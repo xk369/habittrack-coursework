@@ -1,0 +1,86 @@
+/* HabitTrack — Soft Ledger design tokens (v2 — stronger contrast) */
+:root {
+  /* Surfaces — warm cream */
+  --surface-page: oklch(0.96 0.014 78);
+  --surface-card: oklch(0.99 0.008 85);
+  --surface-card-2: oklch(0.975 0.012 80);
+  --surface-inset: oklch(0.94 0.016 78);
+  --surface-deep: oklch(0.91 0.018 75);
+  --surface-ink: oklch(0.18 0.012 235);
+
+  /* Ink — graphite (refined v3) */
+  --ink: oklch(0.16 0.013 235);
+  --ink-1: oklch(0.26 0.013 235);
+  --ink-2: oklch(0.38 0.012 235);
+  --ink-3: oklch(0.5 0.011 235);
+  --ink-4: oklch(0.62 0.01 235);
+
+  /* Borders (refined v3) */
+  --line: oklch(0.81 0.016 78);
+  --line-strong: oklch(0.71 0.02 78);
+  --line-soft: oklch(0.87 0.013 78);
+
+  /* Sage accent — moss green */
+  --sage-50: oklch(0.95 0.022 150);
+  --sage-100: oklch(0.91 0.035 150);
+  --sage-200: oklch(0.83 0.05 150);
+  --sage-300: oklch(0.74 0.062 152);
+  --sage-400: oklch(0.62 0.075 154);
+  --sage-500: oklch(0.52 0.082 158);
+  --sage-600: oklch(0.42 0.072 160);
+  --sage-700: oklch(0.32 0.055 162);
+  --sage-ink: oklch(0.26 0.045 162);
+
+  /* Heatmap fills — 5 steps (more punch) */
+  --heat-0: oklch(0.935 0.01 78);
+  --heat-1: oklch(0.86 0.04 150);
+  --heat-2: oklch(0.74 0.065 152);
+  --heat-3: oklch(0.6 0.082 156);
+  --heat-4: oklch(0.46 0.085 160);
+
+  /* Semantic */
+  --danger: oklch(0.52 0.15 28);
+  --danger-soft: oklch(0.93 0.035 28);
+  --danger-line: oklch(0.78 0.08 28);
+  --warn: oklch(0.62 0.11 65);
+  --warn-soft: oklch(0.94 0.04 70);
+
+  /* Radii */
+  --r-xs: 4px;
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+
+  /* Type stacks */
+  --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'JetBrains Mono', monospace;
+}
+
+/* Reset-ish baseline for artboards */
+.ht-root {
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: var(--surface-page);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'ss01', 'ss02', 'cv11';
+  letter-spacing: -0.005em;
+  line-height: 1.4;
+}
+.ht-root *,
+.ht-root *::before,
+.ht-root *::after { box-sizing: border-box; }
+
+/* Mono numbers */
+.ht-num { font-family: var(--font-mono); font-feature-settings: 'tnum', 'zero'; letter-spacing: -0.025em; }
+.ht-eyebrow { font-size: 10.5px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; font-family: var(--font-mono); }
+
+/* Reusable */
+.ht-divider { height: 1px; background: var(--line); }
+.ht-divider-soft { height: 1px; background: var(--line-soft); }
+
+/* Tight focus ring */
+.ht-focus:focus-visible {
+  outline: 2px solid var(--sage-500);
+  outline-offset: 2px;
+}

@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HabitTrack · Developer Handoff · Soft Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="tokens.css" />
+<link rel="stylesheet" href="handoff.css" />
+</head>
+<body>
+
+<template id="__bundler_thumbnail">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" style="width:100%;height:100%;background:oklch(0.96 0.014 78)">
+    <g transform="translate(60,60)" fill="oklch(0.42 0.072 160)">
+      <rect x="0"  y="0"  width="16" height="16" rx="3" opacity="0.35"/>
+      <rect x="22" y="0"  width="16" height="16" rx="3" opacity="0.7"/>
+      <rect x="44" y="0"  width="16" height="16" rx="3" opacity="0.45"/>
+      <rect x="66" y="0"  width="16" height="16" rx="3"/>
+      <rect x="0"  y="22" width="16" height="16" rx="3"/>
+      <rect x="22" y="22" width="16" height="16" rx="3" opacity="0.5"/>
+      <rect x="44" y="22" width="16" height="16" rx="3" opacity="0.8"/>
+      <rect x="66" y="22" width="16" height="16" rx="3" opacity="0.35"/>
+      <rect x="0"  y="44" width="16" height="16" rx="3" opacity="0.8"/>
+      <rect x="22" y="44" width="16" height="16" rx="3"/>
+      <rect x="44" y="44" width="16" height="16" rx="3" opacity="0.35"/>
+      <rect x="66" y="44" width="16" height="16" rx="3" opacity="0.6"/>
+      <rect x="0"  y="66" width="16" height="16" rx="3" opacity="0.45"/>
+      <rect x="22" y="66" width="16" height="16" rx="3" opacity="0.8"/>
+      <rect x="44" y="66" width="16" height="16" rx="3"/>
+      <rect x="66" y="66" width="16" height="16" rx="3" opacity="0.35"/>
+    </g>
+  </svg>
+</template>
+
+<div class="layout">
+  <!-- ── SIDE TOC ───────────────────────────────────────────── -->
+  <nav class="toc">
+    <div class="group">Cover</div>
+    <a href="#cover">Концепция</a>
+
+    <div class="group">§01 Foundations</div>
+    <a href="#colors">Colors</a>
+    <a href="#spacing">Spacing &amp; radii</a>
+    <a href="#motion">Motion &amp; shadows</a>
+
+    <div class="group">§02 Typography</div>
+    <a href="#fonts">Fonts &amp; roles</a>
+    <a href="#scale">Type scale</a>
+
+    <div class="group">§03 Components</div>
+    <a href="#c-buttons">Buttons</a>
+    <a href="#c-cards">Cards</a>
+    <a href="#c-inputs">Inputs</a>
+    <a href="#c-badges">Badges &amp; chips</a>
+    <a href="#c-weekday">Weekday picker</a>
+    <a href="#c-heatmap">Heatmap</a>
+    <a href="#c-sparkline">Sparkline</a>
+    <a href="#c-stat">Stat cards</a>
+    <a href="#c-tabs">Tabs &amp; segments</a>
+    <a href="#c-nav">Top navigation</a>
+    <a href="#c-toast">Toast</a>
+    <a href="#c-validation">Validation</a>
+    <a href="#c-history">History row</a>
+
+    <div class="group">§04 Screens</div>
+    <a href="#s-dashboard">Dashboard</a>
+    <a href="#s-detail">Habit Detail</a>
+    <a href="#s-create">Create Habit</a>
+
+    <div class="group">§05 Boundaries</div>
+    <a href="#sacred">Must keep</a>
+    <a href="#flex">May simplify</a>
+
+    <div class="group">§06 Files</div>
+    <a href="#manifest">Manifest</a>
+  </nav>
+
+  <!-- ── DOC ────────────────────────────────────────────────── -->
+  <main class="doc">
+
+    <!-- ── COVER ─────────────────────────────────────────────── -->
+    <section class="cover" id="cover">
+      <div class="eyebrow">DEVELOPER HANDOFF · SOFT LEDGER · v1.0 · 2026-05-20</div>
+      <h1>HabitTrack<br/>Soft Ledger.</h1>
+      <p class="lede">
+        Спокойный, измеримый «учётный журнал» привычек. Тёплая кремовая основа, графитовые тексты,
+        мшисто-зелёный sage как единственный акцент, heatmap-сетка дней как главный визуальный мотив.
+        Этот документ фиксирует токены, типографику, компоненты и спецификации трёх ключевых экранов —
+        достаточно, чтобы реализовать дизайн на React + TypeScript + Tailwind без визуальных компромиссов.
+      </p>
+      <div class="meta">
+        <div>
+          <span class="eyebrow">Stack</span>
+          <span style="font-weight:500">React · TypeScript · Vite · Tailwind</span>
+        </div>
+        <div>
+          <span class="eyebrow">Density</span>
+          <span style="font-weight:500">Desktop · 1280 baseline</span>
+        </div>
+        <div>
+          <span class="eyebrow">Темы</span>
+          <span style="font-weight:500">Light · cream-based</span>
+        </div>
+        <div>
+          <span class="eyebrow">Локаль</span>
+          <span style="font-weight:500">RU · LTR</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── §01 FOUNDATIONS ───────────────────────────────────── -->
+    <section class="section" id="foundations">
+      <div class="sec-eyebrow"><span class="num-tag">§01</span><span class="eyebrow">FOUNDATIONS</span></div>
+      <h2>Цвет, пространство, движение</h2>
+      <p class="sublede">
+        Все значения в OKLCH для предсказуемой перцептивной яркости. Реализуйте как CSS custom properties
+        в корне приложения, затем мапьте в Tailwind через <code class="inline">theme.extend.colors</code>.
+        Файл <code class="inline">tokens.css</code> в репозитории уже содержит готовый набор.
+      </p>
+
+      <h3 id="colors">Surfaces · поверхности</h3>
+      <table class="tokens">
+        <thead><tr><th>·</th><th>Переменная</th><th>OKLCH</th><th>Использование</th></tr></thead>
+        <tbody>
+          <tr><td class="swatch"><span class="chip" style="background:var(--surface-page)"></span></td><td class="var">--surface-page</td><td class="value">oklch(0.96 0.014 78)</td><td class="usage">Основной фон приложения</td></tr>
+          <tr><td class="swatch"><span class="chip" style="background:var(--surface-card)"></span></td><td class="var">--surface-card</td><td class="value">oklch(0.99 0.008 85)</td><td class="usage">Карточки и панели</td></tr>
+          <tr><td class="swatch"><span class="chip" style="background:var(--surface-inset)"></span></td><td class="var">--surface-inset</td><td class="value">oklch(0.94 0.016 78)</td><td class="usage">Inset-зоны внутри карточек (footers, viz-полосы)</td></tr>
+          <tr><td class="swatch"><span class="chip" style="background:var(--surface-deep)"></span></td><td class="var">--surface-deep</td><td class="value">oklch(0.91 0.018 75)</td><td class="usage">Фон canvas / страница за приложением</td></tr>
+          <tr><td class="swatch"><span class="chip" style="background:var(--surface-ink)"></span></td><td class="var">--surface-ink</td><td class="value">oklch(0.18 0.012 235)</td><td class="usage">Тёмный фон (toast, primary-кнопка)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Ink · текст</h3>
+      <table class="tokens">
+        <thead><tr><th>·</th><th>Переменная</th><th>OKLCH</th><th>Использование</th></tr></thead>
+        <tbody>
+          <tr><td class="swatch"><span class="chip" style="background:var(--ink)"></span></td><td class="var">--ink</td><td class="value">oklch(0.16 0.013 235)</td><td class="usage">Главный текст, заголовки</td></tr>
+          <tr><td class="swatch"><span class="chip" style="background:var(--ink-1)"></span></td><td class="var">--ink-1</td><td class="value">oklch(0.26 0.013 235)</td><td class="usage">Подзаголовки, акцентные текстовые элементы</td></tr>
+          <tr><td class="swatch"><span class="chip" style="background:var(--ink-2)"></span></td><td class="var">--ink-2</td><td class="value">oklch(0.38 0.012 235)</td><td class="usage">Основной body-текст</td></tr>
+          <tr><td class="swatch"><span class="chip" style="background:var(--ink-3)"></span></td><td class="var">--ink-3</td><td class="value">oklch(0.5 0.011 235)</td><td class="usage">Метаданные, captions, placeholder</td></tr>
+          <tr><td class="swatch"><span class="chip" style="background:var(--ink-4)"></span></td><td class="var">--ink-4</td><td class="value">oklch(0.62 0.01 235)</td><td class="usage">Disabled-текст</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Borders · линии</h3>
+      <table class="tokens">
+        <thead><tr><th>·</th><th>Переменная</th><th>OKLCH</th><th>Использование</th></tr></thead>
+        <tbody>
+          <tr><td class="swatch"><span class="chip" style="background:var(--line)"></span></td><td class="var">--line</td><td class="value">oklch(0.81 0.016 78)</td><td class="usage">Базовая граница карточек и панелей</td></tr>
+          <tr><td class="swatch"><span class="chip" style="background:var(--line-strong)"></span></td><td class="var">--line-strong</td><td class="value">oklch(0.71 0.02 78)</td><td class="usage">Контурные границы (inputs, secondary-кнопки, mode-cards)</td></tr>
+          <tr><td class="swatch"><span class="chip" style="background:var(--line-soft)"></span></td><td class="var">--line-soft</td><td class="value">oklch(0.87 0.013 78)</td><td class="usage">Внутренние делители строк, лёгкие сепараторы</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Sage · единственный акцент</h3>
+      <table class="tokens">
+        <thead><tr><th>·</th><th>Переменная</th><th>OKLCH</th><th>Использование</th></tr></thead>
+        <tbody>
+          <tr><td class="swatch"><span class="chip" style="background:var(--sage-50)"></span></td><td class="var">--sage-50</td><td class="value">oklch(0.95 0.022 150)</td><td class="usage">Sage-фоны (active-карточки, hero-блоки)</td></tr>
+          <tr><td class="swatch"><span class="chip" style="background:var(--sage-100)"></span></td><td class="var">--sage-100</td><td class="value">oklch(0.91 0.035 150)</td><td class="usage">Hover, мягкие подсветки</td></tr>
+          <tr><td class="swatch"><span class="chip" style="background:var(--sage-500)"></span></td><td class="var">--sage-500</td><td class="value">oklch(0.52 0.082 158)</td><td class="usage">Focus-ring, активные индикаторы</td></tr>
+          <tr><td class="swatch"><span class="chip" style="background:var(--sage-600)"></span></td><td class="var">--sage-600</td><td class="value">oklch(0.42 0.072 160)</td><td class="usage">Primary accent (кнопка «Отметить», sage-fill в чекбоксах)</td></tr>
+          <tr><td class="swatch"><span class="chip" style="background:var(--sage-700)"></span></td><td class="var">--sage-700</td><td class="value">oklch(0.32 0.055 162)</td><td class="usage">Sage-текст на светлом фоне, цифры streak</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Heatmap · 5 ступеней</h3>
+      <div class="swatchrow" style="grid-template-columns: repeat(5, 1fr); max-width: 520px;">
+        <div class="sw" style="background:var(--heat-0); border-color: var(--line-soft);">heat-0</div>
+        <div class="sw" style="background:var(--heat-1);">heat-1</div>
+        <div class="sw" style="background:var(--heat-2);">heat-2</div>
+        <div class="sw" style="background:var(--heat-3);">heat-3</div>
+        <div class="sw" style="background:var(--heat-4); color: oklch(0.95 0.01 80);">heat-4</div>
+      </div>
+      <p style="margin-top:12px;">
+        Heat-0 — день без отметки (запланирован, но не выполнен). Heat-1…4 — выполнено пропорционально количеству привычек на день / интенсивности.
+      </p>
+
+      <h3>Semantic · ошибки и предупреждения</h3>
+      <table class="tokens">
+        <thead><tr><th>·</th><th>Переменная</th><th>OKLCH</th><th>Использование</th></tr></thead>
+        <tbody>
+          <tr><td class="swatch"><span class="chip" style="background:var(--danger)"></span></td><td class="var">--danger</td><td class="value">oklch(0.52 0.15 28)</td><td class="usage">Текст ошибки, destructive-кнопка</td></tr>
+          <tr><td class="swatch"><span class="chip" style="background:var(--danger-soft)"></span></td><td class="var">--danger-soft</td><td class="value">oklch(0.93 0.035 28)</td><td class="usage">Фон validation-message</td></tr>
+          <tr><td class="swatch"><span class="chip" style="background:var(--danger-line)"></span></td><td class="var">--danger-line</td><td class="value">oklch(0.78 0.08 28)</td><td class="usage">Граница error-блоков</td></tr>
+          <tr><td class="swatch"><span class="chip" style="background:var(--warn)"></span></td><td class="var">--warn</td><td class="value">oklch(0.62 0.11 65)</td><td class="usage">Предупреждение (skip-day badge)</td></tr>
+          <tr><td class="swatch"><span class="chip" style="background:var(--warn-soft)"></span></td><td class="var">--warn-soft</td><td class="value">oklch(0.94 0.04 70)</td><td class="usage">Фон предупреждения</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="spacing">Spacing</h3>
+      <p>
+        Шкала на базе 4px. Используйте Tailwind-spacing as-is — она 1-в-1 соответствует токенам системы.
+        Edge-paddings экранов — <code class="inline">28px</code> (Tailwind <code class="inline">px-7</code>),
+        внутренние паддинги карточек — <code class="inline">16–24px</code>.
+      </p>
+      <pre><span class="c-cmt">// рекомендованные значения</span>
+<span class="c-key">edge</span>:    <span class="c-num">28</span>px   <span class="c-cmt">// boundary экрана</span>
+<span class="c-key">card</span>:    <span class="c-num">18</span>–<span class="c-num">24</span>px <span class="c-cmt">// внутренний padding карточек</span>
+<span class="c-key">section</span>: <span class="c-num">16</span>px   <span class="c-cmt">// gap между блоками одной секции</span>
+<span class="c-key">item</span>:    <span class="c-num">10</span>–<span class="c-num">14</span>px <span class="c-cmt">// gap между равноправными элементами</span>
+<span class="c-key">inline</span>:  <span class="c-num">6</span>–<span class="c-num">8</span>px   <span class="c-cmt">// gap между иконкой и текстом</span></pre>
+
+      <h3>Radii</h3>
+      <table class="tokens">
+        <thead><tr><th>Переменная</th><th>Значение</th><th>Использование</th></tr></thead>
+        <tbody>
+          <tr><td class="var">--r-xs</td><td class="value">4px</td><td class="usage">Внутренние heatmap-ячейки, мини-чипы</td></tr>
+          <tr><td class="var">--r-sm</td><td class="value">6px</td><td class="usage">Pills, weekday-чипы, segment-кнопки</td></tr>
+          <tr><td class="var">--r-md</td><td class="value">10px</td><td class="usage">Кнопки, inputs, mode-cards, small panels</td></tr>
+          <tr><td class="var">--r-lg</td><td class="value">14px</td><td class="usage">Карточки привычек, основные панели</td></tr>
+          <tr><td class="var">--r-xl</td><td class="value">20px</td><td class="usage">Hero-карточки (Dashboard, форма Create)</td></tr>
+        </tbody>
+      </table>
+      <p>Pill-радиус для бейджей — <code class="inline">999px</code>.</p>
+
+      <h3 id="motion">Shadows</h3>
+      <p>
+        <strong>Драп-теней почти нет.</strong> Soft Ledger использует bordered + inset-структуру вместо elevation —
+        это часть характера. Допустимы только:
+      </p>
+      <ul>
+        <li><code class="inline">inset 0 1px 0 rgba(255,255,255,0.15)</code> — на sage-кнопках и filled-чекбоксах для лёгкого блика;</li>
+        <li>тонкая <code class="inline">box-shadow: 0 0 0 3px var(--sage-50)</code> — фокус-кольцо у активной mode-card.</li>
+      </ul>
+      <p>
+        <span class="pill dont">avoid</span> Drop-shadow в духе <code class="inline">0 4px 12px rgba(0,0,0,.1)</code>
+        и подобные «pretty SaaS»-тени. Они ломают язык системы.
+      </p>
+
+      <h3>Motion</h3>
+      <pre><span class="c-key">transitions</span>: <span class="c-str">'background 120ms, border-color 120ms, color 120ms, transform 120ms'</span>
+<span class="c-key">easing</span>:      <span class="c-str">'cubic-bezier(.2, .7, .3, 1)'</span> <span class="c-cmt">// «settle» — для всех hover/state</span>
+<span class="c-key">page</span>:        <span class="c-num">160</span>–<span class="c-num">220</span>ms <span class="c-cmt">// смена экранов, появление toast</span></pre>
+      <p>
+        Анимаций <em>немного и они короткие</em>. Никаких bounce/spring-кривых, никаких motion-design-флойридов —
+        приложение про спокойную дисциплину.
+      </p>
+    </section>
+    <!--SECTION_FOUNDATIONS-->
+
+    <!-- ── §02 TYPOGRAPHY ────────────────────────────────────── -->
+    <section class="section" id="typography">
+      <div class="sec-eyebrow"><span class="num-tag">§02</span><span class="eyebrow">TYPOGRAPHY</span></div>
+      <h2>Типографика</h2>
+      <p class="sublede">
+        Два шрифта. Geist для всего интерфейса. Geist Mono — для чисел, метрик, ID, дат, технических подписей.
+        Это правило не для красоты — оно делает количественные данные читаемыми как в финансовом отчёте.
+      </p>
+
+      <h3 id="fonts">Шрифтовые стеки</h3>
+      <pre><span class="c-key">--font-sans</span>: <span class="c-str">'Geist'</span>, ui-sans-serif, system-ui, sans-serif;
+<span class="c-key">--font-mono</span>: <span class="c-str">'Geist Mono'</span>, ui-monospace, <span class="c-str">'JetBrains Mono'</span>, monospace;</pre>
+      <p>
+        Подключение через Google Fonts:
+        <code class="inline">family=Geist:wght@300;400;500;600;700&amp;family=Geist+Mono:wght@400;500;600</code>.
+        Включайте <code class="inline">font-feature-settings: 'tnum', 'zero'</code> для всех моноширинных чисел
+        (utility-класс <code class="inline">.ht-num</code> в репозитории).
+      </p>
+
+      <h3 id="scale">Type scale</h3>
+      <table class="tokens">
+        <thead><tr><th>Роль</th><th>Шрифт</th><th>Размер</th><th>Вес</th><th>Letter-spacing</th><th>Где применяется</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Display XL</strong></td><td class="value">Geist</td><td class="value">64 / 1.02</td><td class="value">500</td><td class="value">-0.035em</td><td class="usage">Hero handoff, обложки</td></tr>
+          <tr><td><strong>Display L</strong></td><td class="value">Geist</td><td class="value">42 / 1.05</td><td class="value">500</td><td class="value">-0.025em</td><td class="usage">Habit Detail H1</td></tr>
+          <tr><td><strong>Display M</strong></td><td class="value">Geist</td><td class="value">38 / 1.05</td><td class="value">500</td><td class="value">-0.025em</td><td class="usage">Dashboard greeting, Create Habit H1</td></tr>
+          <tr><td><strong>Heading L</strong></td><td class="value">Geist</td><td class="value">22 / 1.2</td><td class="value">500</td><td class="value">-0.015em</td><td class="usage">Section H2 («Привычки на сегодня»)</td></tr>
+          <tr><td><strong>Heading M</strong></td><td class="value">Geist</td><td class="value">17 / 1.25</td><td class="value">500</td><td class="value">-0.01em</td><td class="usage">Заголовки панелей</td></tr>
+          <tr><td><strong>Heading S</strong></td><td class="value">Geist</td><td class="value">15.5 / 1.3</td><td class="value">500</td><td class="value">-0.008em</td><td class="usage">Habit card title</td></tr>
+          <tr><td><strong>Body L</strong></td><td class="value">Geist</td><td class="value">14.5 / 1.55</td><td class="value">400–450</td><td class="value">-0.005em</td><td class="usage">Hero lede, описание привычки</td></tr>
+          <tr><td><strong>Body</strong></td><td class="value">Geist</td><td class="value">13–13.5 / 1.5</td><td class="value">400–500</td><td class="value">-0.005em</td><td class="usage">Основной текст, form labels</td></tr>
+          <tr><td><strong>Body S</strong></td><td class="value">Geist</td><td class="value">12 / 1.5</td><td class="value">400–500</td><td class="value">0</td><td class="usage">Метаданные, hints</td></tr>
+          <tr><td><strong>Caption</strong></td><td class="value">Geist</td><td class="value">11.5 / 1.4</td><td class="value">400</td><td class="value">0</td><td class="usage">Подписи, secondary-meta</td></tr>
+          <tr><td><strong>Eyebrow</strong></td><td class="value">Geist Mono</td><td class="value">10.5–11 / 1</td><td class="value">500</td><td class="value">+0.06–0.1em · UPPERCASE</td><td class="usage">Все over-section подписи и labels метрик</td></tr>
+          <tr><td><strong>Numeric · hero</strong></td><td class="value">Geist Mono</td><td class="value">48–76</td><td class="value">500</td><td class="value">-0.035em · tnum</td><td class="usage">Hero KPI («3/6», streak-номер)</td></tr>
+          <tr><td><strong>Numeric · L</strong></td><td class="value">Geist Mono</td><td class="value">32–40</td><td class="value">500</td><td class="value">-0.03em · tnum</td><td class="usage">Метрики KPI-полосы</td></tr>
+          <tr><td><strong>Numeric · M</strong></td><td class="value">Geist Mono</td><td class="value">22–24</td><td class="value">500</td><td class="value">-0.025em · tnum</td><td class="usage">Streak в карточке привычки</td></tr>
+          <tr><td><strong>Numeric · S</strong></td><td class="value">Geist Mono</td><td class="value">13–15</td><td class="value">500</td><td class="value">-0.02em · tnum</td><td class="usage">Inline-числа в подписях</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Правила применения</h3>
+      <ul>
+        <li><strong>Geist Mono — всегда для:</strong> процентов, дней, дат (07:14, 17 мая), ID (HABIT_8F3A), счётчиков (12/116).</li>
+        <li><strong>Geist — для всего остального:</strong> заголовки, описания, кнопки, навигация.</li>
+        <li><strong>Eyebrow</strong> — это технический ярлык над секцией («СЕГОДНЯ · ПРОГРЕСС»); не заголовок.</li>
+        <li><strong>Не используйте</strong> bold-веса 600/700 для UI — это перебор для спокойной системы. 500 — потолок.</li>
+        <li>Tabular numbers (<code class="inline">font-variant-numeric: tabular-nums</code>) обязательно везде, где цифры стоят в столбец или сравниваются.</li>
+      </ul>
+    </section>
+    <!--SECTION_TYPOGRAPHY-->
+
+    <!-- ── §03 COMPONENTS ────────────────────────────────────── -->
+    <section class="section" id="components">
+      <div class="sec-eyebrow"><span class="num-tag">§03</span><span class="eyebrow">COMPONENTS</span></div>
+      <h2>Структура ключевых компонентов</h2>
+      <p class="sublede">
+        Минимальный набор, на котором держатся три экрана. Все компоненты реализованы в
+        <code class="inline">components.jsx</code> в исходниках — здесь дана только спецификация props и анатомии,
+        чтобы переписать на TypeScript-аналоги.
+      </p>
+
+      <!-- Buttons -->
+      <h3 id="c-buttons">Button</h3>
+      <div class="spec"><span class="label">props</span><span class="value"><code class="inline">variant: 'primary' | 'accent' | 'secondary' | 'ghost' | 'danger'</code></span></div>
+      <div class="spec"><span class="label">size</span><span class="value"><code class="inline">'sm' | 'md' | 'lg'</code> → высота 30 / 36 / 44; padding-x 12 / 14 / 18; font 12.5 / 13.5 / 14.5</span></div>
+      <div class="spec"><span class="label">slots</span><span class="value"><code class="inline">icon</code> (слева), <code class="inline">iconRight</code>, <code class="inline">disabled</code>, <code class="inline">fullWidth</code></span></div>
+      <div class="spec"><span class="label">radius</span><span class="value">10px (<code class="inline">--r-md</code>)</span></div>
+      <h4>Варианты</h4>
+      <table class="tokens">
+        <thead><tr><th>Variant</th><th>Background</th><th>Color</th><th>Border</th><th>Контекст</th></tr></thead>
+        <tbody>
+          <tr><td><strong>primary</strong></td><td class="value">--ink</td><td class="value">--surface-card</td><td class="value">--ink</td><td class="usage">Главные действия страницы («Создать привычку»)</td></tr>
+          <tr><td><strong>accent</strong></td><td class="value">--sage-600</td><td class="value">#fbfbf7</td><td class="value">--sage-700</td><td class="usage">Единственный sage-CTA («Отметить сегодня»). Inset-блик сверху.</td></tr>
+          <tr><td><strong>secondary</strong></td><td class="value">--surface-card</td><td class="value">--ink</td><td class="value">--line-strong</td><td class="usage">«Редактировать», «Архивировать»</td></tr>
+          <tr><td><strong>ghost</strong></td><td class="value">transparent</td><td class="value">--ink-1</td><td class="value">transparent</td><td class="usage">Tertiary («Отмена», quiet links)</td></tr>
+          <tr><td><strong>danger</strong></td><td class="value">--surface-card</td><td class="value">--danger</td><td class="value">oklch(0.82 0.05 28)</td><td class="usage">Destructive («Удалить»)</td></tr>
+        </tbody>
+      </table>
+      <p><span class="pill must">правило</span> На любом экране — <em>не более одного</em> accent-CTA. Если ситуация требует двух, второй должен быть secondary.</p>
+
+      <!-- Cards -->
+      <h3 id="c-cards">Cards</h3>
+      <p>Три уровня иерархии:</p>
+      <div class="anatomy">
+        <div class="card">
+          <span class="h">PANEL · хост</span>
+          <span class="n" style="font-size:14px">background: --surface-card<br/>border: 1px --line<br/>radius: 14px</span>
+          <span class="b">Внешняя оболочка большой панели (year-heatmap, history, форма). Содержит подзоны через делители.</span>
+        </div>
+        <div class="card">
+          <span class="h">HABIT CARD</span>
+          <span class="n" style="font-size:14px">background: --surface-card<br/>border: 1px --line<br/>radius: 14px</span>
+          <span class="b">Карточка привычки. Три зоны через <code class="inline">--line-soft</code> делители: header, viz-полоса (фон --surface-inset), footer-action.</span>
+        </div>
+        <div class="card">
+          <span class="h">HERO CARD</span>
+          <span class="n" style="font-size:14px">background: --surface-card<br/>border: 1px --line<br/>radius: 20px</span>
+          <span class="b">Корневые «hero»-карточки экранов (Dashboard greeting, Habit Detail title-strip). Sage-блок интегрируется как правый сегмент.</span>
+        </div>
+        <div class="card">
+          <span class="h">EMPHASIS CARD · sage</span>
+          <span class="n" style="font-size:14px">background: gradient sage-50 → sage-100<br/>border: 1px oklch(0.78 0.06 150)<br/>radius: 14px</span>
+          <span class="b">Подсвеченный блок (Habit Detail «47-й день», current state). Только один на экране.</span>
+        </div>
+      </div>
+
+      <!-- Inputs -->
+      <h3 id="c-inputs">Inputs · text / textarea</h3>
+      <div class="spec"><span class="label">height</span><span class="value">42–46px input, textarea — гибкая</span></div>
+      <div class="spec"><span class="label">padding</span><span class="value">14–16px horizontal · 11–12px vertical</span></div>
+      <div class="spec"><span class="label">font</span><span class="value">14–15.5px · Geist · 500</span></div>
+      <div class="spec"><span class="label">border</span><span class="value">1.5px <code class="inline">--line-strong</code>. На <code class="inline">:focus</code> → <code class="inline">--sage-500</code> + 3px ring <code class="inline">--sage-50</code></span></div>
+      <div class="spec"><span class="label">radius</span><span class="value">10px</span></div>
+      <div class="spec"><span class="label">label</span><span class="value">Над полем, 13.5 / 500. Справа «обязательно» / «опционально» в mono · ink-3</span></div>
+      <div class="spec"><span class="label">hint</span><span class="value">11.5 / 1.5 / ink-3 под полем</span></div>
+      <div class="spec"><span class="label">error</span><span class="value">фон <code class="inline">--danger-soft</code>, border <code class="inline">--danger-line</code>, hint меняется на <code class="inline">--danger</code> + иконка Warn</span></div>
+
+      <!-- Badges / chips -->
+      <h3 id="c-badges">Badge &amp; Chip</h3>
+      <div class="spec"><span class="label">Badge</span><span class="value">3×8px padding, font 11.5, radius 999px, опциональный <code class="inline">dot</code>, опциональный <code class="inline">mono</code>. Тона: <code class="inline">neutral · active · archived · warn · danger · sage</code></span></div>
+      <div class="spec"><span class="label">Schedule chip</span><span class="value">4×9px, фон <code class="inline">--surface-inset</code>, border <code class="inline">--line</code>, radius 6px, font 11.5, иконка слева 11px</span></div>
+      <div class="spec"><span class="label">Preset chip</span><span class="value">Тёплая кнопка-предустановка («Будни · Пн–Пт»). 5×11px, border <code class="inline">--line-strong</code>, radius 6px, font 12 / 500</span></div>
+
+      <!-- Weekday picker -->
+      <h3 id="c-weekday">Weekday picker</h3>
+      <p>Два размера:</p>
+      <div class="spec"><span class="label">display 28px</span><span class="value">Полная неделя как индикатор расписания (Dashboard hero, Habit Detail). Состояния: <code class="inline">on</code> — sage-600 fill + sage-700 border + белый текст; <code class="inline">off</code> — surface-card + line-soft border + ink-3 текст.</span></div>
+      <div class="spec"><span class="label">interactive 52–64px</span><span class="value">В Create Habit: 2 строки (eyebrow «ПН» 10.5 / mono · число дня 18 / mono · sage-fill 18×18 индикатор). Кнопки flex:1 в row.</span></div>
+      <div class="spec"><span class="label">mini 20px</span><span class="value">В habit-card footer — только первая буква дня, либо on (sage-tinted) либо off (line-soft outline).</span></div>
+
+      <!-- Heatmap -->
+      <h3 id="c-heatmap">Heatmap · главный мотив</h3>
+      <div class="spec"><span class="label">props</span><span class="value"><code class="inline">weeks · cellSize · gap · seed · density · monthLabels</code></span></div>
+      <div class="spec"><span class="label">cell sizes</span><span class="value">9–10px в карточках, 13px в Dashboard year-view, 18px в Habit Detail 6-month view</span></div>
+      <div class="spec"><span class="label">gap</span><span class="value">2.5–5px (масштабируется с cellSize)</span></div>
+      <div class="spec"><span class="label">5 ступеней</span><span class="value">heat-0…heat-4 (см. §01). Heat-0 рендерится с 1px <code class="inline">--line-soft</code> outline, чтобы пустые дни читались.</span></div>
+      <div class="spec"><span class="label">labels</span><span class="value">Месяцы — mono 10px, ink-3, расставлены сверху по абсолютным X. Опциональны.</span></div>
+      <div class="spec"><span class="label">legend</span><span class="value">«Меньше · □ □ □ □ □ · Больше» в подвале панели.</span></div>
+      <div class="spec"><span class="label">empty state</span><span class="value">В Create Habit preview — dashed outline в каждой ячейке (см. компонент EmptyHeatmap).</span></div>
+
+      <!-- Sparkline -->
+      <h3 id="c-sparkline">Sparkline</h3>
+      <div class="spec"><span class="label">SVG</span><span class="value">Одна area-path под линией (sage-100 @ 55% opacity) + основная линия sage-600, 1.5px stroke. Точка в конце 2.5px sage-600.</span></div>
+      <div class="spec"><span class="label">size</span><span class="value">120×32 в карточке, 420×62 в Habit Detail.</span></div>
+      <div class="spec"><span class="label">правило</span><span class="value">Используется только когда есть содержательный тренд. Не декор.</span></div>
+
+      <!-- Stat -->
+      <h3 id="c-stat">Stat / KPI cards</h3>
+      <p>Четыре типоразмера в порядке возрастания weight:</p>
+      <table class="tokens">
+        <thead><tr><th>Тип</th><th>Numeric</th><th>Где</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Inline stat</strong></td><td class="value">14 / mono</td><td class="usage">Внутри карточки привычки</td></tr>
+          <tr><td><strong>Card metric</strong></td><td class="value">22 / mono</td><td class="usage">Mini-grid внутри карточки (deprecated в v3 для habit card; используется в концепции)</td></tr>
+          <tr><td><strong>Hero KPI</strong></td><td class="value">40 / mono · -0.03em</td><td class="usage">Dashboard hero KPI-strip</td></tr>
+          <tr><td><strong>Big metric</strong></td><td class="value">48 / mono · -0.035em</td><td class="usage">Habit Detail KPI-strip</td></tr>
+          <tr><td><strong>Hero number</strong></td><td class="value">76 / mono · -0.04em</td><td class="usage">Dashboard «3 / 6» today gauge</td></tr>
+        </tbody>
+      </table>
+
+      <!-- Tabs / segments -->
+      <h3 id="c-tabs">Tabs &amp; segments</h3>
+      <div class="spec"><span class="label">Segment group</span><span class="value">фон <code class="inline">--surface-inset</code>, border <code class="inline">--line</code>, padding 3px, radius 10px. Активный таб — surface-card + 1px line, неактивный — transparent.</span></div>
+      <div class="spec"><span class="label">Top-nav tab</span><span class="value">Только текст 13 / 500. Активный — sage underline 2px (см. §c-nav).</span></div>
+
+      <!-- Top nav -->
+      <h3 id="c-nav">Top navigation</h3>
+      <div class="spec"><span class="label">высота</span><span class="value">56–60px, padding 12×24, border-bottom <code class="inline">--line</code>, фон <code class="inline">--surface-card</code></span></div>
+      <div class="spec"><span class="label">brand</span><span class="value">28×28 ink-square с heatmap-SVG глифом + wordmark 15 / 600. Версионная mono-метка справа.</span></div>
+      <div class="spec"><span class="label">nav links</span><span class="value">padding 8×14, gap 2. Активная вкладка — sage-600 underline 2px, появляется на 13px ниже текста (за пределами padding). Hover — без bg, только color → ink.</span></div>
+      <div class="spec"><span class="label">right cluster</span><span class="value">Поиск (search-box с ⌘K), bell c sage-dot, разделитель, avatar-pill (gradient + АЛ + имя).</span></div>
+
+      <!-- Toast -->
+      <h3 id="c-toast">Toast</h3>
+      <div class="spec"><span class="label">контейнер</span><span class="value">Фон <code class="inline">--ink</code>, color <code class="inline">--surface-card</code>, padding 11×14, radius 10px</span></div>
+      <div class="spec"><span class="label">структура</span><span class="value">sage-кружок с галочкой 18×18 · текст · опциональная mono-метаподпись («streak +1 → 47») · close-X</span></div>
+      <div class="spec"><span class="label">позиция</span><span class="value">bottom-right 24px, появление easeOut 180ms, авто-закрытие 4s</span></div>
+
+      <!-- Validation -->
+      <h3 id="c-validation">Validation state</h3>
+      <div class="spec"><span class="label">контейнер поля</span><span class="value">border 1.5px <code class="inline">--danger-line</code>, фон <code class="inline">--surface-inset</code> сохраняется</span></div>
+      <div class="spec"><span class="label">message-блок</span><span class="value">Внутри контейнера: фон <code class="inline">--danger-soft</code>, border 1px <code class="inline">--danger-line</code>, radius 6px, padding 10×14. Иконка Warn 13px + двухстрочный текст (заголовок 13 / 500 + помощь 11.5)</span></div>
+      <div class="spec"><span class="label">счётчик</span><span class="value">«выбрано · 0 / 7» — mono 11.5 / <code class="inline">--danger</code></span></div>
+      <div class="spec"><span class="label">примыкания</span><span class="value">Cтейт распространяется на preview-rail: <code class="inline">CheckItem</code> с этим полем красный, eyebrow карточки превью красный.</span></div>
+
+      <!-- History row -->
+      <h3 id="c-history">History row</h3>
+      <div class="spec"><span class="label">avatar 38×38</span><span class="value">Surface-card / line / radius 6px. Внутри: число дня (mono 14 / 500) + день недели (9 / mono / 0.04em / uppercase).</span></div>
+      <div class="spec"><span class="label">состояния</span><span class="value">
+        <strong>default</strong> — surface-card avatar, белый фон строки;<br/>
+        <strong>current/today</strong> — sage-600 fill avatar + белый текст, фон строки oklch(0.96 0.02 150);<br/>
+        <strong>skip</strong> — surface-inset avatar, ink-3 текст, warn-badge «пропуск»
+      </span></div>
+      <div class="spec"><span class="label">правая часть</span><span class="value">Время + опциональный badge («сегодня», «пропуск») + 11.5 ink-2 описание.</span></div>
+      <div class="spec"><span class="label">action</span><span class="value">«снять» — 11.5 / line / radius 6 / 5×9 padding. Скрывается для skip-строк.</span></div>
+    </section>
+    <!--SECTION_COMPONENTS-->
+
+    <!-- ── §04 SCREENS ──────────────────────────────────────── -->
+    <section class="section" id="screens">
+      <div class="sec-eyebrow"><span class="num-tag">§04</span><span class="eyebrow">SCREENS</span></div>
+      <h2>Спецификация трёх ключевых экранов</h2>
+      <p class="sublede">
+        Layout, состав блоков, визуальные приоритеты и правила responsive. Для каждого экрана зафиксированы
+        элементы, которые критично сохранить при переносе в код.
+      </p>
+
+      <!-- ───────────── DASHBOARD ─────────────── -->
+      <h3 id="s-dashboard">Dashboard · главный экран</h3>
+      <p>
+        Baseline ширина <code class="inline">1280px</code>. Edge-padding <code class="inline">28px</code>.
+        Гид по вертикальной иерархии:
+      </p>
+      <div class="spec"><span class="label">01 · top nav</span><span class="value">Standard 56px header. Активный таб — «Сегодня».</span></div>
+      <div class="spec"><span class="label">02 · hero card</span><span class="value">
+        Карточка-обёртка radius 20px. Разделена на 2 колонки + KPI-strip снизу.<br/>
+        <strong>Left (60%)</strong>: eyebrow с датой → greeting H1 → подсказка → две кнопки (accent «Отметить ближайшую» + secondary «Новая привычка»).<br/>
+        <strong>Right (40%)</strong>: sage-градиентный блок «СЕГОДНЯ · ПРОГРЕСС» — hero-число «3 / 6» (76 / mono), процент, прогресс-бар 10px, точечный рейл из 6 чекбоксов по привычкам.<br/>
+        <strong>KPI-strip снизу</strong>: 4 ячейки по 1fr, разделены 1px. Лучший streak (highlight sage) · Compliance 30 дней · Активных · Отметок всего. Каждое число 40 / mono.
+      </span></div>
+      <div class="spec"><span class="label">03 · year heatmap panel</span><span class="value">
+        Своя карточка radius 14px. Заголовок «Карта регулярности» + H2 «365 дней дисциплины» с моно-числом 365.<br/>
+        Справа в шапке: 3 моно-stat («Идеальных дней / Идеальных недель / Пропусков») + легенда «Меньше□□□□□Больше».<br/>
+        Сам heatmap — 52 недели × 7 дней, cell 13px, gap 4px, monthLabels. Фон inset.
+      </span></div>
+      <div class="spec"><span class="label">04 · habit cards grid</span><span class="value">
+        Eyebrow «СЕГОДНЯ · ВТОРНИК» → H2 «Привычки на сегодня» + микро-сводка («6 запланировано · 3 выполнено · 3 в ожидании»).<br/>
+        Справа — segment-таб Активные/Все/Архив.<br/>
+        Сетка 2 колонки, gap 14px. Карточка см. §c-cards «HABIT CARD».
+      </span></div>
+      <div class="spec"><span class="label">05 · create dashed tile</span><span class="value">
+        Полноширотная dashed-карточка radius 14px. Иконка-квадрат + двухстрочный текст + arrow-right.
+        Действует как нижний CTA-якорь сетки.
+      </span></div>
+
+      <h4>Визуальные приоритеты</h4>
+      <ol>
+        <li>Hero-число «3 / 6» — самый крупный элемент экрана.</li>
+        <li>Greeting H1 — главный текстовый якорь.</li>
+        <li>KPI-strip — секцндарная аналитика.</li>
+        <li>Year heatmap — равноценный визуальный блок-хук.</li>
+        <li>Habit cards — рабочая зона, более ровная плотность.</li>
+      </ol>
+
+      <h4>Responsive</h4>
+      <ul>
+        <li><strong>≥1200</strong> — макет 1-в-1 как в макете.</li>
+        <li><strong>1024–1199</strong> — KPI-strip сворачивается в 2×2, hero становится одноколоночным.</li>
+        <li><strong>768–1023</strong> — habit cards 1 колонка, year heatmap прокручивается горизонтально (сохранить cellSize).</li>
+        <li><strong>&lt;768</strong> — не в скоупе первой итерации, но если придётся: stack everything, weekday-strip скрывается в карточке.</li>
+      </ul>
+
+      <h4>Критично сохранить</h4>
+      <ul>
+        <li>Sage hero-блок справа — он визуально и эмоционально несёт экран.</li>
+        <li>Year heatmap должен быть в отдельной framed-карточке, не прижатой к hero.</li>
+        <li>Карточка привычки: streak справа сверху как доминантная цифра, heatmap внутри inset-полосы.</li>
+        <li>Только один accent-CTA на экране (в hero либо в карточке, не оба).</li>
+      </ul>
+
+      <!-- ───────────── HABIT DETAIL ─────────────── -->
+      <h3 id="s-detail">Habit Detail · центр управления привычкой</h3>
+      <p>
+        Baseline <code class="inline">1280px</code>. После top-nav — breadcrumb 12px ink-3, потом hero-strip, потом
+        двухколоночный grid <code class="inline">1.55fr 1fr</code>.
+      </p>
+      <div class="spec"><span class="label">01 · breadcrumb</span><span class="value">«← Все привычки / [Habit title]» 12px. Минимальный, не давит.</span></div>
+      <div class="spec"><span class="label">02 · hero strip</span><span class="value">
+        Карточка radius 20px. Двухколоночный grid <code class="inline">1fr auto</code>.<br/>
+        <strong>Left</strong>: status badge active + mono-meta (ID, дата создания, дней в работе) → Display L H1 (42px) → описание → schedule-meta inline (weekday-strip 28px + расписание + время напоминания + следующая дата).<br/>
+        <strong>Right</strong>: action-stack 240px ширины — accent-кнопка lg «Отметить сегодня» fullWidth + строка из 3 кнопок (Изменить · В архив · 30×30 destructive-иконка).<br/>
+        <strong>KPI-strip снизу</strong>: 4 big-metric (48 / mono). Первая (streak) — sage-градиентный фон-highlight.
+      </span></div>
+      <div class="spec"><span class="label">03 · viz panel (1.55fr)</span><span class="value">
+        Heatmap-карточка radius 14: header с tab-segment (Год / 6 мес / 3 мес / Месяц), inset-зона с heatmap 26 недель × 18px cellSize, footer с тремя моно-stat и легендой.<br/>
+        Под ней — две карточки в grid <code class="inline">1.4fr 1fr</code>: <em>Compliance 30 дней</em> с big-number 32 / sparkline 420×62; и <em>Weekly bars</em> — 7 столбиков с track-fill (sage-600 если full, sage-400 если partial).
+      </span></div>
+      <div class="spec"><span class="label">04 · history aside (1fr)</span><span class="value">
+        Не одна большая панель, а <strong>стек из трёх блоков</strong> через gap 14px:<br/>
+        1. <strong>Today hero</strong> — sage-градиент карточка radius 14: eyebrow «СЕГОДНЯ · 17 МАЯ», большое число «47-й день подряд», галочка-квадрат 38×38, мета-строка («07:14 · до лучшего 17 дней»), кнопка «снять отметку».<br/>
+        2. <strong>This week strip</strong> — 7 day-cards в равной grid. Каждая: eyebrow день + число + sage-fill 18×18 индикатор. Today-карточка — sage-tinted, future-карточка — inset с line-border.<br/>
+        3. <strong>Full history</strong> — список со sticky-month-headers (eyebrow месяц + progress-bar 64×4 + «x/y» mono). Каждый history row см. §c-history.
+      </span></div>
+
+      <h4>Визуальные приоритеты</h4>
+      <ol>
+        <li>H1 «Утренняя медитация» — основной якорь.</li>
+        <li>Big-metric streak (48 / sage-highlight) — самая весомая цифра.</li>
+        <li>Sage hero «47-й день подряд» в правой колонке — эмоциональный якорь.</li>
+        <li>Year heatmap — рациональный якорь.</li>
+        <li>Список истории — сканируемая рабочая зона.</li>
+      </ol>
+
+      <h4>Responsive</h4>
+      <ul>
+        <li><strong>≥1200</strong> — двухколоночный layout сохраняется.</li>
+        <li><strong>1024–1199</strong> — history-aside уходит под viz-панель в одну колонку, без потери порядка.</li>
+        <li><strong>&lt;1024</strong> — KPI-strip 2×2, action-stack hero растягивается на всю ширину под title.</li>
+      </ul>
+
+      <h4>Критично сохранить</h4>
+      <ul>
+        <li>Three-block структура aside (Today / This week / Full history) — она и даёт «ритм» экрана.</li>
+        <li>Sage-highlight на первой KPI-ячейке (streak) — единственное место на экране с sage-fill.</li>
+        <li>Размер big-metric 48px не должен опускаться ниже 40.</li>
+        <li>«Снять отметку» кнопка должна быть видна на Today hero, не спрятана в меню.</li>
+      </ul>
+
+      <!-- ───────────── CREATE HABIT ─────────────── -->
+      <h3 id="s-create">Create Habit · форма</h3>
+      <p>
+        Двухколоночный layout <code class="inline">1fr 400px</code>. Слева — структурированная форма-документ,
+        справа — live preview rail.
+      </p>
+      <div class="spec"><span class="label">01 · header</span><span class="value">Breadcrumb + Display M H1 «Новая привычка» + lede 14 ink-2. Справа — ghost «Отмена» и accent «Создать привычку» (в disabled state по умолчанию).</span></div>
+      <div class="spec"><span class="label">02 · form card</span><span class="value">
+        Radius 20px. Состоит из трёх <strong>FormSection</strong>, каждая — двухколоночный grid <code class="inline">220px 1fr</code>: левая колонка — sage-tag номер § + название секции + caption, правая — поля.<br/>
+        <strong>§01 Что вы хотите делать</strong> — Title input (46px, счётчик символов справа) + Purpose textarea + hints.<br/>
+        <strong>§02 Когда выполнять</strong> — пара ModeCard radio («Ежедневно» / «Выбранные дни», активный с sage-ring), затем weekday picker контейнер (см. §c-weekday — interactive 52–64px вариант), validation-message внутри, presets-чипы внизу.<br/>
+        <strong>§03 Напоминание</strong> — ReminderChip с моно-временем + dashed «+ Ещё одно» добавление.
+      </span></div>
+      <div class="spec"><span class="label">03 · footer actions</span><span class="value">Inset-полоса в форме: слева info-микротекст, справа ghost-«Отмена» + accent-«Создать привычку» (disabled когда validation fails).</span></div>
+      <div class="spec"><span class="label">04 · preview rail (400px)</span><span class="value">
+        Sticky <code class="inline">top: 18</code>. Стек из трёх блоков:<br/>
+        1. <strong>Habit card preview</strong> — упрощённая копия карточки с Dashboard, отражает текущее состояние формы (включая danger-meta при пустых днях).<br/>
+        2. <strong>Year projection</strong> — EmptyHeatmap (dashed) или partial-filled при выбранных днях, + три ProjStat «ДНЕЙ В НЕДЕЛЮ / В МЕСЯЦ / В ГОД».<br/>
+        3. <strong>Validation checklist</strong> — 4 CheckItem строки (Название / Цель / Режим / Дни) с зелёной галочкой или красным X.
+      </span></div>
+
+      <h4>Визуальные приоритеты</h4>
+      <ol>
+        <li>H1 «Новая привычка» — якорь страницы.</li>
+        <li>Weekday picker (когда невалиден) — красная рамка делает его центром внимания.</li>
+        <li>Mode-cards — primary выбор пользователя, sage-ring на активной.</li>
+        <li>Preview rail — secondary, тихий, но информативный.</li>
+      </ol>
+
+      <h4>Responsive</h4>
+      <ul>
+        <li><strong>≥1100</strong> — двухколоночный layout с sticky preview.</li>
+        <li><strong>768–1099</strong> — preview rail сворачивается в нижний sticky-bar (или в раскрывающуюся секцию), весь экран — одна колонка.</li>
+      </ul>
+
+      <h4>Критично сохранить</h4>
+      <ul>
+        <li>FormSection с sage-tag номером — это и есть «документная» подача формы.</li>
+        <li>Mode-cards со встроенным radio (а не radio-buttons рядом) — критично для визуальной цельности.</li>
+        <li>Validation-message внутри контейнера weekday-picker, не снаружи.</li>
+        <li>Preview rail должен оставаться <em>реактивным к данным</em>, не статическим.</li>
+      </ul>
+    </section>
+    <!--SECTION_SCREENS-->
+
+    <!-- ── §05 BOUNDARIES ───────────────────────────────────── -->
+    <section class="section" id="boundaries">
+      <div class="sec-eyebrow"><span class="num-tag">§05</span><span class="eyebrow">BOUNDARIES</span></div>
+      <h2>Что обязательно сохранить, что допустимо упростить</h2>
+      <p class="sublede">
+        Soft Ledger держится на нескольких принципах. Если они нарушены — это уже другой стиль.
+        Всё остальное — пространство для разумных инженерных компромиссов.
+      </p>
+
+      <h3 id="sacred">Обязательно сохранить</h3>
+      <div class="anatomy">
+        <div class="card">
+          <span class="h"><span class="pill must">must</span> ТЁПЛАЯ КРЕМОВАЯ БАЗА</span>
+          <span class="b">Никаких чисто-белых поверхностей. Все surfaces — в диапазоне oklch(0.94–0.99 / 0.008–0.018 / 75–85). Это и есть «soft» в названии.</span>
+        </div>
+        <div class="card">
+          <span class="h"><span class="pill must">must</span> ЕДИНСТВЕННЫЙ АКЦЕНТ — SAGE</span>
+          <span class="b">Никакого второго акцентного цвета. Sage используется только для прогресса, успеха и единственного primary CTA на экране.</span>
+        </div>
+        <div class="card">
+          <span class="h"><span class="pill must">must</span> ЧИСЛА — ВСЕГДА GEIST MONO</span>
+          <span class="b">Любая метрика, дата, ID — Geist Mono с tabular-nums. Это создаёт «ритм учётного журнала».</span>
+        </div>
+        <div class="card">
+          <span class="h"><span class="pill must">must</span> HEATMAP КАК ГЛАВНЫЙ МОТИВ</span>
+          <span class="b">Heatmap присутствует на всех трёх ключевых экранах. Не круги, не кольца Apple, не bar-charts как главный визуал.</span>
+        </div>
+        <div class="card">
+          <span class="h"><span class="pill must">must</span> BORDERED + INSET КАРТОЧКИ</span>
+          <span class="b">Структура «карточка как документ»: тонкая граница, внутренние делители, inset-зоны. Без drop-shadow.</span>
+        </div>
+        <div class="card">
+          <span class="h"><span class="pill must">must</span> СПОКОЙНЫЙ ЯЗЫК ИНТЕРФЕЙСА</span>
+          <span class="b">Никаких восклицаний, эмодзи, gamification-копии. «Отметить сегодня», а не «🔥 Поехали!». Тон личный, но сдержанный.</span>
+        </div>
+        <div class="card">
+          <span class="h"><span class="pill must">must</span> ТОЛЬКО ОДИН ACCENT-CTA НА ЭКРАН</span>
+          <span class="b">Sage-кнопка — самый сильный сигнал. Если их две, они конкурируют и обе теряют вес.</span>
+        </div>
+        <div class="card">
+          <span class="h"><span class="pill must">must</span> EYEBROW MONO-ЛЕЙБЛЫ</span>
+          <span class="b">«СЕГОДНЯ · ПРОГРЕСС», «ТЕКУЩИЙ STREAK» — обязательная типографическая ткань всех секций и метрик.</span>
+        </div>
+      </div>
+
+      <h3 id="flex">Допустимо упростить при React-реализации</h3>
+      <div class="anatomy">
+        <div class="card">
+          <span class="h"><span class="pill flex">ok to simplify</span> SVG ИКОНКИ</span>
+          <span class="b">Кастомные ручные SVG можно заменить на <code class="inline">lucide-react</code> с тем же stroke-width (1.5–1.6). Размеры и цвета сохранить.</span>
+        </div>
+        <div class="card">
+          <span class="h"><span class="pill flex">ok to simplify</span> HEATMAP-ГЕНЕРАЦИЯ</span>
+          <span class="b">В макете данные псевдо-случайные через seed. В проде — реальные данные completion. Можно использовать <code class="inline">react-calendar-heatmap</code> с кастомным <code class="inline">classForValue</code>, мапя в наши 5 ступеней.</span>
+        </div>
+        <div class="card">
+          <span class="h"><span class="pill flex">ok to simplify</span> SPARKLINE</span>
+          <span class="b">Наш в-line SVG достаточен. Если уже стоит Recharts/Victory — используйте, без gridlines и осей.</span>
+        </div>
+        <div class="card">
+          <span class="h"><span class="pill flex">ok to simplify</span> AVATAR</span>
+          <span class="b">Градиентный кружок с инициалами в дизайне — placeholder. Замените на <code class="inline">&lt;img&gt;</code> с fallback на инициалы.</span>
+        </div>
+        <div class="card">
+          <span class="h"><span class="pill flex">ok to simplify</span> ANIMATIONS</span>
+          <span class="b">Все transitions — 120ms на цвет/border. Никаких scrub-анимаций, parallax, layered motion. Если не успеваете — пропустите анимации первой версии, они не несут смысл.</span>
+        </div>
+        <div class="card">
+          <span class="h"><span class="pill flex">ok to simplify</span> WEEKLY BARS</span>
+          <span class="b">Если короче по времени реализации — замените на горизонтальные progress-bars с подписями недель.</span>
+        </div>
+        <div class="card">
+          <span class="h"><span class="pill flex">ok to simplify</span> PREVIEW RAIL</span>
+          <span class="b">Live-preview в Create Habit можно реализовать как простой <code class="inline">useState</code>-controlled блок без debounce. Year-projection не обязателен в MVP — оставьте только habit card preview + checklist.</span>
+        </div>
+        <div class="card">
+          <span class="h"><span class="pill flex">ok to simplify</span> DESIGN CANVAS</span>
+          <span class="b">DesignCanvas — это инструмент для показа дизайна. В коде не воспроизводите. Каждый экран — самостоятельный route.</span>
+        </div>
+      </div>
+
+      <h3>Чего точно не делать</h3>
+      <div class="anatomy">
+        <div class="card">
+          <span class="h"><span class="pill dont">do not</span> Drop-shadow на карточках</span>
+          <span class="b">Любая «box-shadow: 0 4px 12px rgba(0,0,0,.1)» немедленно превращает дизайн в обычный SaaS-template.</span>
+        </div>
+        <div class="card">
+          <span class="h"><span class="pill dont">do not</span> Второй акцентный цвет</span>
+          <span class="b">Синий для info, фиолетовый для premium, жёлтый для warning — это не наша система. Только sage + ink + warm-cream.</span>
+        </div>
+        <div class="card">
+          <span class="h"><span class="pill dont">do not</span> Эмодзи и gamification</span>
+          <span class="b">🔥 для streak, ✨ для «отлично», конфетти на отметку. Это нарушает характер.</span>
+        </div>
+        <div class="card">
+          <span class="h"><span class="pill dont">do not</span> Inter/Roboto/system fonts</span>
+          <span class="b">Geist обязателен. Если падает CDN — fallback на system-ui, но никогда не подставляйте Inter как «альтернативу».</span>
+        </div>
+      </div>
+    </section>
+    <!--SECTION_BOUNDARIES-->
+
+    <!-- ── §06 FILES ─────────────────────────────────────────── -->
+    <section class="section" id="files">
+      <div class="sec-eyebrow"><span class="num-tag">§06</span><span class="eyebrow">FILES</span></div>
+      <h2>Manifest и инженерные рекомендации</h2>
+      <p class="sublede">
+        Текущий дизайн лежит в проекте как набор JSX-файлов. Они <em>не</em> предназначены для прямого
+        копирования в продакшен (всё через Babel-Standalone), но являются точной живой спецификацией
+        анатомии каждого экрана.
+      </p>
+
+      <h3 id="manifest">Файлы проекта</h3>
+      <table class="tokens">
+        <thead><tr><th>Файл</th><th>Содержимое</th><th>Перенос в React</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="var">HabitTrack.html</td>
+            <td class="usage">Главный entry. Design canvas со всеми тремя экранами.</td>
+            <td class="usage">Не нужен — каждый экран становится своим route.</td>
+          </tr>
+          <tr>
+            <td class="var">tokens.css</td>
+            <td class="usage">CSS custom properties — все токены §01.</td>
+            <td class="usage"><strong>Копируйте 1-в-1</strong> в <code class="inline">src/styles/tokens.css</code>. Подключите как первый импорт в <code class="inline">main.tsx</code>.</td>
+          </tr>
+          <tr>
+            <td class="var">components.jsx</td>
+            <td class="usage">Все базовые компоненты: HTButton, HTBadge, ScheduleChip, WeekdayStrip, StatCard, Sparkline, Heatmap, ComplianceBar, AppHeader, Icon. Около 600 строк.</td>
+            <td class="usage">Перепишите как отдельные TSX-файлы в <code class="inline">src/components/&lt;name&gt;/index.tsx</code>. Сигнатуры props сохраните — они уже стабильные.</td>
+          </tr>
+          <tr>
+            <td class="var">screens/dashboard.jsx</td>
+            <td class="usage">Dashboard экран. Содержит HabitCard, HeroKPI, InlineStat, WeekdayStripMini.</td>
+            <td class="usage"><code class="inline">src/pages/Dashboard/</code>. HabitCard вытащите в отдельный компонент — он переиспользуется в Create Habit preview.</td>
+          </tr>
+          <tr>
+            <td class="var">screens/habit-detail.jsx</td>
+            <td class="usage">Habit Detail. BigMetric, WeeklyBars, HistoryRow.</td>
+            <td class="usage"><code class="inline">src/pages/HabitDetail/[id].tsx</code>. Today-hero, ThisWeekStrip, FullHistory — отдельные компоненты.</td>
+          </tr>
+          <tr>
+            <td class="var">screens/create-habit.jsx</td>
+            <td class="usage">Create Habit. FormSection, ModeCard, PresetChip, ReminderChip, EmptyHeatmap, CheckItem.</td>
+            <td class="usage"><code class="inline">src/pages/CreateHabit/</code>. Подключите form-стейт через <code class="inline">react-hook-form</code> или <code class="inline">@conform-to/react</code>.</td>
+          </tr>
+          <tr>
+            <td class="var">screens/concept.jsx</td>
+            <td class="usage">Styleboard. Только для референса — палитра, типографика, демо компонентов.</td>
+            <td class="usage">Используйте как живую спецификацию при разработке. В прод не переносится.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Tailwind config — стартовый</h3>
+      <pre><span class="c-cmt">// tailwind.config.ts</span>
+<span class="c-key">theme</span>: {
+  <span class="c-key">extend</span>: {
+    <span class="c-key">colors</span>: {
+      <span class="c-key">surface</span>: {
+        <span class="c-key">page</span>:   <span class="c-str">'oklch(0.96 0.014 78)'</span>,
+        <span class="c-key">card</span>:   <span class="c-str">'oklch(0.99 0.008 85)'</span>,
+        <span class="c-key">inset</span>:  <span class="c-str">'oklch(0.94 0.016 78)'</span>,
+        <span class="c-key">deep</span>:   <span class="c-str">'oklch(0.91 0.018 75)'</span>,
+        <span class="c-key">ink</span>:    <span class="c-str">'oklch(0.18 0.012 235)'</span>,
+      },
+      <span class="c-key">ink</span>: {
+        DEFAULT: <span class="c-str">'oklch(0.16 0.013 235)'</span>,
+        <span class="c-num">1</span>: <span class="c-str">'oklch(0.26 0.013 235)'</span>,
+        <span class="c-num">2</span>: <span class="c-str">'oklch(0.38 0.012 235)'</span>,
+        <span class="c-num">3</span>: <span class="c-str">'oklch(0.5 0.011 235)'</span>,
+        <span class="c-num">4</span>: <span class="c-str">'oklch(0.62 0.01 235)'</span>,
+      },
+      <span class="c-key">sage</span>: {
+        <span class="c-num">50</span>:  <span class="c-str">'oklch(0.95 0.022 150)'</span>,
+        <span class="c-num">100</span>: <span class="c-str">'oklch(0.91 0.035 150)'</span>,
+        <span class="c-num">500</span>: <span class="c-str">'oklch(0.52 0.082 158)'</span>,
+        <span class="c-num">600</span>: <span class="c-str">'oklch(0.42 0.072 160)'</span>,
+        <span class="c-num">700</span>: <span class="c-str">'oklch(0.32 0.055 162)'</span>,
+      },
+      <span class="c-key">heat</span>: {
+        <span class="c-num">0</span>: <span class="c-str">'oklch(0.935 0.01 78)'</span>,
+        <span class="c-num">1</span>: <span class="c-str">'oklch(0.86 0.04 150)'</span>,
+        <span class="c-num">2</span>: <span class="c-str">'oklch(0.74 0.065 152)'</span>,
+        <span class="c-num">3</span>: <span class="c-str">'oklch(0.6 0.082 156)'</span>,
+        <span class="c-num">4</span>: <span class="c-str">'oklch(0.46 0.085 160)'</span>,
+      },
+      <span class="c-key">line</span>: {
+        DEFAULT: <span class="c-str">'oklch(0.81 0.016 78)'</span>,
+        <span class="c-key">strong</span>:  <span class="c-str">'oklch(0.71 0.02 78)'</span>,
+        <span class="c-key">soft</span>:    <span class="c-str">'oklch(0.87 0.013 78)'</span>,
+      },
+    },
+    <span class="c-key">borderRadius</span>: {
+      <span class="c-key">xs</span>: <span class="c-str">'4px'</span>, <span class="c-key">sm</span>: <span class="c-str">'6px'</span>, <span class="c-key">md</span>: <span class="c-str">'10px'</span>,
+      <span class="c-key">lg</span>: <span class="c-str">'14px'</span>, <span class="c-key">xl</span>: <span class="c-str">'20px'</span>,
+    },
+    <span class="c-key">fontFamily</span>: {
+      <span class="c-key">sans</span>: [<span class="c-str">'Geist'</span>, <span class="c-str">'ui-sans-serif'</span>, <span class="c-str">'system-ui'</span>],
+      <span class="c-key">mono</span>: [<span class="c-str">'Geist Mono'</span>, <span class="c-str">'ui-monospace'</span>, <span class="c-str">'JetBrains Mono'</span>],
+    },
+  },
+}</pre>
+
+      <h3>Suggested directory layout</h3>
+      <pre>src/
+├─ styles/
+│  ├─ tokens.css          <span class="c-cmt">// 1-в-1 из дизайна</span>
+│  └─ index.css           <span class="c-cmt">// @tailwind base/components/utilities + tokens</span>
+├─ lib/
+│  ├─ format.ts           <span class="c-cmt">// pluralize дн/недель/раз</span>
+│  └─ date.ts             <span class="c-cmt">// week, streak helpers</span>
+├─ components/
+│  ├─ Button/             <span class="c-cmt">// 5 variants × 3 sizes</span>
+│  ├─ Card/
+│  ├─ Heatmap/            <span class="c-cmt">// year & 6-month variants</span>
+│  ├─ Sparkline/
+│  ├─ WeekdayStrip/       <span class="c-cmt">// display + interactive</span>
+│  ├─ StatCard/           <span class="c-cmt">// 5 размеров</span>
+│  ├─ Badge/
+│  ├─ Tabs/
+│  ├─ Toast/
+│  ├─ HabitCard/          <span class="c-cmt">// переиспользуется в Dashboard и Create preview</span>
+│  └─ Layout/
+│     └─ AppHeader/
+├─ pages/
+│  ├─ Dashboard/
+│  ├─ HabitDetail/[id]/
+│  └─ CreateHabit/
+└─ App.tsx</pre>
+
+      <h3>Что взять из исходников «как есть»</h3>
+      <ul>
+        <li><strong>tokens.css</strong> — копируйте без изменений.</li>
+        <li><strong>Heatmap-алгоритм</strong> — функция в <code class="inline">components.jsx</code> с цветами по 5 ступеням. В проде замените генератор данных на реальный, остальное не трогайте.</li>
+        <li><strong>Иконки</strong> — путь stroke-настроек на каждой иконке (1.5–1.6 px). Если переходите на <code class="inline">lucide-react</code>, передавайте те же значения.</li>
+      </ul>
+
+      <h3>Открытые вопросы для разработки</h3>
+      <ul>
+        <li>Реализация snapshot-логики «снять отметку» — нужен ли confirm или достаточно undo-toast (3 секунды).</li>
+        <li>Архивирование привычки — отдельный route или в-line in Habit Detail.</li>
+        <li>Hover-состояния habit cards — пока в дизайне статика; стоит ли добавить мягкий <code class="inline">background: --surface-card-2</code> на hover.</li>
+        <li>Mobile (&lt;768px) — пока вне скоупа, нужна отдельная итерация.</li>
+      </ul>
+    </section>
+    <!--SECTION_FILES-->
+
+    <footer class="foot">
+      <span>HabitTrack · Soft Ledger · v1.0</span>
+      <span>Передано в разработку · 20 мая 2026</span>
+    </footer>
+  </main>
+</div>
+</body>
+</html>

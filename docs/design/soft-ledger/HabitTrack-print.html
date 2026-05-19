@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HabitTrack — Soft Ledger · PDF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  html, body {
+    margin: 0; padding: 0;
+    background: oklch(0.91 0.018 75);
+    font-family: 'Geist', system-ui, sans-serif;
+    color: oklch(0.18 0.012 235);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Each screen sits on its own page. 1280px @96dpi ≈ 338.67mm. */
+  @page {
+    size: 340mm 410mm;
+    margin: 0;
+  }
+
+  .print-page {
+    width: 1280px;
+    min-height: 1540px;
+    background: var(--surface-page);
+    break-after: page;
+    break-inside: avoid;
+    page-break-after: always;
+    position: relative;
+    margin: 0 auto;
+    padding: 20px 0 28px;
+    box-sizing: border-box;
+  }
+  .print-page:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  .print-page .label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: oklch(0.54 0.01 235);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0 28px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .print-page .label .badge {
+    padding: 3px 8px;
+    background: oklch(0.95 0.022 150);
+    color: oklch(0.32 0.055 162);
+    border: 1px solid oklch(0.82 0.05 150);
+    border-radius: 999px;
+    letter-spacing: 0.04em;
+  }
+
+  /* Screen container — wrap each rendered React screen */
+  .screen-wrap {
+    border: 1px solid var(--line);
+    border-radius: 0;
+    overflow: hidden;
+    background: var(--surface-page);
+  }
+
+  @media print {
+    body { background: white; }
+    .print-page { box-shadow: none; }
+    /* Hide focus rings */
+    *:focus, *:focus-visible { outline: none !important; }
+    /* Prevent any animations */
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<!-- React + Babel -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- NB: design-canvas.jsx intentionally NOT loaded — we render screens directly -->
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel" src="screens/concept.jsx"></script>
+<script type="text/babel" src="screens/dashboard.jsx"></script>
+<script type="text/babel" src="screens/habit-detail.jsx"></script>
+<script type="text/babel" src="screens/create-habit.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+  function PrintDoc() {
+    return (
+      <>
+        <div className="print-page">
+          <div className="label">
+            <span>HabitTrack · Soft Ledger</span>
+            <span className="badge">01 · Dashboard</span>
+          </div>
+          <div className="screen-wrap"><DashboardScreen /></div>
+        </div>
+        <div className="print-page">
+          <div className="label">
+            <span>HabitTrack · Soft Ledger</span>
+            <span className="badge">02 · Habit Detail</span>
+          </div>
+          <div className="screen-wrap"><HabitDetailScreen /></div>
+        </div>
+        <div className="print-page">
+          <div className="label">
+            <span>HabitTrack · Soft Ledger</span>
+            <span className="badge">03 · Create Habit · validation state</span>
+          </div>
+          <div className="screen-wrap"><CreateHabitScreen /></div>
+        </div>
+        <div className="print-page">
+          <div className="label">
+            <span>HabitTrack · Soft Ledger</span>
+            <span className="badge">04 · Дизайн-система</span>
+          </div>
+          <div className="screen-wrap"><ConceptArtboard /></div>
+        </div>
+      </>
+    );
+  }
+
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  root.render(<PrintDoc />);
+
+  // Auto-print once fonts + render are ready
+  (async () => {
+    try {
+      if (document.fonts && document.fonts.ready) {
+        await document.fonts.ready;
+      }
+    } catch (e) {}
+    // Wait an extra beat for Babel-deferred renders and any async fills
+    await new Promise(r => setTimeout(r, 800));
+    window.print();
+  })();
+</script>
+</body>
+</html>
