@@ -24,12 +24,16 @@ HabitTrack — персональный веб-трекер формирован
 уровне. Проект перешел к этапу реализации: создан минимальный репозиторный
 каркас и подготовлен backend-каркас Django + DRF с конфигурацией через
 переменные окружения, PostgreSQL-настройками и health-check endpoint.
+Реализован backend foundation для аккаунтов, ролевой модели и JWT-
+аутентификации.
 
 ## Базовая структура репозитория
 
 ```text
 .
 ├── backend/
+│   ├── apps/
+│   │   └── accounts/
 │   ├── habittrack/
 │   ├── manage.py
 │   └── requirements.txt
@@ -39,6 +43,8 @@ HabitTrack — персональный веб-трекер формирован
 ```
 
 - `backend/` — серверная часть на Django и DRF.
+- `backend/apps/accounts/` — кастомная User-модель, роли, статусы,
+  регистрация, вход, JWT и профиль пользователя.
 - `backend/manage.py` — стандартная точка управления Django-проектом.
 - `backend/habittrack/` — настройки, URL-маршруты и базовые проектные модули
   backend.
@@ -47,5 +53,14 @@ HabitTrack — персональный веб-трекер формирован
 - `frontend/` — будущая клиентская часть на React, TypeScript и Vite.
 - `infra/` — будущие материалы инфраструктуры и deploy.
 - `docs/` — проектная документация, планы, требования и доказательная база.
+
+## Backend API текущего этапа
+
+- `GET /api/health/` — health-check backend-сервиса.
+- `POST /api/auth/register/` — регистрация обычного пользователя.
+- `POST /api/auth/login/` — вход активного пользователя и получение JWT.
+- `POST /api/auth/refresh/` — обновление JWT access token.
+- `GET /api/account/profile/` — просмотр собственного профиля.
+- `PATCH /api/account/profile/` — изменение допустимых профильных полей.
 
 Подробный план реализации находится в `docs/implementation-plan.md`.
