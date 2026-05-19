@@ -28,7 +28,8 @@ HabitTrack — персональный веб-трекер формирован
 аутентификации. Добавлен backend-контур управления привычками и расписанием
 выполнения, контур отметок выполнения и истории по привычке, а также API
 статистики, пользовательского дашборда и административного управления
-учетными записями.
+учетными записями. Реализован frontend MVP на React, TypeScript и Vite:
+пользовательские сценарии, административные экраны и интеграция с backend API.
 
 ## Базовая структура репозитория
 
@@ -43,6 +44,9 @@ HabitTrack — персональный веб-трекер формирован
 │   ├── manage.py
 │   └── requirements.txt
 ├── frontend/
+│   ├── src/
+│   ├── package.json
+│   └── vite.config.ts
 ├── infra/
 └── docs/
 ```
@@ -60,7 +64,15 @@ HabitTrack — персональный веб-трекер формирован
   backend.
 - `backend/requirements.txt` — минимальные backend-зависимости текущего
   этапа.
-- `frontend/` — будущая клиентская часть на React, TypeScript и Vite.
+- `frontend/` — клиентская часть на React, TypeScript, Vite, Tailwind CSS,
+  TanStack Query и React Router.
+- `frontend/src/api/` — клиентские модули работы с backend API.
+- `frontend/src/app/` — маршрутизация, провайдеры и основной layout.
+- `frontend/src/features/` — доменные frontend-компоненты auth, habits,
+  completions, profile и admin.
+- `frontend/src/pages/` — страницы пользовательского и административного UI.
+- `frontend/src/shared/` — общие guards, UI-компоненты, helpers и hooks.
+- `frontend/src/styles/` — глобальные стили и дизайн-токены Soft Ledger.
 - `infra/` — будущие материалы инфраструктуры и deploy.
 - `docs/` — проектная документация, планы, требования и доказательная база.
 
@@ -153,6 +165,57 @@ python backend/manage.py runserver
 
 ```bash
 python backend/manage.py test apps.accounts apps.habits apps.analytics --noinput
+```
+
+## Локальный запуск frontend
+
+Frontend работает как отдельное Vite-приложение и обращается к backend API по
+значению `VITE_API_BASE_URL`.
+
+1. Установить frontend-зависимости:
+
+```bash
+cd frontend
+npm install
+```
+
+2. Подготовить frontend env:
+
+```bash
+cp .env.example .env
+```
+
+По умолчанию используется:
+
+```text
+VITE_API_BASE_URL=http://localhost:8000
+```
+
+3. Убедиться, что backend запущен на `http://localhost:8000`.
+
+4. Запустить frontend dev server:
+
+```bash
+npm run dev
+```
+
+5. Открыть UI в браузере по адресу, который покажет Vite, обычно
+`http://localhost:5173`.
+
+Текущий frontend MVP включает регистрацию и вход, профиль, dashboard,
+управление привычками, отметки выполнения, историю, статистику и
+административный контур управления пользователями. Docker, demo data и deploy
+будут оформляться отдельными инфраструктурными этапами.
+
+Визуальная тема использует современные CSS-цвета `oklch()`, поэтому для
+корректного отображения нужен актуальный браузер.
+
+Текущие frontend-проверки:
+
+```bash
+cd frontend
+npm run build
+npm run test -- --run
 ```
 
 Подробный план реализации находится в `docs/implementation-plan.md`.

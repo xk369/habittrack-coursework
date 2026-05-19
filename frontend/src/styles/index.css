@@ -1,0 +1,76 @@
+@import './tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--surface-page);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'ss01', 'ss02', 'cv11';
+  letter-spacing: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+a {
+  color: inherit;
+}
+
+.ht-num {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum', 'zero';
+  letter-spacing: 0;
+}
+
+.ht-eyebrow {
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid var(--sage-500);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .soft-motion {
+    transition:
+      background 120ms cubic-bezier(.2, .7, .3, 1),
+      border-color 120ms cubic-bezier(.2, .7, .3, 1),
+      color 120ms cubic-bezier(.2, .7, .3, 1),
+      transform 120ms cubic-bezier(.2, .7, .3, 1);
+  }
+}

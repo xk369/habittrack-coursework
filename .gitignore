@@ -45,6 +45,7 @@ ENV/
 .ruff_cache/
 .coverage
 htmlcov/
+*.tsbuildinfo
 
 # Node.js / Vite
 node_modules/
@@ -76,4 +77,3 @@ logs/
 .parcel-cache/
 tmp/
 temp/
-
