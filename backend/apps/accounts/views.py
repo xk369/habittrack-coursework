@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -59,6 +60,12 @@ class AdminUserBlockView(generics.GenericAPIView):
     queryset = User.objects.all()
     lookup_url_kwarg = 'user_id'
 
+    @extend_schema(
+        request=None,
+        responses=AdminUserSerializer,
+        summary='Block user account',
+        description='Blocks a user account and returns the updated user.',
+    )
     def post(self, request, *args, **kwargs):
         user = self.get_object()
         if user.id == request.user.id:
@@ -78,6 +85,12 @@ class AdminUserUnblockView(generics.GenericAPIView):
     queryset = User.objects.all()
     lookup_url_kwarg = 'user_id'
 
+    @extend_schema(
+        request=None,
+        responses=AdminUserSerializer,
+        summary='Unblock user account',
+        description='Unblocks a user account and returns the updated user.',
+    )
     def post(self, request, *args, **kwargs):
         user = self.get_object()
         user.unblock()

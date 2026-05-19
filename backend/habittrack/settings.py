@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'drf_spectacular',
     'apps.accounts.apps.AccountsConfig',
     'apps.habits.apps.HabitsConfig',
     'apps.analytics.apps.AnalyticsConfig',
@@ -94,6 +95,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'apps.accounts.permissions.IsAuthenticatedAndActive',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 SIMPLE_JWT = {
@@ -101,6 +103,16 @@ SIMPLE_JWT = {
     # the domain-level 403 from IsAuthenticatedAndActive; refresh is still
     # rejected by ActiveTokenRefreshSerializer.
     'CHECK_USER_IS_ACTIVE': False,
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'HabitTrack API',
+    'DESCRIPTION': (
+        'Backend API for HabitTrack: accounts, JWT authentication, habits, '
+        'completion history, statistics dashboard, and admin account control.'
+    ),
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
 
 

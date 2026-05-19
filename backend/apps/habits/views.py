@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema
 from rest_framework import generics, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
@@ -10,9 +11,13 @@ from apps.habits.serializers import HabitCompletionSerializer, HabitSerializer
 
 class HabitViewSet(viewsets.ModelViewSet):
     serializer_class = HabitSerializer
+    lookup_value_converter = 'int'
     http_method_names = ('get', 'post', 'patch', 'delete', 'head', 'options')
 
     def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return Habit.objects.none()
+
         queryset = (
             Habit.objects
             .filter(owner=self.request.user)
@@ -38,6 +43,12 @@ class HabitViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
+    @extend_schema(
+        request=None,
+        responses=HabitSerializer,
+        summary='Archive habit',
+        description='Archives the habit and returns its updated state.',
+    )
     @action(detail=True, methods=('post',))
     def archive(self, request, pk=None):
         habit = self.get_object()
@@ -45,6 +56,12 @@ class HabitViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(habit)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @extend_schema(
+        request=None,
+        responses=HabitSerializer,
+        summary='Unarchive habit',
+        description='Restores the habit from archive and returns its updated state.',
+    )
     @action(detail=True, methods=('post',))
     def unarchive(self, request, pk=None):
         habit = self.get_object()

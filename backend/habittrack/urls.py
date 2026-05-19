@@ -16,11 +16,38 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
+from rest_framework.permissions import AllowAny
 
 from habittrack.views import health_check
 
 urlpatterns = [
     path('api/health/', health_check, name='health-check'),
+    path(
+        'api/schema/',
+        SpectacularAPIView.as_view(permission_classes=(AllowAny,)),
+        name='schema',
+    ),
+    path(
+        'api/docs/',
+        SpectacularSwaggerView.as_view(
+            permission_classes=(AllowAny,),
+            url_name='schema',
+        ),
+        name='swagger-ui',
+    ),
+    path(
+        'api/redoc/',
+        SpectacularRedocView.as_view(
+            permission_classes=(AllowAny,),
+            url_name='schema',
+        ),
+        name='redoc',
+    ),
     path('api/', include('apps.accounts.urls')),
     path('api/', include('apps.analytics.urls')),
     path('api/', include('apps.habits.urls')),

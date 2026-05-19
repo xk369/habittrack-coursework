@@ -100,6 +100,21 @@ HabitTrack — персональный веб-трекер формирован
 отклоняют доступ по актуальному статусу, а refresh token больше не выдает
 новый access token.
 
+## API-документация
+
+- `GET /api/docs/` — Swagger UI.
+- `GET /api/redoc/` — ReDoc.
+- `GET /api/schema/` — OpenAPI schema.
+
+Ручная проверка через Swagger UI:
+
+1. Запустить backend.
+2. Открыть `/api/docs/`.
+3. Выполнить `POST /api/auth/login/`.
+4. Скопировать `access` token из ответа.
+5. Нажать `Authorize` и вставить Bearer token.
+6. Проверять protected endpoint'ы от имени авторизованного пользователя.
+
 ## Локальный запуск backend
 
 1. Создать и активировать виртуальное окружение:
