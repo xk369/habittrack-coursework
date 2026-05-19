@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone
 
 
@@ -32,11 +33,17 @@ class Habit(models.Model):
         return self.title
 
     def archive(self):
+        if self.state == self.State.ARCHIVED:
+            return
+
         self.state = self.State.ARCHIVED
         self.archived_at = timezone.now()
         self.save(update_fields=('state', 'archived_at', 'updated_at'))
 
     def unarchive(self):
+        if self.state == self.State.ACTIVE:
+            return
+
         self.state = self.State.ACTIVE
         self.archived_at = None
         self.save(update_fields=('state', 'archived_at', 'updated_at'))
@@ -78,9 +85,35 @@ class HabitScheduleDay(models.Model):
                 fields=('schedule', 'weekday'),
                 name='unique_weekday_per_schedule',
             ),
+            models.CheckConstraint(
+                condition=Q(weekday__gte=0) & Q(weekday__lte=6),
+                name='weekday_between_0_and_6',
+            ),
         )
         ordering = ('weekday',)
 
     def __str__(self):
         return f'{self.schedule_id}: {self.weekday}'
 
+
+class HabitCompletion(models.Model):
+    habit = models.ForeignKey(
+        Habit,
+        on_delete=models.CASCADE,
+        related_name='completions',
+    )
+    completion_date = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = (
+            models.UniqueConstraint(
+                fields=('habit', 'completion_date'),
+                name='unique_completion_per_habit_date',
+            ),
+        )
+        ordering = ('-completion_date', '-id')
+
+    def __str__(self):
+        return f'{self.habit_id}: {self.completion_date}'

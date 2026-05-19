@@ -1,10 +1,11 @@
-from rest_framework import status, viewsets
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
-from apps.habits.models import Habit
-from apps.habits.serializers import HabitSerializer
+from apps.habits.models import Habit, HabitCompletion
+from apps.habits.serializers import HabitCompletionSerializer, HabitSerializer
 
 
 class HabitViewSet(viewsets.ModelViewSet):
@@ -51,3 +52,57 @@ class HabitViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(habit)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+class HabitCompletionListCreateView(generics.ListCreateAPIView):
+    serializer_class = HabitCompletionSerializer
+
+    def get_habit(self):
+        if hasattr(self, '_habit'):
+            return self._habit
+
+        self._habit = get_object_or_404(
+            Habit.objects
+            .filter(owner=self.request.user)
+            .select_related('schedule')
+            .prefetch_related('schedule__days'),
+            id=self.kwargs['habit_id'],
+        )
+        return self._habit
+
+    def get_queryset(self):
+        habit = self.get_habit()
+        return habit.completions.order_by('-completion_date', '-id')
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['habit'] = self.get_habit()
+        return context
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+
+class HabitCompletionDestroyView(generics.DestroyAPIView):
+    serializer_class = HabitCompletionSerializer
+    lookup_url_kwarg = 'completion_id'
+
+    def get_habit(self):
+        if hasattr(self, '_habit'):
+            return self._habit
+
+        self._habit = get_object_or_404(
+            Habit.objects.filter(owner=self.request.user),
+            id=self.kwargs['habit_id'],
+        )
+        return self._habit
+
+    def get_queryset(self):
+        habit = self.get_habit()
+        return HabitCompletion.objects.filter(habit=habit)
+
+    def perform_destroy(self, instance):
+        if instance.habit.state == Habit.State.ARCHIVED:
+            raise ValidationError({
+                'habit': 'Cannot change completions for archived habit.'
+            })
+        instance.delete()

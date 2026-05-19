@@ -1,7 +1,13 @@
-from django.db import transaction
+from django.db import IntegrityError, transaction
+from django.utils import timezone
 from rest_framework import serializers
 
-from apps.habits.models import Habit, HabitSchedule, HabitScheduleDay
+from apps.habits.models import (
+    Habit,
+    HabitCompletion,
+    HabitSchedule,
+    HabitScheduleDay,
+)
 
 
 class HabitScheduleInputSerializer(serializers.Serializer):
@@ -49,7 +55,7 @@ class HabitScheduleReadSerializer(serializers.ModelSerializer):
     def get_weekdays(self, obj):
         if obj.mode == HabitSchedule.Mode.DAILY:
             return []
-        return list(obj.days.values_list('weekday', flat=True))
+        return sorted(day.weekday for day in obj.days.all())
 
 
 class HabitSerializer(serializers.ModelSerializer):
@@ -113,3 +119,69 @@ class HabitSerializer(serializers.ModelSerializer):
                 HabitScheduleDay(schedule=schedule, weekday=weekday)
                 for weekday in schedule_data['weekdays']
             ])
+
+
+class HabitCompletionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HabitCompletion
+        fields = ('id', 'completion_date', 'created_at', 'updated_at')
+        read_only_fields = ('id', 'created_at', 'updated_at')
+
+    def validate_completion_date(self, value):
+        habit = self.context['habit']
+
+        created_date = timezone.localtime(habit.created_at).date()
+        if value < created_date:
+            raise serializers.ValidationError(
+                'Completion date cannot be earlier than habit creation date.'
+            )
+
+        if value > timezone.localdate():
+            raise serializers.ValidationError(
+                'Completion date cannot be in the future.'
+            )
+
+        if not is_date_allowed_by_schedule(habit, value):
+            raise serializers.ValidationError(
+                'Completion date does not match habit schedule.'
+            )
+
+        if HabitCompletion.objects.filter(
+            habit=habit,
+            completion_date=value,
+        ).exists():
+            raise serializers.ValidationError(
+                'Completion already exists for this date.'
+            )
+
+        return value
+
+    def validate(self, attrs):
+        habit = self.context['habit']
+
+        if habit.state == Habit.State.ARCHIVED:
+            raise serializers.ValidationError(
+                'Cannot change completions for archived habit.'
+            )
+
+        return attrs
+
+    def create(self, validated_data):
+        try:
+            return HabitCompletion.objects.create(
+                habit=self.context['habit'],
+                **validated_data,
+            )
+        except IntegrityError as exc:
+            raise serializers.ValidationError({
+                'completion_date': 'Completion already exists for this date.'
+            }) from exc
+
+
+def is_date_allowed_by_schedule(habit, completion_date):
+    schedule = habit.schedule
+    if schedule.mode == HabitSchedule.Mode.DAILY:
+        return True
+
+    weekdays = {day.weekday for day in schedule.days.all()}
+    return completion_date.weekday() in weekdays

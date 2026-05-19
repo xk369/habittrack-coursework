@@ -26,7 +26,7 @@ HabitTrack — персональный веб-трекер формирован
 переменные окружения, PostgreSQL-настройками и health-check endpoint.
 Реализован backend foundation для аккаунтов, ролевой модели и JWT-
 аутентификации. Добавлен backend-контур управления привычками и расписанием
-выполнения.
+выполнения, а также контур отметок выполнения и истории по привычке.
 
 ## Базовая структура репозитория
 
@@ -76,5 +76,51 @@ HabitTrack — персональный веб-трекер формирован
 - `DELETE /api/habits/{habit_id}/` — необратимое удаление привычки.
 - `POST /api/habits/{habit_id}/archive/` — архивирование привычки.
 - `POST /api/habits/{habit_id}/unarchive/` — возврат привычки из архива.
+- `GET /api/habits/{habit_id}/completions/` — история отметок выполнения
+  привычки.
+- `POST /api/habits/{habit_id}/completions/` — отметка выполнения привычки за
+  дату.
+- `DELETE /api/habits/{habit_id}/completions/{completion_id}/` — снятие
+  ошибочной отметки.
+
+## Локальный запуск backend
+
+1. Создать и активировать виртуальное окружение:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+2. Установить backend-зависимости:
+
+```bash
+python -m pip install -r backend/requirements.txt
+```
+
+3. Подготовить локальный `.env` на основе `.env.example` и заполнить значения
+   для Django и PostgreSQL.
+
+4. Убедиться, что PostgreSQL запущен, а `POSTGRES_DB`, `POSTGRES_USER`,
+   `POSTGRES_HOST` и `POSTGRES_PORT` совпадают с локальной БД. Роль должна
+   иметь право создавать test database для запуска Django-тестов.
+
+5. Применить миграции:
+
+```bash
+python backend/manage.py migrate
+```
+
+6. Запустить backend:
+
+```bash
+python backend/manage.py runserver
+```
+
+7. Текущий backend test suite:
+
+```bash
+python backend/manage.py test apps.accounts apps.habits --noinput
+```
 
 Подробный план реализации находится в `docs/implementation-plan.md`.
