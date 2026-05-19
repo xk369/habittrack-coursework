@@ -22,5 +22,6 @@ from habittrack.views import health_check
 urlpatterns = [
     path('api/health/', health_check, name='health-check'),
     path('api/', include('apps.accounts.urls')),
+    path('api/', include('apps.habits.urls')),
     path('admin/', admin.site.urls),
 ]

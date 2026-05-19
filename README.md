@@ -25,7 +25,8 @@ HabitTrack — персональный веб-трекер формирован
 каркас и подготовлен backend-каркас Django + DRF с конфигурацией через
 переменные окружения, PostgreSQL-настройками и health-check endpoint.
 Реализован backend foundation для аккаунтов, ролевой модели и JWT-
-аутентификации.
+аутентификации. Добавлен backend-контур управления привычками и расписанием
+выполнения.
 
 ## Базовая структура репозитория
 
@@ -33,7 +34,8 @@ HabitTrack — персональный веб-трекер формирован
 .
 ├── backend/
 │   ├── apps/
-│   │   └── accounts/
+│   │   ├── accounts/
+│   │   └── habits/
 │   ├── habittrack/
 │   ├── manage.py
 │   └── requirements.txt
@@ -45,6 +47,8 @@ HabitTrack — персональный веб-трекер формирован
 - `backend/` — серверная часть на Django и DRF.
 - `backend/apps/accounts/` — кастомная User-модель, роли, статусы,
   регистрация, вход, JWT и профиль пользователя.
+- `backend/apps/habits/` — привычки, расписание выполнения, выбранные дни
+  недели, CRUD, архивирование и удаление привычек.
 - `backend/manage.py` — стандартная точка управления Django-проектом.
 - `backend/habittrack/` — настройки, URL-маршруты и базовые проектные модули
   backend.
@@ -62,5 +66,15 @@ HabitTrack — персональный веб-трекер формирован
 - `POST /api/auth/refresh/` — обновление JWT access token.
 - `GET /api/account/profile/` — просмотр собственного профиля.
 - `PATCH /api/account/profile/` — изменение допустимых профильных полей.
+- `GET /api/habits/` — список активных привычек пользователя.
+- `GET /api/habits/?state=active|archived|all` — фильтрация привычек по
+  состоянию.
+- `POST /api/habits/` — создание привычки с расписанием.
+- `GET /api/habits/{habit_id}/` — просмотр своей привычки.
+- `PATCH /api/habits/{habit_id}/` — изменение привычки и, при необходимости,
+  расписания.
+- `DELETE /api/habits/{habit_id}/` — необратимое удаление привычки.
+- `POST /api/habits/{habit_id}/archive/` — архивирование привычки.
+- `POST /api/habits/{habit_id}/unarchive/` — возврат привычки из архива.
 
 Подробный план реализации находится в `docs/implementation-plan.md`.
