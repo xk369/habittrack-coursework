@@ -1,0 +1,62 @@
+@startuml
+hide circle
+skinparam linetype ortho
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam defaultFontName Arial
+left to right direction
+
+entity "User" as User {
+  * id : PK
+  --
+  email
+  password_hash
+  display_name
+  role
+  status
+  created_at
+  updated_at
+}
+
+entity "Habit" as Habit {
+  * id : PK
+  --
+  user_id : FK
+  title
+  purpose
+  state
+  created_at
+  updated_at
+  archived_at
+}
+
+entity "HabitSchedule" as HabitSchedule {
+  * id : PK
+  --
+  habit_id : FK
+  mode
+}
+
+entity "HabitScheduleDay" as HabitScheduleDay {
+  * id : PK
+  --
+  schedule_id : FK
+  weekday
+}
+
+entity "HabitCompletion" as HabitCompletion {
+  * id : PK
+  --
+  habit_id : FK
+  completion_date
+  created_at
+  updated_at
+}
+
+User ||--o{ Habit
+Habit ||--|| HabitSchedule
+HabitSchedule ||--o{ HabitScheduleDay
+Habit ||--o{ HabitCompletion
+
+@enduml

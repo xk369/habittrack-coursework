@@ -1,0 +1,121 @@
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="usecase-habittrack" name="Use Case - HabitTrack">
+    <mxGraphModel dx="1500" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="780" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="frame" value="HabitTrack" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;verticalAlign=top;align=center;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="170" y="20" width="1200" height="700" as="geometry" />
+        </mxCell>
+
+        <mxCell id="userA" value="Пользователь" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=none;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="60" y="320" width="40" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="adminA" value="Администратор" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=none;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="1410" y="320" width="40" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="lbl1" value="Учётная запись" style="text;html=1;fontStyle=1;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="220" y="40" width="520" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl2" value="Управление привычками" style="text;html=1;fontStyle=1;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="220" y="195" width="760" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl3" value="Выполнение и аналитика" style="text;html=1;fontStyle=1;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="220" y="455" width="760" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl4" value="Администрирование" style="text;html=1;fontStyle=1;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="195" width="240" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_register" value="Зарегистрироваться" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="70" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_login" value="Войти в систему" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="500" y="70" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_profile" value="Просмотреть и изменить профиль" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="140" width="240" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_list" value="Просмотреть список привычек" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="230" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_create" value="Создать привычку" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="510" y="230" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_schedule" value="Настроить периодичность привычки" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="740" y="230" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_edit" value="Редактировать привычку" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="300" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_archive" value="Архивировать привычку" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="510" y="300" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_unarchive" value="Вернуть привычку из архива" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="740" y="300" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_delete" value="Удалить привычку" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="510" y="370" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_mark" value="Отметить выполнение привычки" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="485" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_unmark" value="Снять ошибочную отметку" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="510" y="485" width="220" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_history" value="Просмотреть историю выполнения" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="555" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_stat" value="Просмотреть статистику по привычке" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="510" y="555" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_dash" value="Просмотреть общий дашборд" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="780" y="555" width="220" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_users" value="Просмотреть список пользователей" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="230" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_status" value="Просмотреть статус учётной записи" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="300" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_block" value="Заблокировать пользователя" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="370" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_unblock" value="Разблокировать пользователя" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="440" width="240" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_reg" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.05;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;" edge="1" parent="1" source="userA" target="uc_register"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_login" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.1;exitDx=0;exitDy=0;entryX=0.15;entryY=1;entryDx=0;entryDy=0;endArrow=none;" edge="1" parent="1" source="userA" target="uc_login"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_prof" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.18;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;" edge="1" parent="1" source="userA" target="uc_profile"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_list" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;" edge="1" parent="1" source="userA" target="uc_list"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_create" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.36;exitDx=0;exitDy=0;entryX=0.15;entryY=1;entryDx=0;entryDy=0;endArrow=none;" edge="1" parent="1" source="userA" target="uc_create"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_sched" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.42;exitDx=0;exitDy=0;entryX=0.15;entryY=1;entryDx=0;entryDy=0;endArrow=none;" edge="1" parent="1" source="userA" target="uc_schedule"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_edit" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;" edge="1" parent="1" source="userA" target="uc_edit"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_arch" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.56;exitDx=0;exitDy=0;entryX=0.15;entryY=0;entryDx=0;entryDy=0;endArrow=none;" edge="1" parent="1" source="userA" target="uc_archive"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_unarch" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.62;exitDx=0;exitDy=0;entryX=0.15;entryY=0;entryDx=0;entryDy=0;endArrow=none;" edge="1" parent="1" source="userA" target="uc_unarchive"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_del" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;" edge="1" parent="1" source="userA" target="uc_delete"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_mark" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.78;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;" edge="1" parent="1" source="userA" target="uc_mark"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_unmark" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.84;exitDx=0;exitDy=0;entryX=0.15;entryY=0;entryDx=0;entryDy=0;endArrow=none;" edge="1" parent="1" source="userA" target="uc_unmark"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_hist" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.9;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;" edge="1" parent="1" source="userA" target="uc_history"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_stat" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.95;exitDx=0;exitDy=0;entryX=0.15;entryY=0;entryDx=0;entryDy=0;endArrow=none;" edge="1" parent="1" source="userA" target="uc_stat"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_dash" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0.15;entryY=0;entryDx=0;entryDy=0;endArrow=none;" edge="1" parent="1" source="userA" target="uc_dash"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="ea_login" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.1;exitDx=0;exitDy=0;entryX=0.85;entryY=1;entryDx=0;entryDy=0;endArrow=none;" edge="1" parent="1" source="adminA" target="uc_login"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ea_users" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.3;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;" edge="1" parent="1" source="adminA" target="uc_users"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ea_status" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.45;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;" edge="1" parent="1" source="adminA" target="uc_status"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ea_block" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.6;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;" edge="1" parent="1" source="adminA" target="uc_block"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ea_unblock" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;" edge="1" parent="1" source="adminA" target="uc_unblock"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="inc1" value="«include»" style="endArrow=open;endSize=10;dashed=1;html=1;fontSize=11;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="uc_create" target="uc_schedule"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="inc2" value="«include»" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=open;endSize=10;dashed=1;html=1;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.85;exitY=0;exitDx=0;exitDy=0;entryX=0.15;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="uc_edit" target="uc_schedule"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,101 @@
+digraph IDEF0_A_0_HabitTrack {
+  graph [
+    rankdir=TB,
+    splines=ortho,
+    nodesep=0.55,
+    ranksep=0.8,
+    margin=0.05,
+    pad=0.1
+  ];
+
+  node [
+    fontname="Arial",
+    fontsize=10,
+    shape=box,
+    style="rounded",
+    margin="0.08,0.06"
+  ];
+
+  edge [
+    fontname="Arial",
+    fontsize=9,
+    arrowsize=0.7
+  ];
+
+  controls [
+    shape=plaintext,
+    label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2">
+        <TR><TD><B>Управления</B></TD></TR>
+        <TR><TD ALIGN="LEFT">требования к периодичности</TD></TR>
+        <TR><TD ALIGN="LEFT">правила расчета прогресса</TD></TR>
+        <TR><TD ALIGN="LEFT">правила архивирования и удаления</TD></TR>
+        <TR><TD ALIGN="LEFT">правила ролевого доступа</TD></TR>
+        <TR><TD ALIGN="LEFT">ограничения MVP и задание</TD></TR>
+      </TABLE>
+    >
+  ];
+
+  inputs [
+    shape=plaintext,
+    label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2">
+        <TR><TD><B>Входы</B></TD></TR>
+        <TR><TD ALIGN="LEFT">намерение сформировать привычку</TD></TR>
+        <TR><TD ALIGN="LEFT">сведения о привычках</TD></TR>
+        <TR><TD ALIGN="LEFT">отметки выполнения по датам</TD></TR>
+        <TR><TD ALIGN="LEFT">данные учетной записи</TD></TR>
+      </TABLE>
+    >
+  ];
+
+  process [
+    shape=box,
+    style="",
+    width=3.1,
+    height=1.1,
+    label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2">
+        <TR><TD><B>A-0</B></TD></TR>
+        <TR><TD>Автоматизировать</TD></TR>
+        <TR><TD>формирование и отслеживание</TD></TR>
+        <TR><TD>привычек пользователя</TD></TR>
+      </TABLE>
+    >
+  ];
+
+  outputs [
+    shape=plaintext,
+    label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2">
+        <TR><TD><B>Выходы</B></TD></TR>
+        <TR><TD ALIGN="LEFT">список привычек</TD></TR>
+        <TR><TD ALIGN="LEFT">история выполнения</TD></TR>
+        <TR><TD ALIGN="LEFT">показатели прогресса</TD></TR>
+        <TR><TD ALIGN="LEFT">архив привычек</TD></TR>
+        <TR><TD ALIGN="LEFT">состояние учетных записей</TD></TR>
+        <TR><TD ALIGN="LEFT">состояние привычек для пользователя</TD></TR>
+      </TABLE>
+    >
+  ];
+
+  mechanisms [
+    shape=plaintext,
+    label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2">
+        <TR><TD><B>Механизмы</B></TD></TR>
+        <TR><TD ALIGN="LEFT">пользователь</TD></TR>
+        <TR><TD ALIGN="LEFT">администратор как служебная роль</TD></TR>
+        <TR><TD ALIGN="LEFT">веб-приложение HabitTrack</TD></TR>
+        <TR><TD ALIGN="LEFT">серверная логика и хранилище данных</TD></TR>
+      </TABLE>
+    >
+  ];
+
+  { rank=same; inputs; process; outputs; }
+
+  inputs:e -> process:w;
+  controls:s -> process:n;
+  process:s -> mechanisms:n [dir=back];
+  process:e -> outputs:w;
+}

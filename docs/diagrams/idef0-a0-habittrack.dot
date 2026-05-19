@@ -1,0 +1,158 @@
+digraph IDEF0_A0_HabitTrack {
+  graph [
+    rankdir=LR,
+    splines=ortho,
+    nodesep=0.7,
+    ranksep=0.9,
+    margin=0.05,
+    pad=0.1
+  ];
+
+  node [
+    fontname="Arial",
+    fontsize=10,
+    shape=box,
+    style="rounded",
+    margin="0.08,0.06"
+  ];
+
+  edge [
+    fontname="Arial",
+    fontsize=9,
+    arrowsize=0.7
+  ];
+
+  controls [
+    shape=plaintext,
+    label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2">
+        <TR><TD><B>Управления</B></TD></TR>
+        <TR><TD ALIGN="LEFT">правила периодичности</TD></TR>
+        <TR><TD ALIGN="LEFT">правила прогресса</TD></TR>
+        <TR><TD ALIGN="LEFT">правила доступа</TD></TR>
+        <TR><TD ALIGN="LEFT">ограничения MVP</TD></TR>
+      </TABLE>
+    >
+  ];
+
+  inputs [
+    shape=plaintext,
+    label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2">
+        <TR><TD><B>Входы</B></TD></TR>
+        <TR><TD ALIGN="LEFT">намерение</TD></TR>
+        <TR><TD ALIGN="LEFT">данные аккаунта</TD></TR>
+        <TR><TD ALIGN="LEFT">сведения о привычках</TD></TR>
+        <TR><TD ALIGN="LEFT">отметки по датам</TD></TR>
+      </TABLE>
+    >
+  ];
+
+  outputs [
+    shape=plaintext,
+    label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2">
+        <TR><TD><B>Выходы</B></TD></TR>
+        <TR><TD ALIGN="LEFT">история выполнения</TD></TR>
+        <TR><TD ALIGN="LEFT">статистика и дашборд</TD></TR>
+        <TR><TD ALIGN="LEFT">активные и архивные привычки</TD></TR>
+        <TR><TD ALIGN="LEFT">состояние учетных записей</TD></TR>
+      </TABLE>
+    >
+  ];
+
+  mechanisms [
+    shape=plaintext,
+    label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2">
+        <TR><TD><B>Механизмы</B></TD></TR>
+        <TR><TD ALIGN="LEFT">пользователь</TD></TR>
+        <TR><TD ALIGN="LEFT">администратор</TD></TR>
+        <TR><TD ALIGN="LEFT">HabitTrack</TD></TR>
+        <TR><TD ALIGN="LEFT">сервер и хранилище</TD></TR>
+      </TABLE>
+    >
+  ];
+
+  A1 [
+    style="",
+    label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2">
+        <TR><TD><B>A1</B></TD></TR>
+        <TR><TD>Управлять учетной</TD></TR>
+        <TR><TD>записью и доступом</TD></TR>
+      </TABLE>
+    >
+  ];
+
+  A2 [
+    style="",
+    label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2">
+        <TR><TD><B>A2</B></TD></TR>
+        <TR><TD>Формировать и</TD></TR>
+        <TR><TD>настраивать привычки</TD></TR>
+      </TABLE>
+    >
+  ];
+
+  A3 [
+    style="",
+    label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2">
+        <TR><TD><B>A3</B></TD></TR>
+        <TR><TD>Фиксировать</TD></TR>
+        <TR><TD>выполнение привычек</TD></TR>
+      </TABLE>
+    >
+  ];
+
+  A4 [
+    style="",
+    label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2">
+        <TR><TD><B>A4</B></TD></TR>
+        <TR><TD>Анализировать</TD></TR>
+        <TR><TD>историю и прогресс</TD></TR>
+      </TABLE>
+    >
+  ];
+
+  A5 [
+    style="",
+    label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2">
+        <TR><TD><B>A5</B></TD></TR>
+        <TR><TD>Управлять жизненным</TD></TR>
+        <TR><TD>циклом привычек</TD></TR>
+      </TABLE>
+    >
+  ];
+
+  A6 [
+    style="",
+    label=<
+      <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="2">
+        <TR><TD><B>A6</B></TD></TR>
+        <TR><TD>Выполнять служебное</TD></TR>
+        <TR><TD>администрирование</TD></TR>
+        <TR><TD>пользователей</TD></TR>
+      </TABLE>
+    >
+  ];
+
+  A1:e -> A2:w;
+  A2:e -> A3:w;
+  A3:e -> A4:w;
+  A2:s -> A5:n;
+  A5:e -> A4:s;
+  A6:e -> A1:w;
+
+  A4:e -> outputs:w;
+  A5:e -> outputs:w;
+  A6:e -> outputs:w;
+
+  A1 -> A2 -> A3 -> A4 [style=invis, weight=10];
+  A2 -> A5 [style=invis, weight=3];
+  A6 -> A1 [style=invis, weight=3];
+}
