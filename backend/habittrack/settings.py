@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'apps.accounts.apps.AccountsConfig',
     'apps.habits.apps.HabitsConfig',
+    'apps.analytics.apps.AnalyticsConfig',
 ]
 
 MIDDLEWARE = [

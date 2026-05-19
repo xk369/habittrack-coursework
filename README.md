@@ -26,7 +26,8 @@ HabitTrack — персональный веб-трекер формирован
 переменные окружения, PostgreSQL-настройками и health-check endpoint.
 Реализован backend foundation для аккаунтов, ролевой модели и JWT-
 аутентификации. Добавлен backend-контур управления привычками и расписанием
-выполнения, а также контур отметок выполнения и истории по привычке.
+выполнения, контур отметок выполнения и истории по привычке, а также API
+статистики и пользовательского дашборда.
 
 ## Базовая структура репозитория
 
@@ -35,6 +36,7 @@ HabitTrack — персональный веб-трекер формирован
 ├── backend/
 │   ├── apps/
 │   │   ├── accounts/
+│   │   ├── analytics/
 │   │   └── habits/
 │   ├── habittrack/
 │   ├── manage.py
@@ -47,6 +49,8 @@ HabitTrack — персональный веб-трекер формирован
 - `backend/` — серверная часть на Django и DRF.
 - `backend/apps/accounts/` — кастомная User-модель, роли, статусы,
   регистрация, вход, JWT и профиль пользователя.
+- `backend/apps/analytics/` — вычисляемая статистика по привычкам и
+  пользовательский dashboard без хранения агрегатов в БД.
 - `backend/apps/habits/` — привычки, расписание выполнения, выбранные дни
   недели, CRUD, архивирование и удаление привычек.
 - `backend/manage.py` — стандартная точка управления Django-проектом.
@@ -82,6 +86,8 @@ HabitTrack — персональный веб-трекер формирован
   дату.
 - `DELETE /api/habits/{habit_id}/completions/{completion_id}/` — снятие
   ошибочной отметки.
+- `GET /api/habits/{habit_id}/statistics/` — статистика по привычке.
+- `GET /api/dashboard/` — dashboard по активным привычкам пользователя.
 
 ## Локальный запуск backend
 
@@ -120,7 +126,7 @@ python backend/manage.py runserver
 7. Текущий backend test suite:
 
 ```bash
-python backend/manage.py test apps.accounts apps.habits --noinput
+python backend/manage.py test apps.accounts apps.habits apps.analytics --noinput
 ```
 
 Подробный план реализации находится в `docs/implementation-plan.md`.
