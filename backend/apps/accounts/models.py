@@ -39,3 +39,18 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+    def block(self):
+        if self.status == self.Status.BLOCKED:
+            return
+
+        self.status = self.Status.BLOCKED
+        self.is_active = False
+        self.save(update_fields=['status', 'is_active', 'updated_at'])
+
+    def unblock(self):
+        if self.status == self.Status.ACTIVE:
+            return
+
+        self.status = self.Status.ACTIVE
+        self.is_active = True
+        self.save(update_fields=['status', 'is_active', 'updated_at'])

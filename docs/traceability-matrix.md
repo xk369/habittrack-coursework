@@ -19,7 +19,7 @@
 | P4 | Субъективная оценка прогресса без фактических показателей. | FR-13, FR-14, FR-15 |  |  |  |
 | P5 | Фрагментация данных между памятью, бумагой, таблицами и списками задач. | FR-01, FR-02, FR-03, FR-06, FR-15, FR-17, NFR-04, NFR-05 |  |  |  |
 | P6 | Смешивание активных и неактуальных привычек либо потеря истории при удалении. | FR-16, NFR-03 |  |  |  |
-| P7 | Необходимость контролируемого доступа к учетным записям и служебным действиям. | FR-02, FR-17, FR-18, FR-19, FR-20, FR-21, FR-22, NFR-01, NFR-02, NFR-08 |  |  |  |
+| P7 | Необходимость контролируемого доступа к учетным записям и служебным действиям. | FR-02, FR-17, FR-18, FR-19, FR-20, FR-21, FR-22, NFR-01, NFR-02, NFR-08 | Ролевая модель `user/admin`, статусы `active/blocked`, JWT-auth, permission для active user и admin-role, admin API блокировки/разблокировки. | `apps.accounts`: custom User, login/profile/refresh, `IsAuthenticatedAndActive`, `IsAdminRole`, `GET /api/admin/users/`, detail, block, unblock, синхронизация `status` и `is_active`, запрет refresh после block. | API-тесты accounts/admin: доступ только active admin, block/unblock, self-block, отказ regular/anonymous/blocked admin, login/protected/refresh после блокировки. |
 
 ## Обязательства задания без отдельной предметной проблемы
 
@@ -31,4 +31,4 @@
 | --- | --- | --- | --- | --- |
 | Заполнение системы тестовыми данными. | FR-23 |  |  |  |
 | Воспроизводимое развертывание, Docker, README и облачный deploy. | NFR-06, NFR-07 |  |  |  |
-| Фаззинг-тестирование и проверка некорректных данных ролевой модели. | FR-22, NFR-02, NFR-08 |  |  |  |
+| Фаззинг-тестирование и проверка некорректных данных ролевой модели. | FR-22, NFR-02, NFR-08 | Негативные сценарии ролевой модели фиксируются как проверочная спецификация и база для будущего фаззинга API. | `docs/role-model-validation.md`; serializer-запреты `role/status` в регистрации и профиле; admin permissions; refresh-gap validation. | API-тесты на подмену `role/status`, отказ regular/anonymous/blocked admin, несуществующие user id, self-block, refresh blocked account. |

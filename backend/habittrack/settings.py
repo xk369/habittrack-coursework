@@ -96,6 +96,13 @@ REST_FRAMEWORK = {
     ),
 }
 
+SIMPLE_JWT = {
+    # Let existing access tokens reach DRF permissions so blocked accounts get
+    # the domain-level 403 from IsAuthenticatedAndActive; refresh is still
+    # rejected by ActiveTokenRefreshSerializer.
+    'CHECK_USER_IS_ACTIVE': False,
+}
+
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases

@@ -14,3 +14,14 @@ class IsAuthenticatedAndActive(BasePermission):
             and getattr(user, 'status', None) == User.Status.ACTIVE
         )
 
+
+class IsAdminRole(BasePermission):
+    message = 'Admin role is required.'
+
+    def has_permission(self, request, view):
+        user = request.user
+        return bool(
+            user
+            and user.is_authenticated
+            and getattr(user, 'role', None) == User.Role.ADMIN
+        )
