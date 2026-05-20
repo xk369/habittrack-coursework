@@ -1,37 +1,39 @@
 # HabitTrack
 
 HabitTrack — персональный веб-трекер формирования привычек для индивидуальных
-пользователей. Приложение должно позволять пользователю регистрироваться,
-вести список привычек, настраивать периодичность, отмечать выполнение по дням
-и просматривать прогресс.
+пользователей. Приложение позволяет регистрироваться и входить в систему,
+создавать привычки, настраивать расписание, отмечать выполнение по датам,
+смотреть историю и статистику прогресса.
 
-В продукт также входит административный контур: администратор сможет
-просматривать пользователей, видеть состояние учетных записей, блокировать и
-разблокировать доступ к пользовательским функциям.
+В продукт также входит административный контур: администратор просматривает
+пользователей, видит состояние учетных записей, блокирует и разблокирует
+доступ к пользовательским функциям.
 
-## Утвержденный стек
+## Стек
 
-- Backend: Django + Django REST Framework.
+- Backend: Django 5.2 LTS + Django REST Framework.
+- API auth: JWT через SimpleJWT.
+- API docs: drf-spectacular, Swagger UI, ReDoc.
+- Database: PostgreSQL.
 - Frontend: React + TypeScript + Vite.
-- База данных: PostgreSQL.
-- Аутентификация: JWT.
-- Docker / docker-compose: запланированы к следующему инфраструктурному этапу.
+- UI: Tailwind CSS + Soft Ledger design tokens.
+- Frontend data layer: React Router, TanStack Query, axios.
+- Packaging: Dockerfile для backend/frontend и root `docker-compose.yml`.
 
-## Текущая стадия проекта
+## Реализованные возможности
 
-Анализ предметной области, требования, архитектурная рамка, стек,
-концептуальная модель данных и предварительный API-план завершены на базовом
-уровне. Проект перешел к этапу реализации: создан минимальный репозиторный
-каркас и подготовлен backend-каркас Django + DRF с конфигурацией через
-переменные окружения, PostgreSQL-настройками и health-check endpoint.
-Реализован backend foundation для аккаунтов, ролевой модели и JWT-
-аутентификации. Добавлен backend-контур управления привычками и расписанием
-выполнения, контур отметок выполнения и истории по привычке, а также API
-статистики, пользовательского дашборда и административного управления
-учетными записями. Реализован frontend MVP на React, TypeScript и Vite:
-пользовательские сценарии, административные экраны и интеграция с backend API.
+- регистрация, вход, refresh token и профиль пользователя;
+- роли `user/admin`, статусы `active/blocked`;
+- блокировка закрывает login, protected API и refresh;
+- CRUD привычек с `daily` и `weekly_days` расписанием;
+- архивирование, возврат из архива и удаление привычек;
+- отметки выполнения, снятие ошибочных отметок и история;
+- статистика привычки и dashboard по активным привычкам;
+- admin API и admin UI для просмотра, блокировки и разблокировки пользователей;
+- Swagger/OpenAPI документация;
+- demo data для локальной защиты и ручной проверки.
 
-## Базовая структура репозитория
+## Структура
 
 ```text
 .
@@ -41,181 +43,189 @@ HabitTrack — персональный веб-трекер формирован
 │   │   ├── analytics/
 │   │   └── habits/
 │   ├── habittrack/
+│   ├── Dockerfile
 │   ├── manage.py
 │   └── requirements.txt
 ├── frontend/
 │   ├── src/
+│   ├── Dockerfile
 │   ├── package.json
 │   └── vite.config.ts
+├── docs/
 ├── infra/
-└── docs/
+├── docker-compose.yml
+└── .env.example
 ```
 
-- `backend/` — серверная часть на Django и DRF.
-- `backend/apps/accounts/` — кастомная User-модель, роли, статусы,
-  регистрация, вход, JWT, профиль пользователя и admin API блокировки
-  учетных записей.
-- `backend/apps/analytics/` — вычисляемая статистика по привычкам и
-  пользовательский dashboard без хранения агрегатов в БД.
-- `backend/apps/habits/` — привычки, расписание выполнения, выбранные дни
-  недели, CRUD, архивирование и удаление привычек.
-- `backend/manage.py` — стандартная точка управления Django-проектом.
-- `backend/habittrack/` — настройки, URL-маршруты и базовые проектные модули
-  backend.
-- `backend/requirements.txt` — минимальные backend-зависимости текущего
-  этапа.
-- `frontend/` — клиентская часть на React, TypeScript, Vite, Tailwind CSS,
-  TanStack Query и React Router.
-- `frontend/src/api/` — клиентские модули работы с backend API.
-- `frontend/src/app/` — маршрутизация, провайдеры и основной layout.
-- `frontend/src/features/` — доменные frontend-компоненты auth, habits,
-  completions, profile и admin.
-- `frontend/src/pages/` — страницы пользовательского и административного UI.
-- `frontend/src/shared/` — общие guards, UI-компоненты, helpers и hooks.
-- `frontend/src/styles/` — глобальные стили и дизайн-токены Soft Ledger.
-- `infra/` — будущие материалы инфраструктуры и deploy.
-- `docs/` — проектная документация, планы, требования и доказательная база.
+`backend/apps/accounts/` содержит учетные записи, роли, статусы, JWT,
+профиль и admin API. `backend/apps/habits/` содержит привычки, расписания,
+отметки выполнения, историю и команду `seed_demo`. `backend/apps/analytics/`
+считает статистику и dashboard на лету без сохранения агрегатов.
 
-## Backend API текущего этапа
+Frontend разделен на `src/api/`, `src/app/`, `src/features/`, `src/pages/`,
+`src/shared/` и `src/styles/`.
 
-- `GET /api/health/` — health-check backend-сервиса.
-- `POST /api/auth/register/` — регистрация обычного пользователя.
-- `POST /api/auth/login/` — вход активного пользователя и получение JWT.
-- `POST /api/auth/refresh/` — обновление JWT access token.
-- `GET /api/account/profile/` — просмотр собственного профиля.
-- `PATCH /api/account/profile/` — изменение допустимых профильных полей.
-- `GET /api/habits/` — список активных привычек пользователя.
-- `GET /api/habits/?state=active|archived|all` — фильтрация привычек по
-  состоянию.
-- `POST /api/habits/` — создание привычки с расписанием.
-- `GET /api/habits/{habit_id}/` — просмотр своей привычки.
-- `PATCH /api/habits/{habit_id}/` — изменение привычки и, при необходимости,
-  расписания.
-- `DELETE /api/habits/{habit_id}/` — необратимое удаление привычки.
-- `POST /api/habits/{habit_id}/archive/` — архивирование привычки.
-- `POST /api/habits/{habit_id}/unarchive/` — возврат привычки из архива.
-- `GET /api/habits/{habit_id}/completions/` — история отметок выполнения
-  привычки.
-- `POST /api/habits/{habit_id}/completions/` — отметка выполнения привычки за
-  дату.
-- `DELETE /api/habits/{habit_id}/completions/{completion_id}/` — снятие
-  ошибочной отметки.
-- `GET /api/habits/{habit_id}/statistics/` — статистика по привычке.
-- `GET /api/dashboard/` — dashboard по активным привычкам пользователя.
-- `GET /api/admin/users/` — список пользователей для active admin.
-- `GET /api/admin/users/{user_id}/` — данные пользователя для active admin.
-- `POST /api/admin/users/{user_id}/block/` — блокировка учетной записи.
-- `POST /api/admin/users/{user_id}/unblock/` — разблокировка учетной записи.
+## Env
 
-Блокировка пользователя синхронизирует `status=blocked` и `is_active=False`.
-После блокировки пользователь не может выполнить login, protected API
-отклоняют доступ по актуальному статусу, а refresh token больше не выдает
-новый access token.
-
-## API-документация
-
-- `GET /api/docs/` — Swagger UI.
-- `GET /api/redoc/` — ReDoc.
-- `GET /api/schema/` — OpenAPI schema.
-
-Ручная проверка через Swagger UI:
-
-1. Запустить backend.
-2. Открыть `/api/docs/`.
-3. Выполнить `POST /api/auth/login/`.
-4. Скопировать `access` token из ответа.
-5. Нажать `Authorize` и вставить Bearer token.
-6. Проверять protected endpoint'ы от имени авторизованного пользователя.
-
-## Локальный запуск backend
-
-1. Создать и активировать виртуальное окружение:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
-
-2. Установить backend-зависимости:
-
-```bash
-python -m pip install -r backend/requirements.txt
-```
-
-3. Подготовить локальный `.env` на основе `.env.example` и заполнить значения
-   для Django и PostgreSQL.
-
-4. Убедиться, что PostgreSQL запущен, а `POSTGRES_DB`, `POSTGRES_USER`,
-   `POSTGRES_HOST` и `POSTGRES_PORT` совпадают с локальной БД. Роль должна
-   иметь право создавать test database для запуска Django-тестов.
-
-5. Применить миграции:
-
-```bash
-python backend/manage.py migrate
-```
-
-6. Запустить backend:
-
-```bash
-python backend/manage.py runserver
-```
-
-7. Текущий backend test suite:
-
-```bash
-python backend/manage.py test apps.accounts apps.habits apps.analytics --noinput
-```
-
-## Локальный запуск frontend
-
-Frontend работает как отдельное Vite-приложение и обращается к backend API по
-значению `VITE_API_BASE_URL`.
-
-1. Установить frontend-зависимости:
-
-```bash
-cd frontend
-npm install
-```
-
-2. Подготовить frontend env:
+Подготовить локальный `.env` можно на основе `.env.example`:
 
 ```bash
 cp .env.example .env
 ```
 
-По умолчанию используется:
+Для локального frontend/backend соединения используются:
 
 ```text
 VITE_API_BASE_URL=http://localhost:8000
+CORS_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+CSRF_TRUSTED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
 ```
-
-3. Убедиться, что backend запущен на `http://localhost:8000`.
-
-4. Запустить frontend dev server:
-
-```bash
-npm run dev
-```
-
-5. Открыть UI в браузере по адресу, который покажет Vite, обычно
-`http://localhost:5173`.
-
-Текущий frontend MVP включает регистрацию и вход, профиль, dashboard,
-управление привычками, отметки выполнения, историю, статистику и
-административный контур управления пользователями. Docker, demo data и deploy
-будут оформляться отдельными инфраструктурными этапами.
 
 Визуальная тема использует современные CSS-цвета `oklch()`, поэтому для
 корректного отображения нужен актуальный браузер.
 
-Текущие frontend-проверки:
+## Локальный запуск без Docker
+
+Backend:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r backend/requirements.txt
+python backend/manage.py migrate
+python backend/manage.py runserver
+```
+
+Frontend:
+
+```bash
+cd frontend
+npm install
+cp .env.example .env
+npm run dev
+```
+
+Открыть UI: `http://localhost:5173`.
+
+Backend API по умолчанию ожидается на `http://localhost:8000`.
+
+## Docker Compose
+
+Локальный full-stack запуск:
+
+```bash
+docker compose up --build
+```
+
+Сервисы:
+
+- `postgres` — PostgreSQL с named volume;
+- `backend` — Django/DRF API на `http://localhost:8000`;
+- `frontend` — Vite dev server на `http://localhost:5173`.
+
+Backend container перед запуском применяет миграции. Demo data не запускается
+автоматически, чтобы не менять состояние БД без явной команды.
+
+Запуск demo seed в compose:
+
+```bash
+docker compose exec backend python manage.py seed_demo
+```
+
+## Demo data
+
+Команда:
+
+```bash
+python backend/manage.py seed_demo
+```
+
+Demo accounts:
+
+| Email | Пароль | Роль | Статус |
+| --- | --- | --- | --- |
+| `admin@habittrack.local` | `AdminDemo!2026` | `admin` | `active` |
+| `demo@habittrack.local` | `DemoUser!2026` | `user` | `active` |
+| `blocked@habittrack.local` | `BlockedDemo!2026` | `user` | `blocked` |
+
+Команда создает для demo user 6 привычек: 4 активные и 2 архивные. Среди них
+есть ежедневные и weekly-days привычки, разные серии, разный compliance,
+история completion-записей, привычка с отметкой за сегодня и привычка без
+отметки за сегодня.
+
+Smoke-сценарий:
+
+1. Войти как `demo@habittrack.local`.
+2. Открыть dashboard.
+3. Открыть список привычек.
+4. Перейти в detail привычки.
+5. Проверить history/statistics и heatmap.
+6. Попробовать `Отметить сегодня`; для гарантированного positive-сценария
+   выбрать активную ежедневную привычку без сегодняшней отметки, например
+   `Вода утром`. Для уже отмеченной даты будет duplicate validation.
+7. Войти как `admin@habittrack.local`.
+8. Открыть admin users.
+9. Открыть пользователя и выполнить block/unblock.
+10. Проверить, что `blocked@habittrack.local` не получает пользовательский
+    доступ.
+
+## API
+
+- `GET /api/health/` — health-check.
+- `POST /api/auth/register/`, `POST /api/auth/login/`,
+  `POST /api/auth/refresh/`.
+- `GET/PATCH /api/account/profile/`.
+- `GET/POST /api/habits/`.
+- `GET/PATCH/DELETE /api/habits/{habit_id}/`.
+- `POST /api/habits/{habit_id}/archive/`.
+- `POST /api/habits/{habit_id}/unarchive/`.
+- `GET/POST /api/habits/{habit_id}/completions/`.
+- `DELETE /api/habits/{habit_id}/completions/{completion_id}/`.
+- `GET /api/habits/{habit_id}/statistics/`.
+- `GET /api/dashboard/`.
+- `GET /api/admin/users/`.
+- `GET /api/admin/users/{user_id}/`.
+- `POST /api/admin/users/{user_id}/block/`.
+- `POST /api/admin/users/{user_id}/unblock/`.
+
+## API-документация
+
+- Swagger UI: `http://localhost:8000/api/docs/`.
+- ReDoc: `http://localhost:8000/api/redoc/`.
+- OpenAPI schema: `http://localhost:8000/api/schema/`.
+
+Ручная проверка через Swagger:
+
+1. Выполнить `POST /api/auth/login/`.
+2. Скопировать `access` token.
+3. Нажать `Authorize`.
+4. Вставить Bearer token.
+5. Проверять protected endpoint'ы.
+
+## Проверки
+
+Backend:
+
+```bash
+.venv/bin/python backend/manage.py check
+.venv/bin/python backend/manage.py makemigrations --check --dry-run
+.venv/bin/python backend/manage.py test apps.accounts apps.habits apps.analytics --noinput
+.venv/bin/python backend/manage.py spectacular --file /tmp/habittrack-schema.yml --validate
+```
+
+Frontend:
 
 ```bash
 cd frontend
 npm run build
 npm run test -- --run
+```
+
+Docker/compose:
+
+```bash
+docker compose config
+docker compose build
 ```
 
 Подробный план реализации находится в `docs/implementation-plan.md`.

@@ -2,33 +2,26 @@
 
 ## Назначение
 
-Документ для связи: проблема -> требование -> проектное решение -> реализация
--> проверка.
-
-## Статус
-
-Заполнена связь проблем предметной области с функциональными и
-нефункциональными требованиями. Проектные решения, реализация и проверки на
-этапе требований не заполняются.
+Матрица связывает: проблема -> требование -> проектное решение -> реализация
+-> проверка. Она используется, чтобы в отчет не попали функции, которых нет в
+коде или проверках.
 
 | ID проблемы | Проблема | Связанные требования | Проектное решение | Реализация | Проверка |
 | --- | --- | --- | --- | --- | --- |
-| P1 | Отсутствие надежной фиксации выполнения привычки. | FR-04, FR-11, NFR-02 |  |  |  |
-| P2 | Невозможность достоверно восстановить историю выполнения. | FR-07, FR-11, FR-12, NFR-03 |  |  |  |
-| P3 | Слабая поддержка периодичности привычек. | FR-10, NFR-02 |  |  |  |
-| P4 | Субъективная оценка прогресса без фактических показателей. | FR-13, FR-14, FR-15 |  |  |  |
-| P5 | Фрагментация данных между памятью, бумагой, таблицами и списками задач. | FR-01, FR-02, FR-03, FR-06, FR-15, FR-17, NFR-04, NFR-05 |  |  |  |
-| P6 | Смешивание активных и неактуальных привычек либо потеря истории при удалении. | FR-16, NFR-03 |  |  |  |
-| P7 | Необходимость контролируемого доступа к учетным записям и служебным действиям. | FR-02, FR-17, FR-18, FR-19, FR-20, FR-21, FR-22, NFR-01, NFR-02, NFR-08 | Ролевая модель `user/admin`, статусы `active/blocked`, JWT-auth, permission для active user и admin-role, admin API блокировки/разблокировки. | `apps.accounts`: custom User, login/profile/refresh, `IsAuthenticatedAndActive`, `IsAdminRole`, `GET /api/admin/users/`, detail, block, unblock, синхронизация `status` и `is_active`, запрет refresh после block. | API-тесты accounts/admin: доступ только active admin, block/unblock, self-block, отказ regular/anonymous/blocked admin, login/protected/refresh после блокировки. |
+| P1 | Отсутствие надежной фиксации выполнения привычки. | FR-04, FR-11, NFR-02 | Привычка имеет расписание, а выполнение фиксируется отдельной записью HabitCompletion с уникальностью `(habit, date)`. | `apps.habits`: Habit, HabitSchedule, HabitScheduleDay, HabitCompletion; endpoints create/list/delete completions. | Backend API tests для completion create/history/delete, duplicate, invalid dates, ownership; frontend MarkTodayButton smoke. |
+| P2 | Невозможность достоверно восстановить историю выполнения. | FR-07, FR-11, FR-12, NFR-03 | История хранится как набор completion-записей и доступна на чтение по привычке, включая архивные привычки. | `GET /api/habits/{habit_id}/completions/`; Habit Detail UI показывает историю и heatmap по реальным `completion_date`. | Backend tests history sorting/access; frontend detail/history build и smoke tests. |
+| P3 | Слабая поддержка периодичности привычек. | FR-10, NFR-02 | Расписание вынесено в HabitSchedule: `daily` или `weekly_days`, weekdays `0..6` по Python `date.weekday()`. | Models/serializers: HabitSchedule, HabitScheduleDay, DB constraints, nested schedule payload. | Backend tests schedule validation, duplicates, invalid weekdays, PATCH schedule; HabitForm validation tests. |
+| P4 | Субъективная оценка прогресса без фактических показателей. | FR-13, FR-14, FR-15 | Статистика считается из schedule и completions на лету: streak, compliance, counts, dashboard. | `apps.analytics`: services, serializers, `GET /api/habits/{id}/statistics/`, `GET /api/dashboard/`; dashboard UI. | Analytics backend tests; frontend dashboard/detail build and smoke. |
+| P5 | Фрагментация данных между памятью, бумагой, таблицами и списками задач. | FR-01, FR-02, FR-03, FR-06, FR-15, FR-17, NFR-04, NFR-05 | Единое клиент-серверное приложение с JWT auth, PostgreSQL backend, React frontend и API contract. | Backend apps accounts/habits/analytics; frontend MVP; OpenAPI docs; Docker Compose. | Backend tests, frontend tests/build, OpenAPI validation, compose config/build. |
+| P6 | Смешивание активных и неактуальных привычек либо потеря истории при удалении. | FR-16, NFR-03 | Habit имеет `state=active/archived`; archive сохраняет историю, delete необратимо удаляет связанные данные. | Archive/unarchive/delete endpoints; archive idempotent; dashboard включает только active habits. | Backend tests archive/unarchive/delete/cascade; frontend habits list tabs/actions. |
+| P7 | Необходимость контролируемого доступа к учетным записям и служебным действиям. | FR-02, FR-17, FR-18, FR-19, FR-20, FR-21, FR-22, NFR-01, NFR-02, NFR-08 | Ролевая модель `user/admin`, статусы `active/blocked`, JWT-auth, permission для active user и admin-role, admin API блокировки/разблокировки. | `apps.accounts`: custom User, login/profile/refresh, `IsAuthenticatedAndActive`, `IsAdminRole`, admin users list/detail/block/unblock, синхронизация `status` и `is_active`, запрет refresh после block; frontend AdminRoute/Admin UI. | API-тесты accounts/admin; frontend AdminRoute/AdminUserActions tests; `docs/role-model-validation.md`. |
 
 ## Обязательства задания без отдельной предметной проблемы
 
-Некоторые требования следуют напрямую из листа задания и методических
-обязательств, поэтому дополнительно учитываются при проектировании,
-реализации, тестировании и подготовке отчета:
-
 | Источник обязательства | Связанные требования | Проектное решение | Реализация | Проверка |
 | --- | --- | --- | --- | --- |
-| Заполнение системы тестовыми данными. | FR-23 |  |  |  |
-| Воспроизводимое развертывание, Docker, README и облачный deploy. | NFR-06, NFR-07 |  |  |  |
-| Фаззинг-тестирование и проверка некорректных данных ролевой модели. | FR-22, NFR-02, NFR-08 | Негативные сценарии ролевой модели фиксируются как проверочная спецификация и база для будущего фаззинга API. | `docs/role-model-validation.md`; serializer-запреты `role/status` в регистрации и профиле; admin permissions; refresh-gap validation. | API-тесты на подмену `role/status`, отказ regular/anonymous/blocked admin, несуществующие user id, self-block, refresh blocked account. |
+| Заполнение системы тестовыми данными. | FR-23 | Детерминированная management command для demo accounts, habits, schedules и completions. | `python backend/manage.py seed_demo` в `apps.habits`; demo admin/user/blocked user; 6 demo привычек; history за период. | Seed command tests: создание ожидаемых ролей/статусов, 4 active + 2 archived habits, completions, идемпотентность. |
+| Воспроизводимое развертывание, Docker, README и облачный deploy. | NFR-06, NFR-07 | Локальная упаковка full stack через Docker Compose; cloud deploy остается следующим этапом после freeze. | `backend/Dockerfile`, `frontend/Dockerfile`, `docker-compose.yml`, `.env.example`, README local/docker instructions. | `docker compose config`; при доступности Docker — `docker compose build`; README smoke flow. |
+| Фаззинг-тестирование и проверка некорректных данных ролевой модели. | FR-22, NFR-02, NFR-08 | Негативные сценарии фиксируются в role-model и fuzzing plan; основные риски закрываются API tests. | `docs/role-model-validation.md`, `docs/fuzzing-plan.md`; serializer validations; permissions; refresh serializer. | Backend negative tests для role/status, admin access, malformed schedule/completion, ownership; план будущего fuzzing-прогона. |
+| Интерактивная API-документация. | NFR-04, NFR-05, NFR-08 | OpenAPI schema генерируется из DRF views/serializers; Swagger UI используется для ручной smoke-проверки. | `drf-spectacular`, `/api/schema/`, `/api/docs/`, `/api/redoc/`; точечные schema annotations. | OpenAPI docs tests; `spectacular --validate`. |
+| Клиентская часть. | FR-01-FR-21, NFR-04, NFR-05 | React frontend с защищенными маршрутами, API client, Soft Ledger UI и admin contour. | `frontend/src`: auth, dashboard, habits, detail/history/statistics, profile, admin users. | `npm run build`; `npm run test -- --run`; ручной demo flow после `seed_demo`. |

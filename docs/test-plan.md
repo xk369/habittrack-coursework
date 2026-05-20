@@ -2,52 +2,63 @@
 
 ## Назначение
 
-Документ для будущего плана проверки MVP, пользовательских сценариев,
-авторизации, CRUD, ролевой модели и регрессионных проверок.
+Документ фиксирует фактическую стратегию проверки HabitTrack перед заморозкой
+кода: backend API, frontend MVP, OpenAPI schema, demo data и локальную
+упаковку.
 
-## Проверки admin/auth contour
+## Уровни проверок
 
-Для Инкремента 7 проверяется административный backend-контур управления
-учетными записями и влияние блокировки на auth-flow.
+| Уровень | Что проверяется | Инструмент / команда | Статус |
+| --- | --- | --- | --- |
+| Django system check | Конфигурация backend, apps, settings. | `.venv/bin/python backend/manage.py check` | Final quality pass: 0 issues. |
+| Миграции | Нет незакрепленных изменений моделей. | `.venv/bin/python backend/manage.py makemigrations --check --dry-run` | Final quality pass: No changes detected. |
+| Backend API tests | Auth, роли, habits, completions, analytics, admin, Swagger docs, CORS, demo seed. | `.venv/bin/python backend/manage.py test apps.accounts apps.habits apps.analytics --noinput` | Final quality pass: 134 tests OK. |
+| OpenAPI validation | Генерация и валидность schema. | `.venv/bin/python backend/manage.py spectacular --file /tmp/habittrack-schema.yml --validate` | Final quality pass: OK. |
+| Seed demo smoke | Demo accounts, привычки, completions, идемпотентность. | `.venv/bin/python backend/manage.py seed_demo` + API/DB tests | Final quality pass: command OK, 194 completions при контрольном запуске 2026-05-20. |
+| Frontend build | TypeScript и production build. | `cd frontend && npm run build` | Final quality pass: OK. |
+| Frontend smoke/regression | Guards, auth blocked flow, forms, mutations, admin action, axios refresh. | `cd frontend && npm run test -- --run` | Final quality pass: 9 tests OK. |
+| Frontend dependency audit | Runtime dependencies и общий npm audit. | `cd frontend && npm audit --omit=dev --audit-level=moderate`; `npm audit --audit-level=moderate` | Runtime audit: 0 moderate+ vulnerabilities; общий audit: 5 moderate dev/build-chain vulnerabilities. Dependency bump вынесен в post-defense hygiene task без `npm audit fix` в freeze-блоке. |
+| Docker Compose config | Валидность локальной упаковки. | `docker compose config` | Final quality pass: OK. |
+| Docker Compose build | Сборка backend/frontend images. | `docker compose build` | Повторный запуск с доступом к Docker Hub: backend/frontend images собраны. |
 
-Минимальный набор сценариев:
+## Ключевые backend-сценарии
 
-- active admin получает список пользователей и detail пользователя;
-- admin API недоступен anonymous-пользователю: ожидается 401;
-- admin API недоступен active regular user: ожидается 403;
-- admin API недоступен blocked admin: ожидается 403;
-- admin serializer возвращает только безопасные read-only поля и не раскрывает
-  password, `is_active`, `is_staff`, `is_superuser`, `last_login`, `groups`,
-  `user_permissions`;
-- active admin блокирует active user;
-- повторный block для blocked user идемпотентен;
-- block для несуществующего пользователя возвращает 404;
-- active admin может заблокировать другого admin;
-- self-block запрещен: ожидается 400;
-- regular user не может выполнять block/unblock: ожидается 403;
-- active admin разблокирует blocked user;
-- повторный unblock для active user идемпотентен;
-- unblock для несуществующего пользователя возвращает 404;
-- после block пользователь не может выполнить login: ожидается
-  401 / `account_blocked`;
-- после block пользователь с ранее выданным access token не получает доступ к
-  protected endpoint: ожидается 403;
-- после block ранее выданный refresh token не обновляется: ожидается
-  401 / `account_blocked`;
-- после unblock login снова работает;
-- после unblock refresh token снова может выдать access token.
+- регистрация, login, refresh и profile;
+- запрет передачи `role/status` через публичные user endpoint;
+- отказ blocked user в login, protected API и refresh;
+- CRUD привычек, расписания `daily/weekly_days`, ownership;
+- archive/unarchive/delete;
+- completion create/list/delete, запрет дубликатов и неверных дат;
+- статистика и dashboard по активным привычкам;
+- admin users list/detail/block/unblock;
+- self-block запрет;
+- OpenAPI docs endpoints;
+- CORS для локального frontend origin;
+- seed_demo создает demo-состояние и повторно запускается без размножения
+  demo-данных.
 
-## Регрессионные проверки текущего backend
+## Ключевые frontend-сценарии
 
-Перед фиксацией Инкремента 7 выполняются:
+- anonymous на protected route перенаправляется на login;
+- regular user на admin route получает redirect и единичное сообщение об
+  отказе;
+- blocked account приводит к logout/banner flow;
+- HabitForm валидирует weekly-days и показывает backend errors inline;
+- mark today вызывает completion mutation;
+- admin block action требует подтверждения или отключена для self-row;
+- axios refresh использует single-flight при параллельных 401.
 
-- `python backend/manage.py check`;
-- `python backend/manage.py makemigrations --check --dry-run`;
-- `python backend/manage.py test apps.accounts apps.habits apps.analytics --noinput`;
-- проверка `GET /api/health/`.
+## Ручной smoke после demo seed
+
+1. Войти под `demo@habittrack.local`.
+2. Проверить dashboard, список привычек и detail.
+3. Отметить привычку за сегодня и проверить duplicate-сценарий.
+4. Открыть history/statistics.
+5. Войти под `admin@habittrack.local`.
+6. Открыть admin users и выполнить block/unblock.
+7. Проверить отказ для `blocked@habittrack.local`.
 
 ## Статус
 
-План дополнен сценариями admin/auth contour. Дальнейшая детализация будет
-добавляться по мере реализации frontend, demo data, Docker/deploy и
-фаззинг-тестирования.
+План отражает фактический уровень проверок перед финальным техническим ревью.
+Результаты запусков фиксируются в `docs/evidence-register.md`.
