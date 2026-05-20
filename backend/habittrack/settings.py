@@ -40,6 +40,15 @@ SECRET_KEY = secret_key
 
 ALLOWED_HOSTS = env_list('DJANGO_ALLOWED_HOSTS', ['localhost', '127.0.0.1'])
 
+CORS_ALLOWED_ORIGINS = env_list(
+    'CORS_ALLOWED_ORIGINS',
+    ['http://localhost:5173', 'http://127.0.0.1:5173'],
+)
+CSRF_TRUSTED_ORIGINS = env_list(
+    'CSRF_TRUSTED_ORIGINS',
+    ['http://localhost:5173', 'http://127.0.0.1:5173'],
+)
+
 
 # Application definition
 
@@ -50,6 +59,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'drf_spectacular',
     'apps.accounts.apps.AccountsConfig',
@@ -59,6 +69,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
