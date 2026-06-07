@@ -38,7 +38,12 @@ if not secret_key:
 
 SECRET_KEY = secret_key
 
-ALLOWED_HOSTS = env_list('DJANGO_ALLOWED_HOSTS', ['localhost', '127.0.0.1'])
+default_allowed_hosts = ['localhost', '127.0.0.1']
+railway_public_domain = os.getenv('RAILWAY_PUBLIC_DOMAIN')
+if railway_public_domain:
+    default_allowed_hosts.append(railway_public_domain)
+
+ALLOWED_HOSTS = env_list('DJANGO_ALLOWED_HOSTS', default_allowed_hosts)
 
 CORS_ALLOWED_ORIGINS = env_list(
     'CORS_ALLOWED_ORIGINS',
@@ -133,11 +138,11 @@ SPECTACULAR_SETTINGS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'habittrack'),
-        'USER': os.getenv('POSTGRES_USER', 'habittrack'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
-        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
-        'PORT': os.getenv('POSTGRES_PORT', '5432'),
+        'NAME': os.getenv('POSTGRES_DB') or os.getenv('PGDATABASE', 'habittrack'),
+        'USER': os.getenv('POSTGRES_USER') or os.getenv('PGUSER', 'habittrack'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD') or os.getenv('PGPASSWORD', ''),
+        'HOST': os.getenv('POSTGRES_HOST') or os.getenv('PGHOST', 'localhost'),
+        'PORT': os.getenv('POSTGRES_PORT') or os.getenv('PGPORT', '5432'),
     }
 }
 

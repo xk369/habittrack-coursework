@@ -132,6 +132,46 @@ Backend container перед запуском применяет миграци�
 docker compose exec backend python manage.py seed_demo
 ```
 
+## Railway deploy
+
+Для учебного облачного deploy выбран Railway.
+
+Рекомендуемая схема:
+
+- Railway PostgreSQL service;
+- backend service с root directory `/backend`;
+- frontend service с root directory `/frontend`.
+
+Backend-переменные:
+
+```text
+DJANGO_SECRET_KEY=<production-like-secret>
+DJANGO_DEBUG=False
+DJANGO_ALLOWED_HOSTS=<backend>.up.railway.app
+CORS_ALLOWED_ORIGINS=https://<frontend>.up.railway.app
+CSRF_TRUSTED_ORIGINS=https://<frontend>.up.railway.app
+PGDATABASE=${{Postgres.PGDATABASE}}
+PGUSER=${{Postgres.PGUSER}}
+PGPASSWORD=${{Postgres.PGPASSWORD}}
+PGHOST=${{Postgres.PGHOST}}
+PGPORT=${{Postgres.PGPORT}}
+```
+
+Frontend-переменные:
+
+```text
+VITE_API_BASE_URL=https://<backend>.up.railway.app
+```
+
+После первого успешного deploy нужно выполнить demo seed:
+
+```bash
+python manage.py seed_demo
+```
+
+Затем проверить `GET /api/health/`, вход demo/admin пользователей,
+создание/отметку привычки и admin block/unblock.
+
 ## Demo data
 
 Команда:
