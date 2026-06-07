@@ -2,10 +2,10 @@
 
 ## Статус
 
-В качестве целевой облачной платформы для учебного deploy выбран Railway.
-План фиксирует схему публикации, необходимые сервисы и переменные окружения.
-Фактический публичный URL будет добавлен после создания сервисов и проверки
-рабочего сценария.
+В качестве фактической платформы развертывания выбран арендованный VPS.
+Проект опубликован как Docker Compose stack на сервере `77.110.122.36`.
+Развертывание использует PostgreSQL, backend и frontend контейнеры, управляемые
+одним `docker-compose.yml`.
 
 ## 1. Цель развертывания
 
@@ -53,48 +53,53 @@ HabitTrack должен быть пригоден для:
 PostgreSQL должен подключаться как отдельный сервис, а не как встроенное
 локальное хранилище приложения.
 
-Для локального запуска база данных может подниматься через docker-compose. Для
-облачного deploy база данных может быть вынесена во внешний управляемый сервис
-или отдельный контейнер, в зависимости от выбранной платформы.
+Для локального запуска и VPS deploy база данных поднимается через
+docker-compose как отдельный контейнер `postgres`. Порт PostgreSQL не
+публикуется наружу и доступен только внутри Docker-сети проекта.
 
 Конкретные параметры подключения, имя базы, пользователь и пароль должны
 передаваться через переменные окружения.
 
-## 5. Railway deploy
+## 5. VPS deploy
 
-Для HabitTrack используется схема из трех сервисов Railway:
+Фактический deploy выполнен на VPS:
 
-- `PostgreSQL` — управляемая база данных Railway;
-- `habittrack-backend` — Django/DRF API, root directory `/backend`;
-- `habittrack-frontend` — React/Vite web UI, root directory `/frontend`.
+- сервер: `77.110.122.36`;
+- frontend: `http://77.110.122.36:5173`;
+- backend health-check: `http://77.110.122.36:8000/api/health/`;
+- Swagger UI: `http://77.110.122.36:8000/api/docs/`;
+- ReDoc: `http://77.110.122.36:8000/api/redoc/`.
 
-Railway поддерживает развертывание monorepo через указание root directory для
-каждого сервиса. Для backend указывается `/backend`, для frontend — `/frontend`.
-Оба сервиса используют свои Dockerfile.
+На сервере используется каталог `/opt/habittrack`, куда клонирован GitHub
+репозиторий проекта. Запуск выполняется командой:
+
+```bash
+docker compose up -d --build
+```
 
 Backend должен получать:
 
 - `DJANGO_SECRET_KEY`;
 - `DJANGO_DEBUG=False`;
-- `DJANGO_ALLOWED_HOSTS` со значением backend-домена Railway;
-- `CORS_ALLOWED_ORIGINS` со значением frontend-домена Railway;
-- `CSRF_TRUSTED_ORIGINS` со значением frontend-домена Railway;
-- `PGDATABASE`, `PGUSER`, `PGPASSWORD`, `PGHOST`, `PGPORT` из PostgreSQL-сервиса
-  Railway либо эквивалентные `POSTGRES_*` переменные.
+- `DJANGO_ALLOWED_HOSTS=77.110.122.36,localhost,127.0.0.1,backend`;
+- `CORS_ALLOWED_ORIGINS=http://77.110.122.36:5173`;
+- `CSRF_TRUSTED_ORIGINS=http://77.110.122.36:5173`;
+- `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`,
+  `POSTGRES_PORT`.
 
 Frontend должен получать:
 
-- `VITE_API_BASE_URL` со значением публичного backend URL.
+- `VITE_API_BASE_URL=http://77.110.122.36:8000`.
 
-После deploy необходимо:
+После deploy выполнены:
 
-1. Сгенерировать публичные домены для backend и frontend.
-2. Обновить переменные backend/frontend с учетом фактических доменов.
-3. Выполнить миграции через старт backend-контейнера.
-4. Запустить `seed_demo` через Railway shell или одноразовую команду.
-5. Проверить `/api/health/`, регистрацию, вход, привычки, отметки, dashboard,
-   admin users и block/unblock.
-6. Добавить публичные ссылки и скриншоты в `docs/evidence-register.md`.
+1. Клонирование репозитория на сервер.
+2. Создание server-side `.env` без публикации секретов в GitHub.
+3. Сборка и запуск контейнеров `postgres`, `backend`, `frontend`.
+4. Применение миграций при старте backend.
+5. Запуск `seed_demo`.
+6. Проверка backend health-check, frontend, demo login, dashboard, habits,
+   admin users и blocked-account login.
 
 ## 6. Что пока не фиксируется
 
@@ -106,5 +111,5 @@ Frontend должен получать:
 - конкретная схема сети и proxy;
 - финальная схема хранения статических файлов.
 
-Эти решения уточняются после фактического создания Railway-сервисов и проверки
-публичного URL.
+Эти решения не требуются для учебного MVP, но могут быть добавлены при
+дальнейшем развитии проекта.

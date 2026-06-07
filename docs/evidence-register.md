@@ -27,13 +27,16 @@
 | Docker Compose config | `docker compose config` | Статическая проверка локальной упаковки backend/frontend/postgres. | Final quality pass: OK после явного `name: habittrack`. |
 | Docker Compose build | `docker compose build` | Сборка backend/frontend images. | Повторный запуск с доступом к Docker Hub: `backend Built`, `frontend Built`. |
 | Health-check | `GET /api/health/` через DRF test client с `HTTP_HOST=localhost` | Проверка живого health endpoint. | Final quality pass: `200 {'status': 'ok', 'service': 'habittrack-api'}`. |
+| GitHub repository | https://github.com/xk369/habittrack-coursework | Публичный репозиторий с исходным кодом, Dockerfile, README и документацией. | Создан и запушен: ветка `main`, актуальный deploy commit `eed392b`. |
+| VPS deploy | `http://77.110.122.36:5173`; `http://77.110.122.36:8000/api/health/` | Публичная демонстрация клиент-серверного приложения. | Выполнено на VPS через `/opt/habittrack` и `docker compose up -d --build`. |
+| VPS demo seed | `docker compose exec backend python manage.py seed_demo` | Заполнение опубликованной системы демонстрационными данными. | Созданы 3 demo accounts, 6 habits, 194 completions. |
+| VPS smoke-check | Public API smoke flow: demo login, dashboard, habits, admin login, admin users, blocked login | Проверка работоспособности публичного deploy. | `demo login: 200`; `dashboard: 200`; `habits: 200, count=4`; `admin users: 200, count=3`; `blocked login: 401 account_blocked`. |
 | Swagger UI | `/api/docs/` | Ручная smoke-проверка API и демонстрация. | Реализовано. |
 | ReDoc | `/api/redoc/` | Альтернативная API-документация. | Реализовано. |
 | OpenAPI schema | `/api/schema/` | Контракт для frontend и ревью. | Реализовано. |
 
 ## Что еще нужно после технической фиксации
 
-- при необходимости добавить ссылку на GitHub-репозиторий;
-- после deploy добавить публичный URL и скриншоты пользовательских/admin
-  сценариев;
+- при необходимости добавить скриншоты публичного пользовательского/admin
+  сценария с VPS;
 - после фаззинг-прогона добавить результаты negative testing.

@@ -132,45 +132,48 @@ Backend container перед запуском применяет миграци�
 docker compose exec backend python manage.py seed_demo
 ```
 
-## Railway deploy
+## VPS deploy
 
-Для учебного облачного deploy выбран Railway.
+Проект опубликован на VPS:
 
-Рекомендуемая схема:
+- frontend: `http://77.110.122.36:5173`;
+- backend health-check: `http://77.110.122.36:8000/api/health/`;
+- Swagger UI: `http://77.110.122.36:8000/api/docs/`;
+- ReDoc: `http://77.110.122.36:8000/api/redoc/`.
 
-- Railway PostgreSQL service;
-- backend service с root directory `/backend`;
-- frontend service с root directory `/frontend`.
+На сервере используется каталог `/opt/habittrack` и запуск через Docker
+Compose:
+
+```bash
+git clone https://github.com/xk369/habittrack-coursework.git /opt/habittrack
+cd /opt/habittrack
+docker compose up -d --build
+docker compose exec backend python manage.py seed_demo
+```
 
 Backend-переменные:
 
 ```text
 DJANGO_SECRET_KEY=<production-like-secret>
 DJANGO_DEBUG=False
-DJANGO_ALLOWED_HOSTS=<backend>.up.railway.app
-CORS_ALLOWED_ORIGINS=https://<frontend>.up.railway.app
-CSRF_TRUSTED_ORIGINS=https://<frontend>.up.railway.app
-PGDATABASE=${{Postgres.PGDATABASE}}
-PGUSER=${{Postgres.PGUSER}}
-PGPASSWORD=${{Postgres.PGPASSWORD}}
-PGHOST=${{Postgres.PGHOST}}
-PGPORT=${{Postgres.PGPORT}}
+DJANGO_ALLOWED_HOSTS=77.110.122.36,localhost,127.0.0.1,backend
+CORS_ALLOWED_ORIGINS=http://77.110.122.36:5173
+CSRF_TRUSTED_ORIGINS=http://77.110.122.36:5173
+POSTGRES_DB=habittrack
+POSTGRES_USER=habittrack
+POSTGRES_PASSWORD=<server-side-password>
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
 ```
 
 Frontend-переменные:
 
 ```text
-VITE_API_BASE_URL=https://<backend>.up.railway.app
+VITE_API_BASE_URL=http://77.110.122.36:8000
 ```
 
-После первого успешного deploy нужно выполнить demo seed:
-
-```bash
-python manage.py seed_demo
-```
-
-Затем проверить `GET /api/health/`, вход demo/admin пользователей,
-создание/отметку привычки и admin block/unblock.
+После deploy проверены `GET /api/health/`, вход demo/admin пользователей,
+dashboard, список привычек, admin users и blocked-account login.
 
 ## Demo data
 
