@@ -1,0 +1,42 @@
+@startuml
+hide footbox
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+
+skinparam sequence {
+  ArrowColor black
+  LifeLineBorderColor black
+  LifeLineBackgroundColor white
+  ParticipantBorderColor black
+  ParticipantBackgroundColor white
+  ActorBorderColor black
+  ActorBackgroundColor white
+  DatabaseBorderColor black
+  DatabaseBackgroundColor white
+}
+
+actor "Администратор" as Admin
+participant "Frontend" as FE
+participant "API-сервис" as API
+participant "Модуль прав\nдоступа" as Access
+database "PostgreSQL" as DB
+
+Admin -> FE: Нажимает «Заблокировать пользователя»
+FE -> API: POST /api/admin/users/{id}/block/
+API -> Access: Проверить JWT, статус аккаунта\nи роль администратора
+Access --> API: Доступ подтверждён
+
+API -> DB: Найти пользователя по id
+DB --> API: Данные пользователя
+
+API -> DB: Обновить status = blocked,\nis_active = false
+DB --> API: Изменения сохранены
+
+API --> FE: 200 OK\nОбновлённые данные пользователя
+FE --> Admin: Показать успешную блокировку
+
+@enduml

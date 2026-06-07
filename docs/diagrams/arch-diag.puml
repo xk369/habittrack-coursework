@@ -1,0 +1,54 @@
+@startuml
+left to right direction
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam defaultFontSize 16
+skinparam componentStyle rectangle
+skinparam linetype ortho
+
+skinparam rectangle {
+  BorderColor black
+  BackgroundColor white
+}
+
+skinparam component {
+  BorderColor black
+  BackgroundColor white
+}
+
+skinparam database {
+  BorderColor black
+  BackgroundColor white
+}
+
+actor "Пользователь" as User
+
+rectangle "Клиентский уровень" as Client {
+  component "Web / Mobile Frontend\nReact + TypeScript + Vite" as FE
+}
+
+rectangle "Серверный уровень" as Backend {
+  component "REST API\nDjango + DRF" as API
+
+  component "Модуль учётных записей\nAuth / Profile / Admin" as Accounts
+  component "Модуль привычек\nHabits / Schedules / Completions" as Habits
+  component "Модуль аналитики\nStatistics / Dashboard" as Analytics
+
+  API --> Accounts : аутентификация,\nпрофиль, admin API
+  API --> Habits : привычки,\nрасписания,\nотметки
+  API --> Analytics : статистика\nи dashboard
+}
+
+database "PostgreSQL" as DB
+
+User --> FE : работа\nс интерфейсом
+FE --> API : REST-запросы\nBearer JWT
+
+Accounts --> DB : пользователи,\nроли, статусы
+Habits --> DB : привычки,\nрасписания,\nотметки
+Analytics --> DB : чтение данных\nдля расчёта метрик
+
+@enduml
