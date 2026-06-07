@@ -38,6 +38,8 @@ ENV/
 .env
 .env.*
 !.env.example
+.codex_vps_deploy_key
+.codex_vps_deploy_key.pub
 
 # Python tooling caches
 .pytest_cache/
