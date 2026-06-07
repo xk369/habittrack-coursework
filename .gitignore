@@ -10,8 +10,8 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
+/lib/
+/lib64/
 parts/
 sdist/
 var/
@@ -77,3 +77,10 @@ logs/
 .parcel-cache/
 tmp/
 temp/
+
+# Generated report artifacts
+HabitTrack_coursework_report_final.docx
+HabitTrack_coursework_report_final_preview.pdf
+docs/report-assets/
+docs/report-rendered-pages/
+docs/МИНОБРНАУКИ РОССИИ.docx
