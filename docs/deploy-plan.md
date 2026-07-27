@@ -94,15 +94,18 @@ Backend должен получать:
 
 Frontend должен получать:
 
-- `SITE_HOST=habittrack.77.110.122.36.sslip.io`;
-- `PUBLIC_HTTP_PORT=80`;
-- `PUBLIC_HTTPS_PORT=443`;
+- `SITE_HOST=:80`;
+- `PUBLIC_HTTP_PORT=127.0.0.1:18080`;
+- `PUBLIC_HTTPS_PORT=127.0.0.1:18443`;
 - `VITE_API_BASE_URL=` для same-origin API через reverse proxy.
 
 Backend container применяет миграции и стартует через gunicorn. Frontend
 container собирает приложение на build stage и отдает готовые assets через
-nginx. Caddy принимает публичный HTTP/HTTPS-трафик и проксирует frontend и
-`/api/*` к backend внутри Docker-сети.
+nginx. На VPS `77.110.122.36` публичный HTTP/HTTPS-трафик принимает общий
+Caddy из `/opt/loft-hall-proxy`: он подключен к Docker-сети
+`habittrack_default` и проксирует frontend и `/api/*` к backend внутри сети.
+Проектный `proxy` service остается на loopback-портах для standalone-проверок
+без конфликта с общим reverse proxy.
 
 После deploy необходимо выполнить и зафиксировать:
 

@@ -185,11 +185,18 @@ POSTGRES_PORT=5432
 Frontend-переменные:
 
 ```text
-SITE_HOST=habittrack.77.110.122.36.sslip.io
-PUBLIC_HTTP_PORT=80
-PUBLIC_HTTPS_PORT=443
+SITE_HOST=:80
+PUBLIC_HTTP_PORT=127.0.0.1:18080
+PUBLIC_HTTPS_PORT=127.0.0.1:18443
 VITE_API_BASE_URL=
 ```
+
+На VPS `77.110.122.36` публичные `80/443` обслуживает общий Caddy proxy из
+`/opt/loft-hall-proxy`. Он подключен к Docker-сети `habittrack_default` и
+проксирует `habittrack.77.110.122.36.sslip.io` и `http://77.110.122.36` к
+контейнерам `habittrack-frontend-1` и `habittrack-backend-1`. Проектный
+`proxy` service оставлен на loopback-портах как безопасный standalone
+entrypoint без конфликта с общим reverse proxy.
 
 Если сервер был остановлен или пересоздан, повторный deploy выполняется теми же
 командами. После deploy нужно проверить `GET /api/health/`, вход demo/admin
