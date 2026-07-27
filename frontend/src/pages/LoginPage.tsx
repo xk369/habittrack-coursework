@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Shield, UserRound } from 'lucide-react';
+import { BarChart3, CalendarCheck2, Shield, UserRound } from 'lucide-react';
 
 import { useAuth } from '../features/auth/AuthProvider';
 import { firstError, isAccountBlockedError, normalizeApiError } from '../shared/lib/errors';
@@ -135,15 +135,52 @@ export function LoginPage() {
 
 export function AuthShell({ title, subtitle, children }: { title: string; subtitle: string; children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-surface-page p-4">
-      <Card className="w-full max-w-md overflow-hidden">
-        <div className="border-b border-line bg-surface-inset p-6">
-          <div className="ht-eyebrow mb-2">HabitTrack · Soft Ledger</div>
-          <h1 className="text-2xl font-medium text-ink">{title}</h1>
-          <p className="mt-2 text-sm leading-6 text-ink-2">{subtitle}</p>
+    <div className="min-h-screen bg-surface-page p-4 lg:grid lg:grid-cols-[minmax(0,1fr)_460px] lg:gap-6 lg:p-6">
+      <section className="hidden min-h-[calc(100vh-48px)] flex-col justify-between rounded-lg border border-line bg-surface-card2 p-8 shadow-[var(--shadow-card)] lg:flex">
+        <div>
+          <div className="flex items-center gap-3">
+            <span className="grid h-10 w-10 grid-cols-2 gap-1 rounded-md border border-sage-700 bg-sage-600 p-1">
+              <span className="rounded-[2px] bg-[#fbfffd]/85" />
+              <span className="rounded-[2px] bg-[#fbfffd]/45" />
+              <span className="rounded-[2px] bg-[#fbfffd]/35" />
+              <span className="rounded-[2px] bg-[#fbfffd]/72" />
+            </span>
+            <div>
+              <div className="text-lg font-semibold text-ink">HabitTrack</div>
+              <div className="ht-eyebrow">Рабочий журнал</div>
+            </div>
+          </div>
+          <div className="mt-14 max-w-xl">
+            <div className="ht-eyebrow mb-3">Демо-проект</div>
+            <h2 className="text-[34px] font-semibold leading-tight text-ink">Метрики привычек без визуального шума</h2>
+            <p className="mt-4 max-w-lg text-sm leading-6 text-ink-2">
+              Активные привычки, серии, выполнение по расписанию и история отметок собраны в одном спокойном рабочем интерфейсе.
+            </p>
+          </div>
         </div>
-        <div className="space-y-5 p-6">{children}</div>
-      </Card>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div className="rounded-md border border-line bg-surface-card p-4">
+            <CalendarCheck2 className="h-5 w-5 text-sage-700" />
+            <div className="mt-5 ht-eyebrow">Ритм</div>
+            <div className="mt-1 text-xl font-semibold text-ink">ежедневно</div>
+          </div>
+          <div className="rounded-md border border-line bg-surface-card p-4">
+            <BarChart3 className="h-5 w-5 text-accent-blue" />
+            <div className="mt-5 ht-eyebrow">Метрики</div>
+            <div className="mt-1 text-xl font-semibold text-ink">серии и %</div>
+          </div>
+        </div>
+      </section>
+      <div className="flex min-h-[calc(100vh-32px)] items-center justify-center lg:min-h-[calc(100vh-48px)]">
+        <Card className="w-full max-w-md overflow-hidden">
+          <div className="border-b border-line bg-surface-inset p-6">
+            <div className="ht-eyebrow mb-2">HabitTrack</div>
+            <h1 className="text-2xl font-semibold text-ink">{title}</h1>
+            <p className="mt-2 text-sm leading-6 text-ink-2">{subtitle}</p>
+          </div>
+          <div className="space-y-5 p-6">{children}</div>
+        </Card>
+      </div>
     </div>
   );
 }

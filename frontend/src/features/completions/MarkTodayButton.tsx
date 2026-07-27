@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { CheckCircle2 } from 'lucide-react';
 
 import * as completionsApi from '../../api/completions';
 import { firstError, normalizeApiError } from '../../shared/lib/errors';
@@ -37,6 +38,7 @@ export function MarkTodayButton({ habitId, disabled }: { habitId: number; disabl
       disabled={disabled}
       onClick={() => mutation.mutate()}
     >
+      <CheckCircle2 className="h-4 w-4" />
       Отметить сегодня
     </Button>
   );

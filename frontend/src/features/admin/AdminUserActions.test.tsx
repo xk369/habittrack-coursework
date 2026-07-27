@@ -22,6 +22,6 @@ describe('AdminUserActions', () => {
   it('disables block action for self row', () => {
     renderWithProviders(<AdminUserActions user={user} />);
 
-    expect(screen.getByRole('button', { name: 'Self-block запрещён' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Себя блокировать нельзя' })).toBeDisabled();
   });
 });

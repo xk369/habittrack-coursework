@@ -25,10 +25,13 @@ export function WeekdayPicker({
             key={day}
             type="button"
             disabled={disabled}
+            aria-pressed={active}
             onClick={() => toggle(index)}
             className={clsx(
-              'focus-ring soft-motion h-14 rounded-md border text-xs font-medium uppercase',
-              active ? 'border-sage-700 bg-sage-600 text-[#fbfbf7]' : 'border-line-strong bg-surface-card text-ink-2',
+              'focus-ring soft-motion h-14 rounded-md border text-xs font-medium uppercase disabled:opacity-50',
+              active
+                ? 'border-sage-700 bg-sage-600 text-[#fbfffd] shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]'
+                : 'border-line-strong bg-surface-card text-ink-2 hover:border-sage-200 hover:bg-surface-card2',
             )}
           >
             <span className="font-mono">{day}</span>
@@ -50,7 +53,7 @@ export function WeekdayStrip({ weekdays }: { weekdays: number[] }) {
             key={day}
             className={clsx(
               'inline-flex h-7 w-7 items-center justify-center rounded-sm border font-mono text-[10px] uppercase',
-              active ? 'border-sage-700 bg-sage-600 text-[#fbfbf7]' : 'border-line bg-surface-card text-ink-3',
+              active ? 'border-sage-700 bg-sage-600 text-[#fbfffd]' : 'border-line bg-surface-card text-ink-3',
             )}
           >
             {day}

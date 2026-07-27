@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { CalendarDays, CheckCircle2, Save, Target } from 'lucide-react';
 
 import type { Habit, HabitPayload, ScheduleMode } from '../../api/types';
 import { firstError, normalizeApiError } from '../../shared/lib/errors';
@@ -85,10 +86,18 @@ export function HabitForm({
   }
 
   return (
-    <form onSubmit={handleSubmit(submit)} className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_380px]">
+    <form onSubmit={handleSubmit(submit)} className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
       <Card className="overflow-hidden">
-        <section className="border-b border-line p-5">
-          <div className="ht-eyebrow mb-2">01 · Что вы хотите делать</div>
+        <section className="border-b border-line bg-surface-card p-5">
+          <div className="mb-4 flex items-center gap-3">
+            <span className="flex h-9 w-9 items-center justify-center rounded-md border border-sage-200 bg-sage-50 text-sage-700">
+              <Target className="h-4 w-4" />
+            </span>
+            <div>
+              <div className="ht-eyebrow">01 · Привычка</div>
+              <h2 className="text-lg font-semibold text-ink">Название и цель</h2>
+            </div>
+          </div>
           <div className="space-y-4">
             <label className="block">
               <span className="mb-2 block text-sm font-medium text-ink">Название</span>
@@ -102,8 +111,16 @@ export function HabitForm({
             </label>
           </div>
         </section>
-        <section className="p-5">
-          <div className="ht-eyebrow mb-2">02 · Когда выполнять</div>
+        <section className="bg-surface-card2 p-5">
+          <div className="mb-4 flex items-center gap-3">
+            <span className="flex h-9 w-9 items-center justify-center rounded-md border border-line bg-surface-card text-sage-700">
+              <CalendarDays className="h-4 w-4" />
+            </span>
+            <div>
+              <div className="ht-eyebrow">02 · Расписание</div>
+              <h2 className="text-lg font-semibold text-ink">Когда выполнять</h2>
+            </div>
+          </div>
           <Controller
             control={control}
             name="mode"
@@ -116,9 +133,10 @@ export function HabitForm({
                     onClick={() => {
                       field.onChange(item);
                     }}
-                    className={`focus-ring rounded-md border p-4 text-left soft-motion ${field.value === item ? 'border-sage-600 bg-sage-50' : 'border-line bg-surface-card'}`}
+                    className={`focus-ring soft-motion relative rounded-md border p-4 text-left ${field.value === item ? 'border-sage-600 bg-sage-50' : 'border-line bg-surface-card hover:border-sage-200'}`}
                   >
-                    <div className="font-medium text-ink">{item === 'daily' ? 'Ежедневно' : 'Выбранные дни'}</div>
+                    {field.value === item && <CheckCircle2 className="absolute right-4 top-4 h-4 w-4 text-sage-700" />}
+                    <div className="pr-6 font-medium text-ink">{item === 'daily' ? 'Ежедневно' : 'Выбранные дни'}</div>
                     <div className="mt-1 text-sm text-ink-2">
                       {item === 'daily' ? 'Каждый день недели.' : 'Конкретные дни недели.'}
                     </div>
@@ -144,11 +162,11 @@ export function HabitForm({
           )}
           {errors.root?.message && <div className="mt-4"><InlineAlert>{errors.root.message}</InlineAlert></div>}
           <div className="mt-5 flex justify-end">
-            <Button type="submit" variant="accent" loading={isSubmitting}>{submitLabel}</Button>
+            <Button type="submit" variant="accent" loading={isSubmitting}><Save className="h-4 w-4" />{submitLabel}</Button>
           </div>
         </section>
       </Card>
-      <aside className="space-y-3">
+      <aside className="space-y-3 lg:sticky lg:top-8">
         <div className="ht-eyebrow">Предпросмотр</div>
         <Card className="p-5">
           <div className="text-lg font-medium text-ink">{title}</div>

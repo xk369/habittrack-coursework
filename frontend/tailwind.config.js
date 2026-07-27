@@ -6,7 +6,9 @@ export default {
       colors: {
         surface: {
           page: 'var(--surface-page)',
+          pageTint: 'var(--surface-page-tint)',
           card: 'var(--surface-card)',
+          card2: 'var(--surface-card-2)',
           inset: 'var(--surface-inset)',
           deep: 'var(--surface-deep)',
           ink: 'var(--surface-ink)',
@@ -42,6 +44,12 @@ export default {
         warn: {
           DEFAULT: 'var(--warn)',
           soft: 'var(--warn-soft)',
+        },
+        accent: {
+          amber: 'var(--accent-amber)',
+          amberSoft: 'var(--accent-amber-soft)',
+          blue: 'var(--accent-blue)',
+          blueSoft: 'var(--accent-blue-soft)',
         },
       },
       fontFamily: {

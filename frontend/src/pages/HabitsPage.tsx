@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
+import { Archive, ArchiveRestore, CalendarDays, ExternalLink, Pencil, Plus, Trash2 } from 'lucide-react';
 
 import * as habitsApi from '../api/habits';
 import type { Habit, HabitState } from '../api/types';
 import { scheduleLabel } from '../shared/lib/domain';
 import { firstError } from '../shared/lib/errors';
-import { Button, Card, EmptyState, PageTitle, SegmentTabs, StatusBadge } from '../shared/ui/primitives';
+import { Button, Card, EmptyState, PageTitle, SegmentTabs, Skeleton, StatusBadge } from '../shared/ui/primitives';
 import { ConfirmDialog } from '../shared/ui/ConfirmDialog';
 import { useToast } from '../shared/ui/Toast';
 
@@ -57,19 +58,24 @@ export function HabitsPage() {
       <PageTitle
         eyebrow="Привычки"
         title="Личный список"
-        description="Создавайте, архивируйте и удаляйте привычки без потери уже собранной статистики архивных записей."
-        action={<Link to="/habits/new"><Button variant="accent">Новая привычка</Button></Link>}
+        description="Создавайте, архивируйте и удаляйте привычки без потери собранной статистики."
+        action={<Link to="/habits/new"><Button variant="accent"><Plus className="h-4 w-4" />Новая привычка</Button></Link>}
       />
-      <SegmentTabs
-        value={state}
-        onChange={setState}
-        options={[
-          { value: 'active', label: 'Активные' },
-          { value: 'archived', label: 'Архив' },
-          { value: 'all', label: 'Все' },
-        ]}
-      />
-      {!isLoading && !data.length ? (
+      <Card className="flex flex-col gap-3 p-3 sm:flex-row sm:items-center sm:justify-between">
+        <SegmentTabs
+          value={state}
+          onChange={setState}
+          options={[
+            { value: 'active', label: 'Активные' },
+            { value: 'archived', label: 'Архив' },
+            { value: 'all', label: 'Все' },
+          ]}
+        />
+        <span className="ht-eyebrow px-1">{isLoading ? 'Загрузка' : `Записей: ${data.length}`}</span>
+      </Card>
+      {isLoading ? (
+        <Skeleton className="h-72" />
+      ) : !data.length ? (
         <EmptyState
           title={state === 'archived' ? 'Архив пуст' : state === 'active' ? 'У вас пока нет активных привычек' : 'Список пуст'}
           action={<Link to="/habits/new"><Button variant="accent">Создать привычку</Button></Link>}
@@ -77,24 +83,27 @@ export function HabitsPage() {
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
           {data.map((habit) => (
-            <Card key={habit.id} className="p-5">
+            <Card key={habit.id} className="soft-motion p-5 hover:border-sage-200">
               <div className="flex items-start justify-between gap-3">
-                <div>
+                <div className="min-w-0">
                   <Link className="text-lg font-medium hover:text-sage-700" to={`/habits/${habit.id}`}>{habit.title}</Link>
                   <p className="mt-1 text-sm text-ink-2">{habit.purpose || 'Без описания'}</p>
                 </div>
                 <StatusBadge status={habit.state} />
               </div>
-              <div className="mt-4 rounded-md border border-line bg-surface-inset p-3 text-sm text-ink-2">{scheduleLabel(habit.schedule)}</div>
+              <div className="mt-4 flex items-center gap-2 rounded-md border border-line bg-surface-inset p-3 text-sm text-ink-2">
+                <CalendarDays className="h-4 w-4 shrink-0 text-sage-700" />
+                <span>{scheduleLabel(habit.schedule)}</span>
+              </div>
               <div className="mt-4 flex flex-wrap gap-2">
-                <Link to={`/habits/${habit.id}`}><Button variant="secondary">Открыть</Button></Link>
-                <Link to={`/habits/${habit.id}/edit`}><Button variant="ghost">Редактировать</Button></Link>
+                <Link to={`/habits/${habit.id}`}><Button variant="secondary"><ExternalLink className="h-4 w-4" />Открыть</Button></Link>
+                <Link to={`/habits/${habit.id}/edit`}><Button variant="ghost"><Pencil className="h-4 w-4" />Редактировать</Button></Link>
                 {habit.state === 'active' ? (
-                  <Button variant="secondary" loading={archive.isPending} onClick={() => archive.mutate(habit.id)}>В архив</Button>
+                  <Button variant="secondary" loading={archive.isPending} onClick={() => archive.mutate(habit.id)}><Archive className="h-4 w-4" />В архив</Button>
                 ) : (
-                  <Button variant="secondary" loading={unarchive.isPending} onClick={() => unarchive.mutate(habit.id)}>Вернуть</Button>
+                  <Button variant="secondary" loading={unarchive.isPending} onClick={() => unarchive.mutate(habit.id)}><ArchiveRestore className="h-4 w-4" />Вернуть</Button>
                 )}
-                <Button variant="danger" onClick={() => setDeleteTarget(habit)}>Удалить</Button>
+                <Button variant="danger" onClick={() => setDeleteTarget(habit)}><Trash2 className="h-4 w-4" />Удалить</Button>
               </div>
             </Card>
           ))}

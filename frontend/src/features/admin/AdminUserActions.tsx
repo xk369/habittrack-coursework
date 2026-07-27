@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Ban, Unlock } from 'lucide-react';
 
 import * as adminApi from '../../api/admin';
 import type { AdminUser } from '../../api/types';
@@ -46,17 +47,19 @@ export function AdminUserActions({ user }: { user: AdminUser }) {
     <div className="flex flex-wrap gap-2">
       {user.status === 'blocked' ? (
         <Button variant="secondary" loading={unblock.isPending} onClick={() => unblock.mutate()}>
+          <Unlock className="h-4 w-4" />
           Разблокировать
         </Button>
       ) : (
         <Button variant="danger" disabled={isSelf} loading={block.isPending} onClick={() => setConfirmBlock(true)}>
-          {isSelf ? 'Self-block запрещён' : 'Заблокировать'}
+          <Ban className="h-4 w-4" />
+          {isSelf ? 'Себя блокировать нельзя' : 'Заблокировать'}
         </Button>
       )}
       <ConfirmDialog
         open={confirmBlock}
         title="Заблокировать пользователя?"
-        description={`Пользователь ${user.email} потеряет доступ к login, protected API и refresh.`}
+        description={`Пользователь ${user.email} потеряет доступ к защищенным разделам приложения.`}
         confirmLabel="Заблокировать"
         onCancel={() => setConfirmBlock(false)}
         onConfirm={() => block.mutate()}

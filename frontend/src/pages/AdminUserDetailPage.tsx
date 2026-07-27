@@ -26,15 +26,15 @@ export function AdminUserDetailPage() {
 
   return (
     <div className="space-y-6">
-      <PageTitle eyebrow={`USER_${data.id}`} title={data.email} description="Read-only карточка пользователя." action={<AdminUserActions user={data} />} />
+      <PageTitle eyebrow={`USER_${data.id}`} title={data.email} description="Карточка пользователя и текущий доступ." action={<AdminUserActions user={data} />} />
       <Card className="max-w-3xl p-5">
         <dl className="grid gap-4 md:grid-cols-2">
           <Info label="ID" value={data.id} />
-          <Info label="Display name" value={data.display_name || '—'} />
-          <Info label="Role" value={<RoleBadge role={data.role} />} />
-          <Info label="Status" value={<StatusBadge status={data.status} />} />
-          <Info label="Date joined" value={formatDate(data.date_joined)} />
-          <Info label="Updated" value={formatDate(data.updated_at)} />
+          <Info label="Имя" value={data.display_name || '—'} />
+          <Info label="Роль" value={<RoleBadge role={data.role} />} />
+          <Info label="Статус" value={<StatusBadge status={data.status} />} />
+          <Info label="Создан" value={formatDate(data.date_joined)} />
+          <Info label="Обновлен" value={formatDate(data.updated_at)} />
         </dl>
       </Card>
     </div>
