@@ -1,7 +1,7 @@
 import type { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
-import { apiClient } from './client';
+import { apiClient, resolveApiBaseUrl } from './client';
 import { setAuthEvents, setTokens } from './tokenStore';
 
 function response<T>(config: InternalAxiosRequestConfig, data: T, status = 200): AxiosResponse<T> {
@@ -77,5 +77,15 @@ describe('apiClient auth interceptor', () => {
     expect(onBlocked).toHaveBeenCalledTimes(1);
     expect(localStorage.getItem('habittrack.access_token')).toBeNull();
     expect(localStorage.getItem('habittrack.refresh_token')).toBeNull();
+  });
+});
+
+describe('resolveApiBaseUrl', () => {
+  it('keeps empty string for same-origin deployments', () => {
+    expect(resolveApiBaseUrl('')).toBe('');
+  });
+
+  it('falls back only when the value is absent', () => {
+    expect(resolveApiBaseUrl(undefined)).toBe('http://localhost:8000');
   });
 });

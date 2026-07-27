@@ -4,8 +4,8 @@
 
 В качестве фактической платформы развертывания выбран арендованный VPS.
 Проект разворачивается как Docker Compose stack на сервере `77.110.122.36`.
-Развертывание использует PostgreSQL, backend и frontend контейнеры, управляемые
-одним `docker-compose.yml`.
+Развертывание использует PostgreSQL, backend, frontend и Caddy reverse proxy,
+управляемые одним `docker-compose.yml`.
 
 ## 1. Цель развертывания
 
@@ -65,10 +65,15 @@ docker-compose как отдельный контейнер `postgres`. Порт
 VPS-конфигурация проекта:
 
 - сервер: `77.110.122.36`;
-- frontend: `http://77.110.122.36:5173`;
-- backend health-check: `http://77.110.122.36:8000/api/health/`;
-- Swagger UI: `http://77.110.122.36:8000/api/docs/`;
-- ReDoc: `http://77.110.122.36:8000/api/redoc/`.
+- canonical UI: `https://habittrack.77.110.122.36.sslip.io`;
+- fallback UI: `http://77.110.122.36`;
+- backend health-check: `https://habittrack.77.110.122.36.sslip.io/api/health/`;
+- Swagger UI: `https://habittrack.77.110.122.36.sslip.io/api/docs/`;
+- ReDoc: `https://habittrack.77.110.122.36.sslip.io/api/redoc/`.
+
+Технические прямые порты остаются доступными для диагностики:
+`http://77.110.122.36:5173` для frontend и
+`http://77.110.122.36:8000/api/health/` для backend.
 
 На сервере используется каталог `/opt/habittrack`, куда клонируется GitHub
 репозиторий проекта. Запуск выполняется командой:
@@ -81,38 +86,41 @@ Backend должен получать:
 
 - `DJANGO_SECRET_KEY`;
 - `DJANGO_DEBUG=False`;
-- `DJANGO_ALLOWED_HOSTS=77.110.122.36,localhost,127.0.0.1,backend`;
-- `CORS_ALLOWED_ORIGINS=http://77.110.122.36:5173`;
-- `CSRF_TRUSTED_ORIGINS=http://77.110.122.36:5173`;
+- `DJANGO_ALLOWED_HOSTS=77.110.122.36,habittrack.77.110.122.36.sslip.io,localhost,127.0.0.1,backend`;
+- `CORS_ALLOWED_ORIGINS=http://77.110.122.36,http://77.110.122.36:5173,https://habittrack.77.110.122.36.sslip.io`;
+- `CSRF_TRUSTED_ORIGINS=http://77.110.122.36,http://77.110.122.36:5173,https://habittrack.77.110.122.36.sslip.io`;
 - `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`,
   `POSTGRES_PORT`.
 
 Frontend должен получать:
 
-- `VITE_API_BASE_URL=http://77.110.122.36:8000`.
+- `SITE_HOST=habittrack.77.110.122.36.sslip.io`;
+- `PUBLIC_HTTP_PORT=80`;
+- `PUBLIC_HTTPS_PORT=443`;
+- `VITE_API_BASE_URL=` для same-origin API через reverse proxy.
 
 Backend container применяет миграции и стартует через gunicorn. Frontend
 container собирает приложение на build stage и отдает готовые assets через
-nginx.
+nginx. Caddy принимает публичный HTTP/HTTPS-трафик и проксирует frontend и
+`/api/*` к backend внутри Docker-сети.
 
 После deploy необходимо выполнить и зафиксировать:
 
 1. Клонирование репозитория на сервер.
 2. Создание server-side `.env` без публикации секретов в GitHub.
-3. Сборка и запуск контейнеров `postgres`, `backend`, `frontend`.
+3. Сборка и запуск контейнеров `postgres`, `backend`, `frontend`, `proxy`.
 4. Применение миграций при старте backend.
 5. Запуск `seed_demo`.
-6. Проверка backend health-check, frontend, demo login, dashboard, habits,
-   admin users и blocked-account login.
+6. Проверка canonical URL, backend health-check, frontend, demo login,
+   dashboard, habits, admin users и blocked-account login.
 
 ## 6. Что пока не фиксируется
 
 На текущем этапе не фиксируются:
 
-- домен и HTTPS-настройки;
 - CI/CD;
 - мониторинг и логирование;
-- конкретная схема сети и reverse proxy перед Docker Compose.
+- собственный домен вместо временного `sslip.io`-домена.
 
 Эти решения не требуются для учебного MVP, но могут быть добавлены при
 дальнейшем развитии проекта.

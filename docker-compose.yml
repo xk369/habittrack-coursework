@@ -51,12 +51,31 @@ services:
     build:
       context: ./frontend
       args:
-        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8000}
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL-}
     ports:
       - "5173:80"
     depends_on:
       backend:
         condition: service_healthy
 
+  proxy:
+    image: caddy:2-alpine
+    environment:
+      SITE_HOST: ${SITE_HOST:-:80}
+    ports:
+      - "${PUBLIC_HTTP_PORT:-80}:80"
+      - "${PUBLIC_HTTPS_PORT:-443}:443"
+    volumes:
+      - ./infra/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      frontend:
+        condition: service_started
+      backend:
+        condition: service_healthy
+
 volumes:
   postgres_data:
+  caddy_data:
+  caddy_config:

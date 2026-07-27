@@ -20,6 +20,7 @@ HabitTrack — персональный веб-трекер формирован
 - UI: Tailwind CSS + Soft Ledger design tokens.
 - Frontend data layer: React Router, TanStack Query, axios.
 - Frontend runtime: статическая Vite-сборка через nginx.
+- Reverse proxy: Caddy для единого публичного входа и HTTPS.
 - Packaging: Dockerfile для backend/frontend и root `docker-compose.yml`.
 
 ## Реализованные возможности
@@ -76,7 +77,10 @@ Frontend разделен на `src/api/`, `src/app/`, `src/features/`, `src/pag
 cp .env.example .env
 ```
 
-Для локального frontend/backend соединения используются:
+Docker Compose по умолчанию собирает frontend с относительным API base URL:
+публичный UI открывается через reverse proxy, а запросы уходят на `/api/*` того
+же origin. Для локального запуска frontend без Docker в `frontend/.env` можно
+оставить явный backend URL:
 
 ```text
 VITE_API_BASE_URL=http://localhost:8000
@@ -124,12 +128,14 @@ docker compose up --build
 
 - `postgres` — PostgreSQL с named volume;
 - `backend` — Django/DRF API на `http://localhost:8000`;
-- `frontend` — nginx со статической Vite-сборкой на `http://localhost:5173`.
+- `frontend` — nginx со статической Vite-сборкой на `http://localhost:5173`;
+- `proxy` — Caddy на `http://localhost/`, проксирует UI и `/api/*`.
 
 Backend container перед запуском применяет миграции и стартует через gunicorn.
 Frontend container собирает Vite-приложение на build stage и отдает готовые
-assets через nginx. Demo data не запускается автоматически, чтобы не менять
-состояние БД без явной команды.
+assets через nginx. Caddy дает единый entrypoint без frontend/backend портов:
+`http://localhost/` для UI и `http://localhost/api/health/` для API. Demo data
+не запускается автоматически, чтобы не менять состояние БД без явной команды.
 
 Запуск demo seed в compose:
 
@@ -141,10 +147,15 @@ docker compose exec backend python manage.py seed_demo
 
 Последняя VPS-конфигурация проекта использует сервер:
 
-- frontend: `http://77.110.122.36:5173`;
-- backend health-check: `http://77.110.122.36:8000/api/health/`;
-- Swagger UI: `http://77.110.122.36:8000/api/docs/`;
-- ReDoc: `http://77.110.122.36:8000/api/redoc/`.
+- canonical UI: `https://habittrack.77.110.122.36.sslip.io`;
+- fallback UI: `http://77.110.122.36`;
+- backend health-check: `/api/health/` на том же домене;
+- Swagger UI: `/api/docs/` на том же домене;
+- ReDoc: `/api/redoc/` на том же домене.
+
+Прямые технические порты оставлены для диагностики: frontend
+`http://77.110.122.36:5173`, backend
+`http://77.110.122.36:8000/api/health/`.
 
 На сервере используется каталог `/opt/habittrack` и запуск через Docker
 Compose:
@@ -161,9 +172,9 @@ Backend-переменные:
 ```text
 DJANGO_SECRET_KEY=<production-like-secret>
 DJANGO_DEBUG=False
-DJANGO_ALLOWED_HOSTS=77.110.122.36,localhost,127.0.0.1,backend
-CORS_ALLOWED_ORIGINS=http://77.110.122.36:5173
-CSRF_TRUSTED_ORIGINS=http://77.110.122.36:5173
+DJANGO_ALLOWED_HOSTS=77.110.122.36,habittrack.77.110.122.36.sslip.io,localhost,127.0.0.1,backend
+CORS_ALLOWED_ORIGINS=http://77.110.122.36,http://77.110.122.36:5173,https://habittrack.77.110.122.36.sslip.io
+CSRF_TRUSTED_ORIGINS=http://77.110.122.36,http://77.110.122.36:5173,https://habittrack.77.110.122.36.sslip.io
 POSTGRES_DB=habittrack
 POSTGRES_USER=habittrack
 POSTGRES_PASSWORD=<server-side-password>
@@ -174,7 +185,10 @@ POSTGRES_PORT=5432
 Frontend-переменные:
 
 ```text
-VITE_API_BASE_URL=http://77.110.122.36:8000
+SITE_HOST=habittrack.77.110.122.36.sslip.io
+PUBLIC_HTTP_PORT=80
+PUBLIC_HTTPS_PORT=443
+VITE_API_BASE_URL=
 ```
 
 Если сервер был остановлен или пересоздан, повторный deploy выполняется теми же
