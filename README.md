@@ -12,17 +12,20 @@ HabitTrack — персональный веб-трекер формирован
 ## Стек
 
 - Backend: Django 5.2 LTS + Django REST Framework.
+- Backend runtime: gunicorn в Docker-окружении.
 - API auth: JWT через SimpleJWT.
 - API docs: drf-spectacular, Swagger UI, ReDoc.
 - Database: PostgreSQL.
 - Frontend: React + TypeScript + Vite.
 - UI: Tailwind CSS + Soft Ledger design tokens.
 - Frontend data layer: React Router, TanStack Query, axios.
+- Frontend runtime: статическая Vite-сборка через nginx.
 - Packaging: Dockerfile для backend/frontend и root `docker-compose.yml`.
 
 ## Реализованные возможности
 
 - регистрация, вход, refresh token и профиль пользователя;
+- быстрый demo-вход для пользователя и администратора на странице login;
 - роли `user/admin`, статусы `active/blocked`;
 - блокировка закрывает login, protected API и refresh;
 - CRUD привычек с `daily` и `weekly_days` расписанием;
@@ -121,10 +124,12 @@ docker compose up --build
 
 - `postgres` — PostgreSQL с named volume;
 - `backend` — Django/DRF API на `http://localhost:8000`;
-- `frontend` — Vite dev server на `http://localhost:5173`.
+- `frontend` — nginx со статической Vite-сборкой на `http://localhost:5173`.
 
-Backend container перед запуском применяет миграции. Demo data не запускается
-автоматически, чтобы не менять состояние БД без явной команды.
+Backend container перед запуском применяет миграции и стартует через gunicorn.
+Frontend container собирает Vite-приложение на build stage и отдает готовые
+assets через nginx. Demo data не запускается автоматически, чтобы не менять
+состояние БД без явной команды.
 
 Запуск demo seed в compose:
 
@@ -134,7 +139,7 @@ docker compose exec backend python manage.py seed_demo
 
 ## VPS deploy
 
-Проект опубликован на VPS:
+Последняя VPS-конфигурация проекта использует сервер:
 
 - frontend: `http://77.110.122.36:5173`;
 - backend health-check: `http://77.110.122.36:8000/api/health/`;
@@ -172,8 +177,9 @@ Frontend-переменные:
 VITE_API_BASE_URL=http://77.110.122.36:8000
 ```
 
-После deploy проверены `GET /api/health/`, вход demo/admin пользователей,
-dashboard, список привычек, admin users и blocked-account login.
+Если сервер был остановлен или пересоздан, повторный deploy выполняется теми же
+командами. После deploy нужно проверить `GET /api/health/`, вход demo/admin
+пользователей, dashboard, список привычек, admin users и blocked-account login.
 
 ## Demo data
 

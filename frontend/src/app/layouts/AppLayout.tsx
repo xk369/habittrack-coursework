@@ -37,7 +37,7 @@ export function AppLayout() {
             <NavLink to="/" end className={navClass}>Дашборд</NavLink>
             <NavLink to="/habits" className={navClass}>Привычки</NavLink>
             <NavLink to="/profile" className={navClass}>Профиль</NavLink>
-            {user?.role === 'admin' && <NavLink to="/admin/users" className={navClass}>Admin</NavLink>}
+            {user?.role === 'admin' && <NavLink to="/admin/users" className={navClass}>Админ</NavLink>}
           </nav>
           <div className="flex items-center gap-2">
             <span className="hidden items-center gap-2 rounded-md border border-line bg-surface-card px-3 py-2 text-sm text-ink-2 md:inline-flex">

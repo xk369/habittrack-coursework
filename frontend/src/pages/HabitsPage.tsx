@@ -64,9 +64,9 @@ export function HabitsPage() {
         value={state}
         onChange={setState}
         options={[
-          { value: 'active', label: 'Active' },
-          { value: 'archived', label: 'Archived' },
-          { value: 'all', label: 'All' },
+          { value: 'active', label: 'Активные' },
+          { value: 'archived', label: 'Архив' },
+          { value: 'all', label: 'Все' },
         ]}
       />
       {!isLoading && !data.length ? (

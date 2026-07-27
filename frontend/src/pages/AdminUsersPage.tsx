@@ -11,7 +11,7 @@ export function AdminUsersPage() {
 
   return (
     <div className="space-y-6">
-      <PageTitle eyebrow="Admin contour" title="Пользователи" description="Просмотр статуса и управление блокировкой учетных записей." />
+      <PageTitle eyebrow="Админ-контур" title="Пользователи" description="Просмотр статуса и управление блокировкой учетных записей." />
       {isLoading ? <Skeleton className="h-80" /> : !data.length ? (
         <EmptyState title="Пользователей нет" />
       ) : (
@@ -22,10 +22,10 @@ export function AdminUsersPage() {
                 <tr>
                   <th className="px-4 py-3">ID</th>
                   <th className="px-4 py-3">Email</th>
-                  <th className="px-4 py-3">Role</th>
-                  <th className="px-4 py-3">Status</th>
-                  <th className="px-4 py-3">Joined</th>
-                  <th className="px-4 py-3">Actions</th>
+                  <th className="px-4 py-3">Роль</th>
+                  <th className="px-4 py-3">Статус</th>
+                  <th className="px-4 py-3">Создан</th>
+                  <th className="px-4 py-3">Действия</th>
                 </tr>
               </thead>
               <tbody>

@@ -91,11 +91,26 @@ export function Badge({
 }
 
 export function StatusBadge({ status }: { status: string }) {
-  return <Badge tone={status === 'active' ? 'active' : status === 'blocked' ? 'danger' : 'archived'}>{status}</Badge>;
+  const labels: Record<string, string> = {
+    active: 'Активен',
+    blocked: 'Заблокирован',
+    archived: 'В архиве',
+  };
+
+  return (
+    <Badge tone={status === 'active' ? 'active' : status === 'blocked' ? 'danger' : 'archived'}>
+      {labels[status] ?? status}
+    </Badge>
+  );
 }
 
 export function RoleBadge({ role }: { role: string }) {
-  return <Badge tone={role === 'admin' ? 'sage' : 'neutral'}>{role}</Badge>;
+  const labels: Record<string, string> = {
+    admin: 'Администратор',
+    user: 'Пользователь',
+  };
+
+  return <Badge tone={role === 'admin' ? 'sage' : 'neutral'}>{labels[role] ?? role}</Badge>;
 }
 
 export function SegmentTabs<T extends string>({
