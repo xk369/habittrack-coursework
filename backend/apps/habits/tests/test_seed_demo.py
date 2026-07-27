@@ -7,7 +7,7 @@ from apps.habits.management.commands.seed_demo import (
     BLOCKED_EMAIL,
     DEMO_EMAIL,
 )
-from apps.habits.models import Habit, HabitCompletion
+from apps.habits.models import Habit, HabitCompletion, HabitSchedule
 
 
 class SeedDemoCommandTests(TestCase):
@@ -53,3 +53,19 @@ class SeedDemoCommandTests(TestCase):
         )
 
         self.assertEqual(second_counts, first_counts)
+
+    def test_seed_demo_removes_manual_demo_habits(self):
+        call_command('seed_demo', verbosity=0)
+        User = get_user_model()
+        demo_user = User.objects.get(email=DEMO_EMAIL)
+        stray_habit = Habit.objects.create(
+            owner=demo_user,
+            title='длавдл',
+            purpose='manual smoke artifact',
+        )
+        HabitSchedule.objects.create(habit=stray_habit, mode=HabitSchedule.Mode.DAILY)
+
+        call_command('seed_demo', verbosity=0)
+
+        self.assertFalse(Habit.objects.filter(owner=demo_user, title='длавдл').exists())
+        self.assertEqual(Habit.objects.filter(owner=demo_user).count(), 6)

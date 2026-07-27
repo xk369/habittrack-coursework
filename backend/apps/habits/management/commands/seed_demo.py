@@ -122,8 +122,7 @@ class Command(BaseCommand):
         # Keep the blocked demo account transition on the domain method.
         blocked_user.block()
 
-        demo_titles = [spec.title for spec in DEMO_HABITS]
-        Habit.objects.filter(owner=demo_user, title__in=demo_titles).delete()
+        Habit.objects.filter(owner=demo_user).delete()
 
         today = timezone.localdate()
         created_habits = []
