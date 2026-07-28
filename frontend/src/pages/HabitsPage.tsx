@@ -59,7 +59,7 @@ export function HabitsPage() {
         eyebrow="Привычки"
         title="Личный список"
         description="Создавайте, архивируйте и удаляйте привычки без потери собранной статистики."
-        action={<Link to="/habits/new"><Button variant="accent"><Plus className="h-4 w-4" />Новая привычка</Button></Link>}
+        action={<Link className="block w-full md:w-auto" to="/habits/new"><Button className="w-full md:w-auto" variant="accent"><Plus className="h-4 w-4" />Новая привычка</Button></Link>}
       />
       <Card className="flex flex-col gap-3 p-3 sm:flex-row sm:items-center sm:justify-between">
         <SegmentTabs
@@ -96,14 +96,14 @@ export function HabitsPage() {
                 <span>{scheduleLabel(habit.schedule)}</span>
               </div>
               <div className="mt-4 flex flex-wrap gap-2">
-                <Link to={`/habits/${habit.id}`}><Button variant="secondary"><ExternalLink className="h-4 w-4" />Открыть</Button></Link>
-                <Link to={`/habits/${habit.id}/edit`}><Button variant="ghost"><Pencil className="h-4 w-4" />Редактировать</Button></Link>
+                <Link className="w-full sm:w-auto" to={`/habits/${habit.id}`}><Button className="w-full sm:w-auto" variant="secondary"><ExternalLink className="h-4 w-4" />Открыть</Button></Link>
+                <Link className="w-full sm:w-auto" to={`/habits/${habit.id}/edit`}><Button className="w-full sm:w-auto" variant="ghost"><Pencil className="h-4 w-4" />Редактировать</Button></Link>
                 {habit.state === 'active' ? (
-                  <Button variant="secondary" loading={archive.isPending} onClick={() => archive.mutate(habit.id)}><Archive className="h-4 w-4" />В архив</Button>
+                  <Button className="w-full sm:w-auto" variant="secondary" loading={archive.isPending} onClick={() => archive.mutate(habit.id)}><Archive className="h-4 w-4" />В архив</Button>
                 ) : (
-                  <Button variant="secondary" loading={unarchive.isPending} onClick={() => unarchive.mutate(habit.id)}><ArchiveRestore className="h-4 w-4" />Вернуть</Button>
+                  <Button className="w-full sm:w-auto" variant="secondary" loading={unarchive.isPending} onClick={() => unarchive.mutate(habit.id)}><ArchiveRestore className="h-4 w-4" />Вернуть</Button>
                 )}
-                <Button variant="danger" onClick={() => setDeleteTarget(habit)}><Trash2 className="h-4 w-4" />Удалить</Button>
+                <Button className="w-full sm:w-auto" variant="danger" onClick={() => setDeleteTarget(habit)}><Trash2 className="h-4 w-4" />Удалить</Button>
               </div>
             </Card>
           ))}

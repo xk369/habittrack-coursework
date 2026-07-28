@@ -46,12 +46,12 @@ export function AdminUserActions({ user }: { user: AdminUser }) {
   return (
     <div className="flex flex-wrap gap-2">
       {user.status === 'blocked' ? (
-        <Button variant="secondary" loading={unblock.isPending} onClick={() => unblock.mutate()}>
+        <Button className="w-full sm:w-auto" variant="secondary" loading={unblock.isPending} onClick={() => unblock.mutate()}>
           <Unlock className="h-4 w-4" />
           Разблокировать
         </Button>
       ) : (
-        <Button variant="danger" disabled={isSelf} loading={block.isPending} onClick={() => setConfirmBlock(true)}>
+        <Button className="w-full sm:w-auto" variant="danger" disabled={isSelf} loading={block.isPending} onClick={() => setConfirmBlock(true)}>
           <Ban className="h-4 w-4" />
           {isSelf ? 'Себя блокировать нельзя' : 'Заблокировать'}
         </Button>

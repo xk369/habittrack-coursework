@@ -1,69 +1,69 @@
 /* HabitTrack - Ledger Workspace design tokens */
 :root {
-  /* Surfaces */
-  --surface-page: oklch(0.965 0.009 172);
-  --surface-page-tint: oklch(0.94 0.016 172);
-  --surface-card: oklch(0.996 0.002 172);
-  --surface-card-2: oklch(0.982 0.008 172);
-  --surface-inset: oklch(0.94 0.014 172);
-  --surface-deep: oklch(0.86 0.023 172);
-  --surface-ink: oklch(0.18 0.018 172);
+  /* Surfaces: warm pistachio neutrals keep long sessions gentle. */
+  --surface-page: oklch(0.972 0.014 135);
+  --surface-page-tint: oklch(0.95 0.025 135);
+  --surface-card: oklch(0.996 0.005 112);
+  --surface-card-2: oklch(0.983 0.015 130);
+  --surface-inset: oklch(0.945 0.025 135);
+  --surface-deep: oklch(0.88 0.04 135);
+  --surface-ink: oklch(0.22 0.022 145);
 
   /* Ink */
-  --ink: oklch(0.18 0.019 172);
-  --ink-1: oklch(0.28 0.017 172);
-  --ink-2: oklch(0.42 0.014 172);
-  --ink-3: oklch(0.56 0.013 172);
-  --ink-4: oklch(0.68 0.01 172);
+  --ink: oklch(0.23 0.024 145);
+  --ink-1: oklch(0.34 0.02 145);
+  --ink-2: oklch(0.47 0.016 145);
+  --ink-3: oklch(0.59 0.014 145);
+  --ink-4: oklch(0.7 0.012 145);
 
   /* Borders */
-  --line: oklch(0.84 0.017 172);
-  --line-strong: oklch(0.75 0.024 172);
-  --line-soft: oklch(0.9 0.011 172);
+  --line: oklch(0.86 0.025 135);
+  --line-strong: oklch(0.77 0.045 138);
+  --line-soft: oklch(0.92 0.018 135);
 
   /* Product accent */
-  --sage-50: oklch(0.95 0.026 188);
-  --sage-100: oklch(0.9 0.043 188);
-  --sage-200: oklch(0.82 0.065 188);
-  --sage-300: oklch(0.72 0.083 188);
-  --sage-400: oklch(0.61 0.094 190);
-  --sage-500: oklch(0.51 0.1 194);
-  --sage-600: oklch(0.42 0.088 198);
-  --sage-700: oklch(0.32 0.065 202);
-  --sage-ink: oklch(0.27 0.055 202);
-  --accent-amber: oklch(0.58 0.11 78);
-  --accent-amber-soft: oklch(0.94 0.045 84);
-  --accent-blue: oklch(0.52 0.09 242);
-  --accent-blue-soft: oklch(0.94 0.028 242);
+  --sage-50: oklch(0.96 0.026 135);
+  --sage-100: oklch(0.92 0.05 135);
+  --sage-200: oklch(0.85 0.08 135);
+  --sage-300: oklch(0.76 0.1 137);
+  --sage-400: oklch(0.64 0.11 140);
+  --sage-500: oklch(0.52 0.1 143);
+  --sage-600: oklch(0.43 0.085 145);
+  --sage-700: oklch(0.35 0.065 148);
+  --sage-ink: oklch(0.31 0.055 148);
+  --accent-amber: oklch(0.62 0.1 86);
+  --accent-amber-soft: oklch(0.95 0.04 90);
+  --accent-blue: oklch(0.55 0.06 205);
+  --accent-blue-soft: oklch(0.94 0.025 205);
 
   /* Heatmap fills - 5 steps */
-  --heat-0: oklch(0.91 0.012 172);
-  --heat-1: oklch(0.86 0.04 188);
-  --heat-2: oklch(0.75 0.075 188);
-  --heat-3: oklch(0.61 0.103 194);
-  --heat-4: oklch(0.44 0.108 202);
+  --heat-0: oklch(0.92 0.02 135);
+  --heat-1: oklch(0.86 0.05 135);
+  --heat-2: oklch(0.75 0.08 135);
+  --heat-3: oklch(0.62 0.1 140);
+  --heat-4: oklch(0.48 0.09 145);
 
   /* Semantic */
-  --danger: oklch(0.52 0.15 28);
-  --danger-soft: oklch(0.93 0.035 28);
-  --danger-line: oklch(0.78 0.08 28);
-  --warn: oklch(0.62 0.13 78);
-  --warn-soft: oklch(0.94 0.04 85);
+  --danger: oklch(0.54 0.12 28);
+  --danger-soft: oklch(0.95 0.025 28);
+  --danger-line: oklch(0.82 0.06 28);
+  --warn: oklch(0.62 0.1 78);
+  --warn-soft: oklch(0.95 0.035 85);
 
   /* Radii */
-  --r-xs: 4px;
-  --r-sm: 6px;
-  --r-md: 8px;
-  --r-lg: 8px;
-  --r-xl: 8px;
+  --r-xs: 6px;
+  --r-sm: 8px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 18px;
 
   /* Type stacks */
   --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, 'JetBrains Mono', monospace;
 
   /* Depth */
-  --shadow-card: 0 1px 0 rgba(22, 33, 31, 0.04), 0 16px 40px rgba(22, 33, 31, 0.06);
-  --shadow-popover: 0 18px 60px rgba(22, 33, 31, 0.18);
+  --shadow-card: 0 1px 1px rgba(37, 53, 42, 0.04), 0 12px 28px rgba(37, 53, 42, 0.045);
+  --shadow-popover: 0 18px 50px rgba(37, 53, 42, 0.14);
 }
 
 /* Reset-ish baseline for artboards */
@@ -98,7 +98,7 @@
 .ht-progress-fill {
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--sage-500), var(--sage-700));
+  background: var(--sage-600);
 }
 
 /* Tight focus ring */

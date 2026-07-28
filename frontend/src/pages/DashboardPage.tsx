@@ -30,7 +30,7 @@ export function DashboardPage() {
         eyebrow="Сегодня"
         title="Дашборд привычек"
         description="Текущий ритм, серии и выполнение по активным привычкам."
-        action={<Link to="/habits/new"><Button variant="accent"><Plus className="h-4 w-4" />Создать привычку</Button></Link>}
+        action={<Link className="block w-full md:w-auto" to="/habits/new"><Button className="w-full md:w-auto" variant="accent"><Plus className="h-4 w-4" />Создать привычку</Button></Link>}
       />
       <Card className="overflow-hidden">
         <div className="grid gap-0 xl:grid-cols-[1.05fr_1fr]">
@@ -55,8 +55,8 @@ export function DashboardPage() {
           <div className="grid gap-3 bg-surface-card2 p-4 sm:grid-cols-2 xl:grid-cols-2">
             <StatCard label="Активных" value={activeHabitsCount} tone="sage" note="В работе сейчас" />
             <StatCard label="Отметок" value={totalCompletions} note="За весь период" />
-            <StatCard label="Лучшая серия" value={bestStreak} unit="дн." tone="amber" />
-            <StatCard label="Соблюдение" value={percent(averageCompliance)} tone="blue" note="Среднее по активным" />
+            <StatCard label="Лучшая серия" value={bestStreak} unit="дн." />
+            <StatCard label="Соблюдение" value={percent(averageCompliance)} tone="sage" note="Среднее по активным" />
           </div>
         </div>
       </Card>
@@ -80,7 +80,7 @@ export function DashboardPage() {
                     Серия: <span className="ht-num text-sage-700">{habit.current_streak}</span> дней
                   </p>
                 </div>
-                <MarkTodayButton habitId={habit.habit_id} />
+                <MarkTodayButton habitId={habit.habit_id} className="w-full sm:w-auto" />
               </div>
               <div className="mt-5">
                 <div className="mb-2 flex items-center justify-between gap-3 text-xs text-ink-2">

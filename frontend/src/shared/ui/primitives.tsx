@@ -18,7 +18,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLBut
     <button
       ref={ref}
       className={clsx(
-        'focus-ring soft-motion inline-flex min-h-9 items-center justify-center gap-2 rounded-md border px-4 py-2 text-sm font-medium disabled:opacity-55 disabled:shadow-none',
+        'focus-ring soft-motion inline-flex min-h-10 items-center justify-center gap-2 whitespace-nowrap rounded-md border px-3.5 py-2 text-sm font-medium disabled:opacity-55 disabled:shadow-none',
         variant === 'primary' && 'border-ink bg-ink text-surface-card hover:bg-surface-ink',
         variant === 'accent'
           && 'border-sage-700 bg-sage-600 text-[#fbfffd] shadow-[inset_0_1px_0_rgba(255,255,255,0.18)] hover:bg-sage-700',
@@ -241,7 +241,7 @@ export function PageTitle({ eyebrow, title, description, action }: { eyebrow?: s
         <h1 className="text-2xl font-semibold tracking-normal text-ink md:text-[34px]">{title}</h1>
         {description && <p className="mt-2 max-w-2xl text-sm leading-6 text-ink-2">{description}</p>}
       </div>
-      {action && <div className="shrink-0">{action}</div>}
+      {action && <div className="w-full shrink-0 md:w-auto">{action}</div>}
     </header>
   );
 }

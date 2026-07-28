@@ -8,7 +8,7 @@ import { todayIso } from '../../shared/lib/format';
 import { Button } from '../../shared/ui/primitives';
 import { useToast } from '../../shared/ui/Toast';
 
-export function MarkTodayButton({ habitId, disabled }: { habitId: number; disabled?: boolean }) {
+export function MarkTodayButton({ habitId, disabled, className }: { habitId: number; disabled?: boolean; className?: string }) {
   const queryClient = useQueryClient();
   const { showToast } = useToast();
   const mutation = useMutation({
@@ -36,6 +36,7 @@ export function MarkTodayButton({ habitId, disabled }: { habitId: number; disabl
       variant="accent"
       loading={mutation.isPending}
       disabled={disabled}
+      className={className}
       onClick={() => mutation.mutate()}
     >
       <CheckCircle2 className="h-4 w-4" />
